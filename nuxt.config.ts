@@ -7,6 +7,8 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       'Open+Sans': [300, 400, 600, 700],
+      'Oswald': [300, 400, 600, 700],
+      'Inter': [300, 400, 600, 700],
     },
     display: 'swap',
     prefetch: true,

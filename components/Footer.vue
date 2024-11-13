@@ -127,7 +127,7 @@
             <p v-html="text.Html"></p>
           </div>
           <div class="flex items-center justify-center">
-            <img src="../static/jazzyspins_logo_wh.svg" loading="lazy" alt="Jazzy Spins Casino footer Logo"
+            <img src="/images/JazzySpins_logo_wh.svg" loading="lazy" alt="Jazzy Spins Casino footer Logo"
               class="footer_logo p-5 shadow-md rounded-lg" height="" width="" />
           </div>
         </div>

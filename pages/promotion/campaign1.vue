@@ -2,80 +2,88 @@
     <!-- Fixed Header -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-jazzy-blue border-b border-white/10">
         <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between h-[80px]">
+            <div class="flex items-center justify-between h-[60px] md:h-[80px]">
                 <!-- Logo -->
                 <div class="flex-shrink-0">
-                    <img src="/images/JazzySpins_logo_wh.svg" alt="JazzySpins" class="h-12 w-auto" />
+                    <img src="/images/JazzySpins_logo_wh.svg" alt="JazzySpins" class="h-8 md:h-12 w-auto" />
                 </div>
 
                 <!-- Right Side CTAs -->
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 md:gap-4">
                     <button @click="() => window.location.href = loginLink"
-                        class="md:flex items-center px-6 py-2 bg-jazzy-green text-white font-medium rounded-md hover:bg-opacity-90 transition-all duration-300 uppercase tracking-wide text-sm">
+                        class="px-4 py-1 md:px-6 md:py-2 bg-jazzy-green text-white font-medium rounded-md hover:bg-opacity-90 transition-all duration-300 uppercase tracking-wide text-xs md:text-sm">
                         {{ msgTranslate.login }}
                     </button>
 
                     <button @click="() => window.location.href = regLink"
-                        class="flex items-center px-6 py-2 bg-jazzy-red-secondary text-white font-medium rounded-md hover:bg-jazzy-red hover:scale-105 transition-all duration-300 uppercase tracking-wide text-sm">
+                        class="px-4 py-1 md:px-6 md:py-2 bg-jazzy-red-secondary text-white font-medium rounded-md hover:bg-jazzy-red hover:scale-105 transition-all duration-300 uppercase tracking-wide text-xs md:text-sm">
                         {{ msgTranslate.sign_up }}
                     </button>
                 </div>
             </div>
         </div>
-
-        <!-- Mobile Menu -->
-        <!-- <div v-if="isMobileMenuOpen"
-            class="md:hidden absolute top-full left-0 right-0 bg-jazzy-blue border-t border-white/10">
-            <div class="container mx-auto px-4 py-4 space-y-2">
-                <a :href="loginLink" class="block w-full px-4 py-2 text-center bg-jazzy-green text-white rounded-md">
-                    {{ msgTranslate.login }}
-                </a>
-                <a :href="regLink"
-                    class="block w-full px-4 py-2 text-center bg-jazzy-red-secondary text-white rounded-md">
-                    {{ msgTranslate.sign_up }}
-                </a>
-            </div>
-        </div> -->
     </header>
+
 
     <!-- Main Content (adjust the top margin to account for fixed header) -->
     <div class="min-h-screen bg-jazzy-blue">
         <!-- Hero Section -->
-        <div class="relative h-[600px] md:h-[800px] overflow-hidden pt-[80px]">
-            <!-- Background Image -->
+        <div class="relative h-[600px] md:h-[500px] overflow-hidden pt-[80px]">
+            <!-- Background Image for Mobile and Desktop -->
             <div class="absolute inset-0 mt-16">
-                <img src="/images/image-banner.webp" alt="Casino Atmosphere" class="w-full h-full object-cover" />
-                <div class="absolute inset-0 bg-gradient-to-r from-jazzy-darkblue/80 to-transparent"></div>
+                <img src="/images/jazz-mobile-welcome-notext.webp" alt="Casino Atmosphere"
+                    class="w-full h-full object-cover object-top md:hidden" />
+                <img src="/images/jazz-desktop-welcome.webp" alt="Casino Atmosphere"
+                    class="w-full h-full object-cover object-top hidden md:block" />
+                <div class="absolute inset-0 bg-gradient-to-r from-jazzy-darkblue/80 to-transparent md:block"></div>
             </div>
 
             <!-- Animated Content -->
-            <div class="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
-                <div class="space-y-6 max-w-2xl animate-fade-in">
-                    <h1 class="text-5xl md:text-7xl font-extrabold text-white animate-slide-up">
-                        WELCOME BONUS
-                    </h1>
+            <div
+                class="relative z-10 container mx-auto px-4 h-full flex flex-col justify-end pb-5 md:justify-center md:pb-0">
+                <div class="space-y-4 max-w-xs md:max-w-2xl animate-fade-in text-center md:text-left mx-auto md:mx-0">
+                    <div class="space-y-1 md:space-y-2">
+                        <!-- Text with Responsive Alignment -->
+                        <h1
+                            class="text-base mb-0 md:text-2xl font-normal text-white animate-slide-up tracking-wider uppercase">
+                            REGISTER AND DEPOSIT TO GET
+                        </h1>
 
-                    <div class="flex flex-wrap items-baseline gap-4 animate-slide-up animation-delay-200">
-                        <span class="text-6xl md:text-9xl font-black text-jazzy-yellow glow-effect">200%</span>
-                        <span class="text-3xl md:text-5xl text-white">UP TO</span>
-                        <span class="text-6xl md:text-9xl font-black text-jazzy-yellow glow-effect">£100</span>
+                        <div
+                            class="flex flex-col md:flex-row items-center md:items-baseline gap-1 md:gap-4 animate-slide-up animation-delay-200">
+                            <span class="text-2xl md:text-5xl font-semibold italic text-white font-inter">
+                                200% BONUS UP TO £100
+                            </span>
+                        </div>
+
+                        <div
+                            class="flex flex-row items-center md:items-baseline gap-1 md:gap-4 justify-center md:justify-start mx-auto">
+                            <span class="text-3xl md:text-7xl font-semibold text-white font-oswald">PLUS</span>
+                            <span class="text-3xl md:text-7xl font-semibold text-jazzy-yellow font-oswald">50 FREE
+                                SPINS</span>
+                        </div>
+
+
+                        <div
+                            class="text-xl md:text-4xl font-normal text-jazzy-red uppercase animate-slide-up animation-delay-400 font-inter">
+                            ON THE PAYING PIANO CLUB
+                        </div>
                     </div>
 
-                    <div class="text-4xl md:text-6xl font-bold text-white animate-slide-up animation-delay-400">
-                        + 50 FREE SPINS
-                    </div>
-
+                    <!-- Centered Button on Mobile, Left-Aligned on Desktop -->
                     <button
-                        class="mt-8 px-8 py-4 bg-jazzy-red-secondary hover:bg-jazzy-red text-white text-xl font-bold rounded-lg transform hover:scale-105 transition-all animate-slide-up animation-delay-600">
-                        CLAIM NOW
+                        class="mt-4 md:mt-8 px-6 py-3 md:px-8 md:py-4 bg-jazzy-red-secondary hover:bg-jazzy-red text-white text-lg md:text-xl font-normal font-oswald rounded-lg transform hover:scale-105 transition-all animate-slide-up animation-delay-600">
+                        JOIN NOW
                     </button>
-                    <!-- Payment Methods Pills -->
-                    <div class="mt-12 animate-slide-up animation-delay-800">
-                        <div class="flex flex-wrap items-center gap-1 max-w-[800px]">
+
+                    <!-- Payment Methods Pills Section, Responsive Layout -->
+                    <div class="mt-6 md:mt-12 animate-slide-up animation-delay-800">
+                        <div
+                            class="flex flex-wrap items-center gap-1 justify-center md:justify-start max-w-[300px] md:max-w-[800px]">
                             <div v-for="n in 10" :key="n"
                                 class="flex-shrink-0 h-[20px] md:h-[30px] transform hover:scale-110 transition-all duration-300">
                                 <img :src="`/images/paypills/paypills_${String(n).padStart(2, '0')}.png`"
-                                    :alt="`Payment Method ${n}`" class="w-auto h-6 object-contain" />
+                                    :alt="`Payment Method ${n}`" class="w-auto h-5 md:h-6 object-contain" />
                             </div>
                         </div>
                     </div>
@@ -93,7 +101,7 @@
         </div>
 
         <!-- Features Section with 4 Yellow Icons -->
-        <div class="bg-jazzy-liteblue py-16">
+        <div class="bg-jazzy-darkblue py-16">
             <div class="container mx-auto px-4">
                 <div class="flex justify-center items-center gap-4 mx-auto">
                     <img class="center" src="/images/Trust_jazzy.svg" />

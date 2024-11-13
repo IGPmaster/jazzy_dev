@@ -10,6 +10,11 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Open Sans', 'sans-serif'],
+        oswald: ['Oswald', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+      },
       colors: {
         primary: '#EFF1E0',
         secondary: '#141042',

@@ -1,92 +1,123 @@
 <template>
   <div>
-    <footer class="bg-tertiary_dark pt-10">
+    <footer class="!bg-jazzy-blue pt-10">
       <div class="row">
         <div class="container mx-auto">
           <ul class="flex flex-wrap justify-center pb-16 gap-8">
             <li>
               <NuxtLink to="/"
                 class="uppercase font-light text-sm text-zinc-200 py-2 px-4 rounded hover:bg-[#323131] transition ease-in-out">
-                {{ msgTranslate.home }}</NuxtLink>
+                <TranslatedText translation-key="home" />
+              </NuxtLink>
             </li>
             <li>
               <NuxtLink to="/promotions"
                 class="uppercase font-light text-sm text-zinc-200 py-2 px-4 bg-stone-800 rounded hover:bg-[#323131] transition ease-in-out">
-                {{ msgTranslate.promotions }}</NuxtLink>
+                <TranslatedText translation-key="promotions" />
+              </NuxtLink>
             </li>
             <li>
               <NuxtLink to="/compliance"
                 class="uppercase font-light text-sm text-zinc-200 py-2 px-4 bg-stone-800 rounded hover:bg-[#323131] transition ease-in-out">
-                {{ msgTranslate.legal }}</NuxtLink>
+                <TranslatedText translation-key="legal" />
+              </NuxtLink>
             </li>
             <li>
               <NuxtLink to="/all-games"
                 class="uppercase font-light text-sm text-zinc-200 py-2 px-4 bg-stone-800 rounded hover:bg-[#323131] transition ease-in-out">
-                {{ msgTranslate.all_games }}</NuxtLink>
+                <TranslatedText translation-key="all_games" />
+              </NuxtLink>
             </li>
             <li>
               <NuxtLink to="/casino-games"
                 class="uppercase font-light text-sm text-zinc-200 py-2 px-4 bg-stone-800 rounded hover:bg-[#323131] transition ease-in-out">
-                {{ msgTranslate.casino_games }}</NuxtLink>
+                <TranslatedText translation-key="casino_games" />
+              </NuxtLink>
             </li>
             <li>
               <NuxtLink to="/jackpot-games"
                 class="uppercase font-light text-sm text-zinc-200 py-2 px-4 bg-stone-800 rounded hover:bg-[#323131] transition ease-in-out">
-                {{ msgTranslate.jackpot_games }}</NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/live-games"
-                class="uppercase font-light text-sm text-zinc-200 py-2 px-4 bg-stone-800 rounded hover:bg-[#323131] transition ease-in-out">
-                {{ msgTranslate.live_games }}</NuxtLink>
+                <TranslatedText translation-key="jackpot_games" />
+              </NuxtLink>
             </li>
             <li>
               <NuxtLink to="/popular-games"
                 class="uppercase font-light text-sm text-zinc-200 py-2 px-4 bg-stone-800 rounded hover:bg-[#323131] transition ease-in-out">
-                {{ msgTranslate.popular_games }}</NuxtLink>
+                <TranslatedText translation-key="popular_games" />
+              </NuxtLink>
             </li>
             <li>
               <NuxtLink to="/scratchcards"
                 class="uppercase font-light text-sm text-zinc-200 py-2 px-4 bg-stone-800 rounded hover:bg-[#323131] transition ease-in-out">
-                {{ msgTranslate.scratchcards_games }}</NuxtLink>
+                <TranslatedText translation-key="scratchcards_games" />
+              </NuxtLink>
             </li>
             <li>
               <NuxtLink to="/slot-games"
                 class="uppercase font-light text-sm text-zinc-200 py-2 px-4 bg-stone-800 rounded hover:bg-[#323131] transition ease-in-out">
-                {{ msgTranslate.slot_games }}</NuxtLink>
+                <TranslatedText translation-key="slot_games" />
+              </NuxtLink>
             </li>
           </ul>
         </div>
       </div>
 
-      <div class="row pb-10">
-        <div class="container mx-auto footerContainer bg-neutral-50 rounded-md p-10">
+      <div class="row bg-jazzy-blue pb-10">
+        <div class="container mx-auto footerContainer bg-white p-24 rounded-xl">
           <ul class="container mx-auto flex list-none flex-wrap text-lg justify-center gap-6 py-8 text-gray-800">
             <li>
-              <NuxtLink to="/compliance/aboutus" class="compliance-btn">{{ msgTranslate.aboutus }}</NuxtLink>
+              <NuxtLink to="/compliance/aboutus"
+                class="border-gray-500 cursor-pointer uppercase border px-3 py-1 rounded text-sm text-gray-600 hover:bg-slate-50 transition ease-in-out">
+                <TranslatedText translation-key="aboutus" />
+              </NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/compliance/withdrawals" class="compliance-btn">{{ msgTranslate.withdrawals }}</NuxtLink>
+              <NuxtLink to="/compliance/withdrawals"
+                class="border-gray-500 cursor-pointer uppercase border px-3 py-1 rounded text-sm text-gray-600 hover:bg-slate-50 transition ease-in-out">
+                <TranslatedText translation-key="withdrawals" />
+              </NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/compliance/deposits" class="compliance-btn">{{ msgTranslate.deposits }}</NuxtLink>
+              <NuxtLink to="/compliance/deposits"
+                class="border-gray-500 cursor-pointer uppercase border px-3 py-1 rounded text-sm text-gray-600 hover:bg-slate-50 transition ease-in-out">
+                <TranslatedText translation-key="deposits" />
+              </NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/compliance/contact" class="compliance-btn">{{ msgTranslate.contact }}</NuxtLink>
+              <NuxtLink to="/compliance/contact"
+                class="border-gray-500 cursor-pointer uppercase border px-3 py-1 rounded text-sm text-gray-600 hover:bg-slate-50 transition ease-in-out">
+                <TranslatedText translation-key="contact" />
+              </NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/compliance/privacy" class="compliance-btn">{{ msgTranslate.privacy }}</NuxtLink>
+              <NuxtLink to="/compliance/privacy"
+                class="border-gray-500 cursor-pointer uppercase border px-3 py-1 rounded text-sm text-gray-600 hover:bg-slate-50 transition ease-in-out">
+                <TranslatedText translation-key="privacy" />
+              </NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/compliance/responsible" class="compliance-btn">{{ msgTranslate.responsible }}</NuxtLink>
+              <NuxtLink to="/compliance/responsible"
+                class="border-gray-500 cursor-pointer uppercase border px-3 py-1 rounded text-sm text-gray-600 hover:bg-slate-50 transition ease-in-out">
+                <TranslatedText translation-key="responsible" />
+              </NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/compliance/faq" class="compliance-btn">{{ msgTranslate.faq }}</NuxtLink>
+              <NuxtLink to="/compliance/faq"
+                class="border-gray-500 cursor-pointer uppercase border px-3 py-1 rounded text-sm text-gray-600 hover:bg-slate-50 transition ease-in-out">
+                <TranslatedText translation-key="faq" />
+              </NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/compliance/payouts" class="compliance-btn">{{ msgTranslate.payouts }}</NuxtLink>
+              <NuxtLink to="/compliance/payouts"
+                class="border-gray-500 cursor-pointer uppercase border px-3 py-1 rounded text-sm text-gray-600 hover:bg-slate-50 transition ease-in-out">
+                <TranslatedText translation-key="payouts" />
+              </NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/compliance/terms" class="compliance-btn">{{ msgTranslate.terms }}</NuxtLink>
+              <NuxtLink to="/compliance/terms"
+                class="border-gray-500 cursor-pointer uppercase border px-3 py-1 rounded text-sm text-gray-600 hover:bg-slate-50 transition ease-in-out">
+                <TranslatedText translation-key="terms" />
+              </NuxtLink>
             </li>
           </ul>
           <div v-for="icon in footerIcons" :key="icon.Name">
@@ -96,7 +127,7 @@
             <p v-html="text.Html"></p>
           </div>
           <div class="flex items-center justify-center">
-            <img src="../static/vegasparadise.webp" loading="lazy" alt="Vegas Paradise footer Logo"
+            <img src="../static/jazzyspins_logo_wh.svg" loading="lazy" alt="Jazzy Spins Casino footer Logo"
               class="footer_logo p-5 shadow-md rounded-lg" height="" width="" />
           </div>
         </div>
@@ -124,6 +155,8 @@
 </template>
 
 <script setup>
+import { WHITELABEL_ID } from '~/composables/globalData'
+const brandId = computed(() => WHITELABEL_ID)
 
 import { ref, onMounted } from 'vue';
 
@@ -142,6 +175,7 @@ const { fetch, error, $fetchState } = useFetch(async () => {
   background-color: #212121;
   max-width: 150px;
 }
+
 .router-link-active {
   @apply text-secondary bg-secondary_bg;
 }

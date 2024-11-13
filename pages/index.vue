@@ -48,12 +48,10 @@
 </template>
 
 <script setup>
-
 import { ref, onMounted, defineEmits } from 'vue';
-const loading = ref(true);
-
 import { promotionsPosts, regLink, fetchPromotions } from '~/composables/globalData';
-
+const loading = ref(true);
+const { getCacheKey, getCache, setCache } = useCache();
 const emit = defineEmits(['loaded']);
 
 const { fetch, error, $fetchState } = useFetch(async () => {

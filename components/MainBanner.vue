@@ -4,7 +4,7 @@
       <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="3"></circle>
     </svg>
   </div>
-  <div class="headWrap bg-tertiary_dark">
+  <div class="headWrap bg-secondary">
     <div v-for="promo in promotionsPosts" :key="promo.id">
       <div class="w-full">
         <a :href="regLink" style="margin-bottom: -5px;" v-if="promo.acf && promo.yoast_head_json">
@@ -18,12 +18,12 @@
         </a>
       </div>
 
-      <div class="container mx-auto text-center text-primary sig_terms lg:py-5 lg:w-3/4">
+      <div class="container mx-auto text-center text-jazzy-beige sig_terms lg:py-5 lg:w-3/4">
         <div class="px-5" v-html="promo.acf.sig_terms"></div>
       </div>
 
       <main class="container mx-auto text-center py-4">
-        <h1 class="site_heading text-primary text-lg md:text-2xl lg:text-4xl font-bold">VegasParadise - Your Casino!</h1>
+        <h1 class="site_heading text-primary text-lg md:text-2xl lg:text-4xl font-bold">Jazzy Spins - Your Casino!</h1>
       </main>
 
 

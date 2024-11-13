@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <nav class="top-menu bg-primary_bg fixed z-10 py-4 shadow-lg items-center w-full">
+    <nav class="top-menu bg-jazzy-blue fixed z-10 py-4 shadow-lg items-center w-full">
       <div class="w-full md:px-0">
         <div class="container md:mx-auto grid grid-cols-3 items-center">
           <div class="left">
@@ -31,7 +31,7 @@
           </div>
           <div class="">
             <NuxtLink class="flex justify-center" to="/">
-              <img src="../static/vegasparadise.webp" alt="Vegas Paradise header Logo" class="" width="200" height="">
+              <img src="../static/jazzyspins_logo_wh.svg" alt="Vegas Paradise header Logo" class="" width="200" height="">
             </NuxtLink>
           </div>
 
@@ -39,12 +39,12 @@
             <ul class=" grid-cols-2 gap-6 hidden lg:flex justify-end">
               <li class="items-center">
                 <a :href="loginLink"
-                  class="text-primary border border-secondary_bg py-1.5 shadow-lg tracking-wider px-6 font-semibold uppercase rounded">{{
+                  class="text-primary bg-jazzy-green py-1.5 shadow-lg tracking-wider px-6 font-normal uppercase rounded">{{
                   msgTranslate.login }}</a>
               </li>
               <li class="items-center">
                 <a :href="regLink"
-                  class="text-secondary bg-secondary_bg py-1.5 shadow-lg tracking-wider px-6 font-semibold rounded hover:text-primary hover:bg-tertiary_dark transition ease-in-out duration-400 hover:scale-110 uppercase cursor-pointer ">{{
+                  class="text-white bg-jazzy-red-secondary py-1.5 shadow-lg tracking-wider px-6 font-normal rounded hover:text-primary hover:bg-jazzy-red transition ease-in-out duration-400 hover:scale-110 uppercase cursor-pointer ">{{
                   msgTranslate.sign_up }}</a>
               </li>
             </ul>

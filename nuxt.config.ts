@@ -1,5 +1,35 @@
 export default defineNuxtConfig({
   // Keep SSR true for Cloudflare Pages
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/google-fonts'
+  ],
+  googleFonts: {
+    families: {
+      'Open+Sans': [300, 400, 600, 700],
+    },
+    display: 'swap',
+    prefetch: true,
+    preconnect: true,
+    preload: true,
+    download: true,
+  },  // Added closing brace here
+  tailwindcss: {
+    cssPath: '~/assets/main.css',
+    configPath: 'tailwind.config.js',
+    exposeConfig: false,
+    injectPosition: 0,
+    viewer: true,
+  },
+  css: [
+    'swiper/css',
+    'swiper/css/pagination',
+    'swiper/css/navigation',
+  ],
+
+  build: {
+    transpile: ['gsap'],
+  },
   ssr: true,
   nitro: {
     preset: 'cloudflare-pages',
@@ -9,29 +39,25 @@ export default defineNuxtConfig({
     },
     prerender: {
       fallback: true,
-      crawlLinks: true,     // Add this to prerender linked pages
-      routes: ['/']         // Add this to ensure root is prerendered
+      crawlLinks: true,
+      routes: ['/']
     }
   },
-  // Use ISR (Incremental Static Regeneration) for all routes
   routeRules: {
     '/**': { isr: true }
   },
-  // Add this experimental feature for better Cloudflare Pages compatibility
   experimental: {
     payloadExtraction: false
   },
-  css: ['~/assets/main.css'],
   plugins: [
     '~/plugins/language.js',
     '~/plugins/hreflang.js',
   ],
-  modules: ['@nuxtjs/tailwindcss'],
   app: {
     head: {
-      title: 'VegasParadise - Your Casino!',
+      title: 'Jazzy Spins',
       meta: [
-        { name: 'description', content: "Enjoy seamless mobile gaming with VegasParadise's mobile slots." }
+        { name: 'description', content: "Jazzy" }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },

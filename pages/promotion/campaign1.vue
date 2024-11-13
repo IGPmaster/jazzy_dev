@@ -5,7 +5,7 @@
             <div class="flex items-center justify-between h-[80px]">
                 <!-- Logo -->
                 <div class="flex-shrink-0">
-                    <img src="/images/jazzyspins_logo_wh.svg" alt="JazzySpins" class="h-12 w-auto" />
+                    <img src="/images/JazzySpins_logo_wh.svg" alt="JazzySpins" class="h-12 w-auto" />
                 </div>
 
                 <!-- Right Side CTAs -->

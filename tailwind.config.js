@@ -30,6 +30,7 @@ export default {
         'jazzy-red': '#DD0524',
         'jazzy-green': '#748F1B',
         'jazzy-red-secondary': '#FC0035',
+        'jazzy-gold': '#FEB708',
       }
     },
   },

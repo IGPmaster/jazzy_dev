@@ -5,12 +5,14 @@
 	<NewGames />
 
 	<!-- PP Promotions API -->
-	<div class="section px-5 bg-primary">
+	<div class="section px-5 bg-jazzy-beige">
+		
 		<div v-for="rest in promotionsPosts" :key="rest.code" class="container py-10 mx-auto text-primary">
 			<div v-html="rest.acf.promo_over" class="leading-relaxed"></div>
 		</div>
 
 		<div class="container mx-auto py-5">
+			<h2 class="text-jazzy-darkblue mb-4">Promotions</h2>
 			<div class="grid grid-cols-2 md:grid-cols-2 gap-4 lg:gap-8">
 				<div v-for="promo in pp_promotions" :key="promo.code">
 					<div class="card overflow-hidden rounded-lg leading-relaxed">
@@ -41,7 +43,7 @@
 			<div class="px-4">
 				<div class="text-sm text-primary">
 					<div v-for="promotion in promotionsPosts" :key="promotion.id">
-						<div v-html="promotion.content.rendered" :key="promotion.id"></div>
+						<div class="cms-content" v-html="promotion.content.rendered" :key="promotion.id"></div>
 					</div>
 				</div>
 			</div>

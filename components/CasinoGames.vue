@@ -88,7 +88,7 @@
 
 			<!-- CTA Section -->
 			<div class="mt-16">
-				<div class="bg-jazzy-blue rounded-lg p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between">
+				<div class="bg-jazzy-liteblue rounded-lg p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between">
 					<div class="text-primary font-medium text-xl md:text-2xl xl:text-3xl mb-4 sm:mb-0">
 						<TranslatedText translation-key="claim" />
 					</div>

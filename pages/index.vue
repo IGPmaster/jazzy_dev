@@ -1,16 +1,17 @@
 <template>
 
 	<MainBanner />
+	<ProvidersSlider />
 	<NewGames />
 
 	<!-- PP Promotions API -->
-	<div class="section px-5 bg-tertiary_dark">
+	<div class="section px-5 bg-primary">
 		<div v-for="rest in promotionsPosts" :key="rest.code" class="container py-10 mx-auto text-primary">
 			<div v-html="rest.acf.promo_over" class="leading-relaxed"></div>
 		</div>
 
 		<div class="container mx-auto py-5">
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
+			<div class="grid grid-cols-2 md:grid-cols-2 gap-4 lg:gap-8">
 				<div v-for="promo in pp_promotions" :key="promo.code">
 					<div class="card overflow-hidden rounded-lg leading-relaxed">
 						<div class="card-image">
@@ -35,12 +36,13 @@
 	<SlotGames />
 	<CasinoGames />
 	<JackpotGames />
-
-	<div class="container mx-auto py-10">
-		<div class="px-4">
-			<div class="text-sm text-primary">
-				<div v-for="promotion in promotionsPosts" :key="promotion.id">
-					<div v-html="promotion.content.rendered" :key="promotion.id"></div>
+	<div class="section px-5 bg-jazzy-darkblue">
+		<div class="container mx-auto py-10 bg-jazzy-darkblue">
+			<div class="px-4">
+				<div class="text-sm text-primary">
+					<div v-for="promotion in promotionsPosts" :key="promotion.id">
+						<div v-html="promotion.content.rendered" :key="promotion.id"></div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -48,10 +50,12 @@
 </template>
 
 <script setup>
+
 import { ref, onMounted, defineEmits } from 'vue';
-import { promotionsPosts, regLink, fetchPromotions } from '~/composables/globalData';
 const loading = ref(true);
-const { getCacheKey, getCache, setCache } = useCache();
+
+import { promotionsPosts, regLink, fetchPromotions } from '~/composables/globalData';
+
 const emit = defineEmits(['loaded']);
 
 const { fetch, error, $fetchState } = useFetch(async () => {
@@ -69,6 +73,19 @@ onMounted(async () => {
 	emit('loaded');
 });
 
+useHead({
+  title: 'Exclusive Casino Promotions - Jazzy Spins',
+  meta: [
+    { 
+      name: 'description', 
+      content: 'Discover exciting casino promotions at Jazzy Spins. Enjoy welcome bonuses, free spins, and exclusive rewards designed to maximize your gaming experience.'
+    },
+    {
+      name: 'keywords',
+      content: 'casino promotions, welcome bonus, free spins, casino rewards, gaming offers, Jazzy Spins bonuses'
+    }
+  ]
+});
 </script>
 
 <style scoped>

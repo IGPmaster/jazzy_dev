@@ -226,6 +226,39 @@ const providers = Array.from({ length: 29 }, (_, i) => ({
 
 // Duplicate the array for seamless loop
 const duplicateProviders = [...providers];
+
+// Add SEO meta tags
+useHead({
+  title: '200% Welcome Bonus up to £100 + 50 Free Spins | Jazzy Spins Casino',
+  meta: [
+    { 
+      name: 'description', 
+      content: 'Join Jazzy Spins Casino today and claim your 200% welcome bonus up to £100 plus 50 free spins on The Paying Piano Club. New players only, minimum deposit £10.'
+    },
+    {
+      name: 'keywords',
+      content: 'casino welcome bonus, casino free spins, online casino bonus, Jazzy Spins bonus, casino sign up offer, casino welcome package'
+    },
+    // Open Graph tags for social sharing
+    {
+      property: 'og:title',
+      content: '200% Welcome Bonus up to £100 + 50 Free Spins | Jazzy Spins Casino'
+    },
+    {
+      property: 'og:description',
+      content: 'Join Jazzy Spins Casino today and claim your 200% welcome bonus up to £100 plus 50 free spins on The Paying Piano Club. New players only, minimum deposit £10.'
+    },
+    {
+      property: 'og:type',
+      content: 'website'
+    },
+    // Add canonical URL to prevent duplicate content issues
+    {
+      rel: 'canonical',
+      href: 'https://jazzyspins.com/promotion/campaign1'
+    }
+  ]
+});
 </script>
 
 <style scoped>

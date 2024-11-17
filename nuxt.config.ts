@@ -1,9 +1,19 @@
 export default defineNuxtConfig({
-  // Keep SSR true for Cloudflare Pages
+  // Add compatibility date
+  compatibilityDate: '2024-11-17',
+
+  // Add auto-imports for composables
+  imports: {
+    dirs: ['composables/**']
+  },
+
+  // Keep existing modules
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/google-fonts'
   ],
+
+  // Keep Google Fonts config
   googleFonts: {
     families: {
       'Open+Sans': [300, 400, 600, 700],
@@ -15,23 +25,30 @@ export default defineNuxtConfig({
     preconnect: true,
     preload: true,
     download: true,
-  },  // Added closing brace here
+  },
+
+  // Update Tailwind config
   tailwindcss: {
     cssPath: '~/assets/main.css',
     configPath: 'tailwind.config.js',
     exposeConfig: false,
-    injectPosition: 0,
     viewer: true,
   },
+
+  // Keep existing CSS imports
   css: [
+    '~/assets/main.css', // Add your main CSS file
     'swiper/css',
     'swiper/css/pagination',
     'swiper/css/navigation',
   ],
 
+  // Keep existing build config
   build: {
     transpile: ['gsap'],
   },
+
+  // Keep SSR and Cloudflare config
   ssr: true,
   nitro: {
     preset: 'cloudflare-pages',
@@ -45,16 +62,23 @@ export default defineNuxtConfig({
       routes: ['/']
     }
   },
+
+  // Keep route rules
   routeRules: {
     '/**': { isr: true }
   },
+
   experimental: {
     payloadExtraction: false
   },
+
+  // Keep plugins
   plugins: [
     '~/plugins/language.js',
     '~/plugins/hreflang.js',
   ],
+
+  // Keep app head config
   app: {
     head: {
       title: 'Jazzy Spins',
@@ -70,4 +94,4 @@ export default defineNuxtConfig({
       ],
     }
   },
-});
+})

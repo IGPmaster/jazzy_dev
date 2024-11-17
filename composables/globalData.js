@@ -103,8 +103,8 @@ export async function loadLang() {
       if (foundLangKV && foundLangIGP) {
         langValue = originalLang;
       } else {
-        // If the country is not found in both KV's, set fallback to 'CA'
-        langValue = 'CA';
+        // If the country is not found in both KV's, set fallback to 'IE'
+        langValue = 'IE';
       }
     } catch (error) {
       console.error('Error getting country code:', error);
@@ -119,13 +119,13 @@ export async function loadLang() {
         lang.value = cookieLang.toUpperCase();
       } else {
         // 2:4 If NOT same value (or empty lang cookie), set new lang cookie value from CF_GEO_WORKER value
-        lang.value = langValue || 'CA';
+        lang.value = langValue || 'IE';
         // Set the 'lang' cookie to the selected language for one month
         setCookie('lang', lang.value, 30, 'None', true);
       }
     } else {
-      // 3. Fallback to "CA" if all the above fails
-      lang.value = langValue || 'CA';
+      // 3. Fallback to "IE" if all the above fails
+      lang.value = langValue || 'IE';
       // Set the 'lang' cookie to the selected language for one month
       setCookie('lang', lang.value, 30, 'None', true);
     }
@@ -162,7 +162,9 @@ export async function loadTranslations() {
     let langCode = lang.value;
     const countryCode = langCode;
     if (!Object.values(IGP_SUPPORTED_COUNTRIES_KV).flat().includes(countryCode)) {
+      // If country not found in supported countries, default to English with IE country code
       langCode = 'EN';
+      lang.value = 'IE';
     } else {
       for (const [key, value] of Object.entries(IGP_SUPPORTED_COUNTRIES_KV)) {
         if (value.includes(countryCode)) {
@@ -195,35 +197,31 @@ async function fetchApiPromotions() {
 
 export async function fetchPromotions() {
   try {
-    //console.log('Fetching Promotions...');
-    const response = await fetch(`${WP_API}promotions/?_fields=content,yoast_head_json.description,yoast_head_json.og_title,acf&acf_format=standard`);
-    //const response = await fetch(`${WP_API}promotions`);
-    console.log('Response received:', response);
-    
+    const response = await fetch(`${WP_API}promotions?per_page=100`);
     const data = await response.json();
-    console.log('JSON data:', data);
-    
-    const filteredData = data.filter((item) => {
+
+    // First try to find content for current country (SE in this case)
+    let filteredData = data.filter((item) => {
       const geoTarget = item.acf.geo_target_country_sel;
       return geoTarget && geoTarget.includes(lang.value);
     });
-    console.log('Filtered data:', filteredData);
-    
-    // If no posts are found for the selected country, include the CA post
+
+    // If no content found for current country, fallback to IE content
     if (filteredData.length === 0) {
-      const caPosts = data.filter((item) => {
+      console.log('No content found for', lang.value, 'falling back to IE content');
+      filteredData = data.filter((item) => {
         const geoTarget = item.acf.geo_target_country_sel;
         return geoTarget && geoTarget.includes('IE');
       });
-      //console.log('CA Posts:', caPosts);
-      filteredData.push(...caPosts);
     }
-    
+
+    // Add some debugging
+    console.log('Current language:', lang.value);
+    console.log('Filtered promotions data:', filteredData);
+
     promotionsPosts.value = filteredData;
-    console.log('promotionsPosts.value:', promotionsPosts.value);
-    
   } catch (error) {
-    console.error('Error fetching Promotions:', error);
+    console.error('Error fetching promotions:', error);
   }
 }
 

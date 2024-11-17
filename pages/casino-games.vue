@@ -3,8 +3,9 @@
 		<div class="row bg-primary_bg lg:mb-4 pt-20">
 			<div class="container grid grid-cols-1 lg:grid-cols-8 lg:gap-10 items-center mx-auto p-4">
 				<div class="col-span-full lg:col-span-6">
-					<p class="gamesSectionHead text-center lg:text-left text-3xl text-primary py-4 px-4">{{
-						msgTranslate.casino_games }}</p>
+					<p class="gamesSectionHead text-center lg:text-left text-3xl text-primary py-4 px-4">
+						<TranslatedText translation-key="casino_games" />
+					</p>
 					<div v-for="promo in promotionsPosts" :key="promo.id">
 						<div class="info_content text-primary font-extralight py-5 px-4">{{ promo.acf.casino_games_info }}
 						</div>
@@ -14,7 +15,9 @@
 					<div class="flex justify-between items-center">
 						<a :href="regLink"
 							class="bg-secondary_bg w-full rounded-md py-3 flex text-secondary hover:text-primary hover:bg-tertiary_dark uppercase cursor-pointer transition ease-in-out duration-500 hover:scale-110">
-							<span class="text-center w-full">{{ msgTranslate.sign_up }}</span>
+							<span class="text-center w-full">
+								<TranslatedText translation-key="sign_up" />
+							</span>
 							<i class="material-icons items-center pr-2 font-extralight">arrow_forward</i>
 						</a>
 					</div>
@@ -62,10 +65,10 @@ const { fetch, error, $fetchState } = useFetch(async () => {
 });
 // Set page-specific meta tags
 useHead({
-	title: 'Casino Games - Hippozino',
+	title: 'Casino Games - Jazzy',
 	meta: [
-		{ hid: 'description', name: 'description', content: 'Explore the best casino games available at Hippozino!' },
-		{ name: 'keywords', content: 'casino, games, casino, Hippozino' }
+		{ hid: 'description', name: 'description', content: 'Explore the best casino games available at Jazzy Spins!' },
+		{ name: 'keywords', content: 'casino, games, casino, Jazzy Spins' }
 	]
 });
 </script>

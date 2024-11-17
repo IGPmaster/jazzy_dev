@@ -65,10 +65,10 @@ const { fetch, error, $fetchState } = useFetch(async () => {
 
 // Set page-specific meta tags
 useHead({
-	title: 'Slot Games - Hippozino',
+	title: 'Slot Games - Jazzy Spins Online Casino	',
 	meta: [
-		{ hid: 'description', name: 'description', content: 'Explore the best slot games available at Hippozino!' },
-		{ name: 'keywords', content: 'slots, games, casino, Hippozino' }
+		{ hid: 'description', name: 'description', content: 'Explore the best slot games available at Jazzy Spins!' },
+		{ name: 'keywords', content: 'slots, games, casino, Jazzy Spins' }
 	]
 });
 </script>

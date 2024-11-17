@@ -1,15 +1,18 @@
 <template>
     <div v-if="!accepted">
         <div class="cookie-consent">
-            <p class="py-10 text-black">{{ msgTranslate.cookieConsent }}</p>
-            <button class="bg-login-gradient text-black py-1.5 shadow-lg tracking-wider px-6 font-semibold uppercase rounded" @click="acceptCookies">{{ msgTranslate.accept }}</button>
+            <p class="py-10 text-black">
+				<TranslatedText translation-key="cookieConsent" />
+			</p>
+            <button class="bg-login-gradient text-black py-1.5 shadow-lg tracking-wider px-6 font-semibold uppercase rounded" @click="acceptCookies">
+				<TranslatedText translation-key="accept" />
+			</button>
         </div>
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { msgTranslate } from '~/composables/globalData';
 
 const accepted = ref(false);
 

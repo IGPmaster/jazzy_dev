@@ -17,20 +17,20 @@
         </a>
       </div>
       <div>
-        <div class="container mx-auto text-center sig_terms lg:py-5 lg:w-1/2">
-          <div class="px-5 text-jazzy-beige text-xs font-light" v-html="promo.acf.sig_terms"></div>
+        <div class="container mx-auto text-center sig_terms lg:py-2 ">
+          <div class="px-5 text-jazzy-beige !text-xs !font-light" v-html="promo.acf.sig_terms"></div>
         </div>
         <!-- Steps Section -->
         <div class="bg-jazzy-beige py-8">
             <div class="container mx-auto px-4">
-                <div class="flex justify-center items-center gap-4 mx-auto">
-                    <img class="center" src="/images/1-2-3_JAZZY.svg" />
+                <div class="flex justify-center items-center mx-auto">
+                    <img class="center" :src="promo.acf.one_two_three_icon" />
                 </div>
             </div>
         </div>
 
         <div class="container mx-auto">
-          <div class="flex justify-center lg:pb-5 py-3">
+          <div class="flex justify-center pt-5">
             <img class=" w-6/8 lg:w-2/5 place-items-center" :src="promo.acf.trust_icons"
               alt="100% Licensed and fast payouts" />
           </div>
@@ -148,5 +148,11 @@ onMounted(async () => {
 
 .head-banner {
   opacity: 1;
+}
+:deep(a) {
+  @apply !text-jazzy-gold underline font-normal;
+}
+:deep(p) {
+  @apply !text-jazzy-beige font-thin text-xs;
 }
 </style>

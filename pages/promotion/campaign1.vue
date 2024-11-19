@@ -1,5 +1,4 @@
 <template>
-    <!-- Fixed Header -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-jazzy-blue border-b border-white/10">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between h-[60px] md:h-[80px]">
@@ -10,15 +9,15 @@
 
                 <!-- Right Side CTAs -->
                 <div class="flex items-center gap-2 md:gap-4">
-                    <button @click="() => window.location.href = loginLink"
-                        class="px-4 py-1 md:px-6 md:py-2 bg-jazzy-green text-white font-medium rounded-md hover:bg-opacity-90 transition-all duration-300 uppercase tracking-wide text-xs md:text-sm">
-                        {{ msgTranslate.login }}
-                    </button>
+                    <a :href="loginLink" 
+                    class="px-4 py-1 md:px-6 md:py-2 bg-jazzy-green text-white font-medium rounded-md hover:bg-opacity-90 transition-all duration-300 uppercase tracking-wide text-xs md:text-sm">
+                    <TranslatedText translation-key="login" />
+                    </a>
 
-                    <button @click="() => window.location.href = regLink"
-                        class="px-4 py-1 md:px-6 md:py-2 bg-jazzy-red-secondary text-white font-medium rounded-md hover:bg-jazzy-red hover:scale-105 transition-all duration-300 uppercase tracking-wide text-xs md:text-sm">
-                        {{ msgTranslate.sign_up }}
-                    </button>
+                    <a :href="regLink"
+                    class="px-4 py-1 md:px-6 md:py-2 bg-jazzy-red-secondary text-white font-medium rounded-md hover:bg-jazzy-red hover:scale-105 transition-all duration-300 uppercase tracking-wide text-xs md:text-sm">
+                    <TranslatedText translation-key="sign_up" />
+                    </a>
                 </div>
             </div>
         </div>
@@ -71,10 +70,10 @@
                     </div>
 
                     <!-- Centered Button on Mobile, Left-Aligned on Desktop -->
-                    <button
-                        class="mt-4 md:mt-8 px-6 py-3 md:px-8 md:py-4 bg-jazzy-red-secondary hover:bg-jazzy-red text-white text-lg md:text-xl font-normal font-oswald rounded-lg transform hover:scale-105 transition-all animate-slide-up animation-delay-600">
+                    <a :href="regLink"
+                        class="mt-4 md:mt-8 px-6 py-3 md:px-8 md:py-4 bg-jazzy-red-secondary hover:bg-jazzy-red text-white text-lg md:text-xl font-normal font-oswald rounded-lg transform hover:scale-105 transition-all animate-slide-up animation-delay-600 inline-block">
                         JOIN NOW
-                    </button>
+                    </a>
 
                     <!-- Payment Methods Pills Section, Responsive Layout -->
                     <div class="mt-6 md:mt-12 animate-slide-up animation-delay-800">
@@ -88,6 +87,17 @@
                         </div>
                     </div>
                 </div>
+                
+            </div>
+        </div>
+        <div class="bg-jazzy-darkblue">
+            <div class="container mx-auto text-white font-light text-xs text-center py-2">
+                New Players Only. Wagering occurs from real balance first. 50X wagering the bonus. Contribution may vary per game. 
+                Available on selected games only. The wagering requirement is calculated on bonus bets only. 
+                Bonus valid 30 Days from receipt. Max conversion: 3 X the bonus amount. 
+                Limited to 5 brands within the <a href="https://www.gamblingcommission.gov.uk/public-register/business/detail/domain-names/39335" class="text-jazzy-yellow underline">network</a>. 
+                Withdrawal requests void all active/pending bonuses. Excluded Skrill and Neteller deposits. 
+                <a :href="regLink" class="text-jazzy-yellow underline">Full Terms Apply</a>
             </div>
         </div>
 
@@ -146,50 +156,27 @@
                     <p v-for="n in 1" :key="n" class="text-jazzy-beige mb-4 font-thin">
 
                     <p class="text-3xl font-normal pt-4">Terms and Conditions</p>
-                    Players must make a minimum deposit of £10.
-                    Bonus or any winnings from the free spins must be wagered 50 times before a withdrawal may be made.
-                    Wagering contributions apply and vary from game to game.
-                    Withdrawal requests void all active/pending bonuses.
-                    In order to qualify for the bonus, the player must deposit using the casino cashier only.
+                        <p class="text-jazzy-beige font-thin">Players must make a minimum deposit of kr100.
+                        Bonus or any winnings from the free spins must be wagered 50 times before a withdrawal may be made. Wagering contributions apply and vary from game to game.
+                        Withdrawal requests void all active/pending bonuses.
+                        In order to qualify for the bonus, the player must deposit using the casino cashier only.</p>
 
-                    <p class="text-2xl font-normal pt-4">Match Deposit Offer:</p>
-                    Any bonus and winnings will expire 30 days after being credited from the date and time it is
-                    credited to a player's account. Players who have not used their bonus and winnings generated
-                    from the bonus or if the Wagering Requirement has not been met within the stipulated time limits
-                    shall not be able to receive the expired bonus and/or winnings generated from the bonus
-                    thereafter.
-                    Once the amount you have wagered meets or exceeds the Wagering Requirement, the Promotion will end
-                    and your Bonus Funds will automatically transfer to your Real Money Balance (up to the
-                    Maximum Conversion Amount of 3 times the original bonus amount credited to your account) from where
-                    you will be able to withdraw them as cash or continue to use them in non-Promotion play.
+                        <p class="text-2xl font-normal pt-4">Match Deposit Offer:</p>
 
-                    <p class="text-2xl font-normal pt-4">Free Spins Offer:</p>
-                    Any bonus and winnings will expire 7 days after being credited from the date and time it is
-                    credited to a player's account. Players who have not used their bonus and winnings generated
-                    from the bonus or if the Wagering Requirement has not been met within the stipulated time limits
-                    shall not be able to receive the expired bonus and/or winnings generated from the bonus
-                    thereafter.
-                    Once the amount you have wagered meets or exceeds the Wagering Requirement, the Promotion will
-                    end and your Bonus Funds will automatically transfer to your Real Money Balance (up to the
-                    Maximum Conversion Amount of £20) from where you will be able to withdraw them as cash or
-                    continue to use them in non-Promotion play.
+                        <p class="text-jazzy-beige font-thin">Any bonus and winnings will expire 30 days after being credited from the date and time it is credited to a player's account. Players who have not used their bonus and winnings generated from the bonus or if the Wagering Requirement has not been met within the stipulated time limits shall not be able to receive the expired bonus and/or winnings generated from the bonus thereafter.
+                        Once the amount you have wagered meets or exceeds the Wagering Requirement, the Promotion will end and your Bonus Funds will automatically transfer to your Real Money Balance (up to the Maximum Conversion Amount of 3 times the original bonus amount credited to your account) from where you will be able to withdraw them as cash or continue to use them in non-Promotion play.</p>
+                        
+                        <p class="text-2xl font-normal pt-4">Free Spins Offer:</p>
 
-                    <p class="text-2xl font-normal pt-4">General Terms & Conditions:</p>
-                    The promotion is not available to customers depositing with Skrill and Neteller payment method.
-                    All active bonuses or pending bonuses and promotional offers, and any winnings generated through
-                    the wagering of either of the aforementioned, will be cancelled upon withdrawal request if any
-                    of the applicable conditions have not been met in full prior to withdrawal request being
-                    submitted.
-                    The promotion is subject to the JazzySpins's Terms and Conditions.
-                    JazzySpins reserves the right to alter this chapter, cancel, modify or suspend any offer and any
-                    promotion at any time and without prior notice – in respect of any Bonus that has yet to be
-                    provided to You. Any bonuses granted prior to the change shall not be affected. The terms and
-                    conditions and the bonus policy that apply to any Bonus received by You are the Terms and
-                    Conditions and its Bonus Policy that are in force at the time in which You sign up to the
-                    Promotion to which that Bonus relates. Nothing in this section limits any other right and/or
-                    remedy granted to Us.
-                    These terms and conditions may be published in a number of languages for information purposes.
-                    In case of deviations, the English version applies.
+                        <p class="text-jazzy-beige font-thin">Any bonus and winnings will expire 7 days after being credited from the date and time it is credited to a player's account. Players who have not used their bonus and winnings generated from the bonus or if the Wagering Requirement has not been met within the stipulated time limits shall not be able to receive the expired bonus and/or winnings generated from the bonus thereafter.
+                        Once the amount you have wagered meets or exceeds the Wagering Requirement, the Promotion will end and your Bonus Funds will automatically transfer to your Real Money Balance (up to the Maximum Conversion Amount of kr200) from where you will be able to withdraw them as cash or continue to use them in non-Promotion play.</p>
+                        
+                        <p class="text-2xl font-normal pt-4">General Terms & Conditions:</p>
+
+                        <p class="text-jazzy-beige font-thin">All active bonuses or pending bonuses and promotional offers, and any winnings generated through the wagering of either of the aforementioned, will be cancelled upon withdrawal request if any of the applicable conditions have not been met in full prior to withdrawal request being submitted.
+                        The promotion is subject to the JazzySpins's Terms and Conditions.
+                        JazzySpins reserves the right to alter this chapter, cancel, modify or suspend any offer and any promotion at any time and without prior notice – in respect of any Bonus that has yet to be provided to You. Any bonuses granted prior to the change shall not be affected. The terms and conditions and the bonus policy that apply to any Bonus received by You are the Terms and Conditions and its Bonus Policy that are in force at the time in which You sign up to the Promotion to which that Bonus relates. Nothing in this section limits any other right and/or remedy granted to Us.
+                        These terms and conditions may be published in a number of languages for information purposes. In case of deviations, the English version applies.</p>
                     </p>
                 </div>
             </div>
@@ -199,33 +186,29 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
+import { regLink, loginLink, fetchGames } from '~/composables/globalData'
+
 definePageMeta({
-    layout: false
+    layout: 'campaign'  // Use the custom layout instead of false
 })
-import { ref } from 'vue'
 
-const steps = [
-    { number: '1', title: 'REGISTER', description: 'Sign up in seconds' },
-    { number: '2', title: 'DEPOSIT', description: '£20 or more' },
-    { number: '3', title: 'GET BONUS', description: 'Start playing instantly' }
-]
-
-// Update features data
-const features = [
-    { title: 'Huge Games Collection', icon: 'games' },
-    { title: 'Safe & Secure', icon: 'shield' },
-    { title: 'Fast Withdrawals', icon: 'money' },
-    { title: '24/7 Support', icon: 'support' }
-]
+onMounted(async () => {
+  try {
+    await fetchGames()  // This will initialize regLink
+  } catch (error) {
+    console.error('Error initializing:', error)
+  }
+})
 
 // Generate array of image paths
 const providers = Array.from({ length: 29 }, (_, i) => ({
     id: i + 1,
     path: `/images/providers/providers_${String(i + 1).padStart(2, '0')}.png`
-}));
+}))
 
 // Duplicate the array for seamless loop
-const duplicateProviders = [...providers];
+const duplicateProviders = [...providers]
 
 // Add SEO meta tags
 useHead({
@@ -260,7 +243,6 @@ useHead({
   ]
 });
 </script>
-
 <style scoped>
 /* Keep your existing styles */
 .glow-effect {

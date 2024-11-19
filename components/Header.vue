@@ -16,7 +16,7 @@
                 {{ msgTranslate[item.label] }}
               </NuxtLink>
               <a :href="regLink" class="menu-item hover:bg-slate-700 px-5 text-jazzy-beige font-extrabold">
-                {{ msgTranslate.login }}
+                <TranslatedText translation-key="login" />
               </a>
             </div>
           </div>
@@ -37,7 +37,7 @@
                  class="inline-flex items-center px-6 py-2 text-white bg-jazzy-green rounded-md
                         hover:bg-opacity-90 transform hover:-translate-y-0.5 transition-all duration-300
                         font-medium tracking-wide uppercase text-sm">
-                <span>{{ msgTranslate.login }}</span>
+                <TranslatedText translation-key="login" />
               </a>
             </li>
             <li>
@@ -46,7 +46,7 @@
                         hover:bg-jazzy-red transform hover:scale-105 transition-all duration-300
                         font-medium tracking-wide uppercase text-sm shadow-lg
                         ring-2 ring-transparent hover:ring-jazzy-red/50">
-                <span>{{ msgTranslate.sign_up }}</span>
+                <TranslatedText translation-key="sign_up" />
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
@@ -58,7 +58,7 @@
                class="inline-flex items-center px-4 py-1.5 text-white bg-jazzy-green rounded
                       hover:bg-opacity-90 transition-all duration-300
                       text-sm font-medium uppercase tracking-wide">
-              {{ msgTranslate.login }}
+              <TranslatedText translation-key="login" />
             </a>
           </div>
         </div>
@@ -68,8 +68,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { msgTranslate, regLink, loginLink } from '~/composables/globalData';
+
+
 
 const menuIsOpen = ref(false);
 

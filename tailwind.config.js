@@ -9,6 +9,22 @@ export default {
     "./error.vue",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: '1rem',
+        sm: '2rem',
+        lg: '4rem',
+        xl: '5rem',
+      },
+      screens: {
+        sm: '600px',
+        md: '728px',
+        lg: '1024px',
+        xl: '1440px',
+        '2xl': '1496px',
+      },
+    },
     extend: {
       fontFamily: {
         sans: ['Open Sans', 'sans-serif'],

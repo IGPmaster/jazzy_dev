@@ -13,17 +13,16 @@
           <div class="w-full lg:w-5/6">
             <!-- Navigation Links -->
             <div class="flex flex-wrap gap-4 lg:gap-6 mb-8 justify-center lg:justify-start">
-              <NuxtLink to="/home" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Home</NuxtLink>
-              <NuxtLink to="/about-us" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">About Us</NuxtLink>
-              <NuxtLink to="/deposits" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Deposits</NuxtLink>
-              <NuxtLink to="/withdrawals" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Withdrawals</NuxtLink>
-              <NuxtLink to="/rewards" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Rewards Programme</NuxtLink>
-              <NuxtLink to="/responsible" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Play Responsibly</NuxtLink>
-              <NuxtLink to="/terms" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Terms & Conditions</NuxtLink>
-              <NuxtLink to="/privacy" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Privacy Policy</NuxtLink>
-              <NuxtLink to="/casino" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Casino</NuxtLink>
-              <NuxtLink to="/faq" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">FAQ</NuxtLink>
-              <NuxtLink to="/contact" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Contact</NuxtLink>
+              <NuxtLink to="/" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Home</NuxtLink>
+              <NuxtLink to="/compliance/aboutus" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">About Us</NuxtLink>
+              <NuxtLink to="/compliance/deposits" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Deposits</NuxtLink>
+              <NuxtLink to="/compliance/withdrawals" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Withdrawals</NuxtLink>
+              <NuxtLink to="/compliance/rewards" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Rewards Programme</NuxtLink>
+              <NuxtLink to="/compliance/responsible" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Play Responsibly</NuxtLink>
+              <NuxtLink to="/compliance/terms" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Terms & Conditions</NuxtLink>
+              <NuxtLink to="/compliance/privacy" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Privacy Policy</NuxtLink>
+              <NuxtLink to="/compliance/faq" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">FAQ</NuxtLink>
+              <NuxtLink to="/compliance/contact" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Contact</NuxtLink>
             </div>
 
             <!-- Footer Text -->

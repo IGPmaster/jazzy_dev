@@ -90,6 +90,7 @@ const { fetch, error, $fetchState } = useFetch(async () => {
 
 <style scoped>
 .footer_logo {
+  max-width: 200px;
 
 }
 .router-link-active {

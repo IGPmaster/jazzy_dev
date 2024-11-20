@@ -90,6 +90,10 @@ export default defineNuxtConfig({
         { 
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/icon?family=Material+Icons'
+        },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/icon?family=Material+Icons+Outlined'
         }
       ],
     }

@@ -71,7 +71,7 @@
 
                     <!-- Centered Button on Mobile, Left-Aligned on Desktop -->
                     <a :href="regLink"
-                        class="mt-4 md:mt-8 px-6 py-3 md:px-8 md:py-4 bg-jazzy-red-secondary hover:bg-jazzy-red text-white text-lg md:text-xl font-normal font-oswald rounded-lg transform hover:scale-105 transition-all animate-slide-up animation-delay-600 inline-block">
+                        class="mt-4 md:mt-8 px-6 py-3 md:px-8 md:py-4 bg-jazzy-red-secondary hover:bg-jazzy-red text-white text-lg md:text-3xl font-normal font-sans rounded-lg transform hover:scale-105 transition-all animate-slide-up animation-delay-600 inline-block">
                         JOIN NOW
                     </a>
 
@@ -90,6 +90,8 @@
                 
             </div>
         </div>
+
+        <!-- Terms Section -->
         <div class="bg-jazzy-darkblue">
             <div class="container mx-auto text-white font-light text-xs text-center py-2">
                 New Players Only. Wagering occurs from real balance first. 50X wagering the bonus. Contribution may vary per game. 
@@ -102,17 +104,18 @@
         </div>
 
         <!-- Steps Section -->
-        <div class="bg-jazzy-beige py-8">
-            <div class="container mx-auto px-4">
-                <div class="flex justify-center items-center gap-4 mx-auto">
-                    <img class="center" src="/images/1-2-3_JAZZY.svg" />
+        <div class="bg-jazzy-beige">
+            <div class="container mx-auto py-4 md:py-8">
+                <div class="flex justify-center items-center">
+                    <img src="/images/UKC_1-2-3_JAZZY_mobile.svg" alt="Steps to Join" class="w-full md:hidden" />
+                    <img src="/images/1-2-3_JAZZY.svg" alt="Steps to Join" class="w-2/3 hidden md:block" />
                 </div>
             </div>
         </div>
 
         <!-- Features Section with 4 Yellow Icons -->
-        <div class="bg-jazzy-darkblue py-16">
-            <div class="container mx-auto px-4">
+        <div class="bg-jazzy-darkblue">
+            <div class="container mx-auto px-4 py-4 md:py-8">
                 <div class="flex justify-center items-center gap-4 mx-auto">
                     <img class="center" src="/images/Trust_jazzy.svg" />
                 </div>
@@ -120,16 +123,17 @@
         </div>
 
         <!-- Payments Section -->
-        <div class="bg-jazzy-beige py-8">
-            <div class="container mx-auto px-4">
-                <div class="flex justify-center items-center gap-4 mx-auto">
-                    <img class="center" src="/images/payments_jazzy.svg" />
+        <div class="bg-jazzy-beige">
+            <div class="container mx-auto py-4 md:py-8">
+                <div class="flex justify-center items-center">
+                    <img src="/images/payments_jazzy_mobile.webp" alt="Payment Methods" class="w-full md:hidden" />
+                    <img src="/images/payments_jazzy.svg" alt="Payment Methods" class="w-3/4 hidden md:block" />
                 </div>
             </div>
         </div>
 
         <!-- Game Providers Section -->
-        <div class="bg-jazzy-liteblue py-10 overflow-hidden relative">
+        <div class="bg-jazzy-liteblue py-0 md:py-2 overflow-hidden relative">
             <div class="slider">
                 <div class="slide-track">
                     <!-- First set of logos -->
@@ -150,34 +154,36 @@
         </div>
 
         <!-- Terms Section -->
-        <div class="bg-jazzy-blue py-16">
+        <div class="bg-jazzy-blue py-8 md:py-16">
             <div class="container mx-auto px-4">
                 <div class="prose prose-lg max-w-4xl mx-auto">
-                    <p v-for="n in 1" :key="n" class="text-jazzy-beige mb-4 font-thin">
+                    <p class="text-xl md:text-3xl font-normal pt-4 text-jazzy-beige">Terms and Conditions</p>
+                    <ol class="text-jazzy-beige font-thin text-xs md:text-sm list-decimal pl-5">
+                        <li>Players must make a minimum deposit of £10.</li>
+                        <li>Bonus or any winnings from the free spins must be wagered 50 times before a withdrawal may be made. Wagering contributions apply and vary from game to game.</li>
+                        <li>Withdrawal requests void all active/pending bonuses.</li>
+                        <li>In order to qualify for the bonus, the player must deposit using the casino cashier only.</li>
+                    </ol>
 
-                    <p class="text-3xl font-normal pt-4">Terms and Conditions</p>
-                        <p class="text-jazzy-beige font-thin">Players must make a minimum deposit of kr100.
-                        Bonus or any winnings from the free spins must be wagered 50 times before a withdrawal may be made. Wagering contributions apply and vary from game to game.
-                        Withdrawal requests void all active/pending bonuses.
-                        In order to qualify for the bonus, the player must deposit using the casino cashier only.</p>
-
-                        <p class="text-2xl font-normal pt-4">Match Deposit Offer:</p>
-
-                        <p class="text-jazzy-beige font-thin">Any bonus and winnings will expire 30 days after being credited from the date and time it is credited to a player's account. Players who have not used their bonus and winnings generated from the bonus or if the Wagering Requirement has not been met within the stipulated time limits shall not be able to receive the expired bonus and/or winnings generated from the bonus thereafter.
-                        Once the amount you have wagered meets or exceeds the Wagering Requirement, the Promotion will end and your Bonus Funds will automatically transfer to your Real Money Balance (up to the Maximum Conversion Amount of 3 times the original bonus amount credited to your account) from where you will be able to withdraw them as cash or continue to use them in non-Promotion play.</p>
-                        
-                        <p class="text-2xl font-normal pt-4">Free Spins Offer:</p>
-
-                        <p class="text-jazzy-beige font-thin">Any bonus and winnings will expire 7 days after being credited from the date and time it is credited to a player's account. Players who have not used their bonus and winnings generated from the bonus or if the Wagering Requirement has not been met within the stipulated time limits shall not be able to receive the expired bonus and/or winnings generated from the bonus thereafter.
-                        Once the amount you have wagered meets or exceeds the Wagering Requirement, the Promotion will end and your Bonus Funds will automatically transfer to your Real Money Balance (up to the Maximum Conversion Amount of kr200) from where you will be able to withdraw them as cash or continue to use them in non-Promotion play.</p>
-                        
-                        <p class="text-2xl font-normal pt-4">General Terms & Conditions:</p>
-
-                        <p class="text-jazzy-beige font-thin">All active bonuses or pending bonuses and promotional offers, and any winnings generated through the wagering of either of the aforementioned, will be cancelled upon withdrawal request if any of the applicable conditions have not been met in full prior to withdrawal request being submitted.
-                        The promotion is subject to the JazzySpins's Terms and Conditions.
-                        JazzySpins reserves the right to alter this chapter, cancel, modify or suspend any offer and any promotion at any time and without prior notice – in respect of any Bonus that has yet to be provided to You. Any bonuses granted prior to the change shall not be affected. The terms and conditions and the bonus policy that apply to any Bonus received by You are the Terms and Conditions and its Bonus Policy that are in force at the time in which You sign up to the Promotion to which that Bonus relates. Nothing in this section limits any other right and/or remedy granted to Us.
-                        These terms and conditions may be published in a number of languages for information purposes. In case of deviations, the English version applies.</p>
-                    </p>
+                    <p class="text-2xl font-normal pt-4 text-jazzy-beige">Match Deposit Offer:</p>
+                    <ol class="text-jazzy-beige font-thin text-xs md:text-sm list-decimal pl-5">
+                        <li>Any bonus and winnings will expire 30 days after being credited from the date and time it is credited to a player's account. Players who have not used their bonus and winnings generated from the bonus or if the Wagering Requirement has not been met within the stipulated time limits shall not be able to receive the expired bonus and/or winnings generated from the bonus thereafter.</li>
+                        <li>Once the amount you have wagered meets or exceeds the Wagering Requirement, the Promotion will end and your Bonus Funds will automatically transfer to your Real Money Balance (up to the Maximum Conversion Amount of 3 times the original bonus amount credited to your account) from where you will be able to withdraw them as cash or continue to use them in non-Promotion play.</li>
+                    </ol>
+                    
+                    <p class="text-2xl font-normal pt-4 text-jazzy-beige">Free Spins Offer:</p>
+                    <ol class="text-jazzy-beige font-thin text-xs md:text-sm list-decimal pl-5">
+                        <li>Any bonus and winnings will expire 7 days after being credited from the date and time it is credited to a player's account. Players who have not used their bonus and winnings generated from the bonus or if the Wagering Requirement has not been met within the stipulated time limits shall not be able to receive the expired bonus and/or winnings generated from the bonus thereafter.</li>
+                        <li>Once the amount you have wagered meets or exceeds the Wagering Requirement, the Promotion will end and your Bonus Funds will automatically transfer to your Real Money Balance (up to the Maximum Conversion Amount of kr200) from where you will be able to withdraw them as cash or continue to use them in non-Promotion play.</li>
+                    </ol>
+                    
+                    <p class="text-2xl font-normal pt-4 text-jazzy-beige">General Terms & Conditions:</p>
+                    <ol class="text-jazzy-beige font-thin text-xs md:text-sm list-decimal pl-5">
+                        <li>All active bonuses or pending bonuses and promotional offers, and any winnings generated through the wagering of either of the aforementioned, will be cancelled upon withdrawal request if any of the applicable conditions have not been met in full prior to withdrawal request being submitted.</li>
+                        <li>The promotion is subject to the JazzySpins's <a href="https://www.jazzyspins.com/#info/terms" class="text-jazzy-yellow underline">Terms and Conditions.</a></li>
+                        <li>JazzySpins reserves the right to alter this chapter, cancel, modify or suspend any offer and any promotion at any time and without prior notice – in respect of any Bonus that has yet to be provided to You. Any bonuses granted prior to the change shall not be affected. The terms and conditions and the bonus policy that apply to any Bonus received by You are the Terms and Conditions and its Bonus Policy that are in force at the time in which You sign up to the Promotion to which that Bonus relates. Nothing in this section limits any other right and/or remedy granted to Us.</li>
+                        <li>These terms and conditions may be published in a number of languages for information purposes. In case of deviations, the English version applies.</li>
+                    </ol>
                 </div>
             </div>
         </div>

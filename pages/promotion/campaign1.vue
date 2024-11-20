@@ -107,8 +107,8 @@
         <div class="bg-jazzy-beige">
             <div class="container mx-auto py-4 md:py-8">
                 <div class="flex justify-center items-center">
-                    <img src="/images/UKC_1-2-3_JAZZY_mobile.svg" alt="Steps to Join" class="w-full md:hidden" />
-                    <img src="/images/1-2-3_JAZZY.svg" alt="Steps to Join" class="w-2/3 hidden md:block" />
+                    <img src="/images/Jazzy_UK_1-2-3_mobile.svg" alt="Steps to Join" class="w-full md:hidden" />
+                    <img src="/images/Jazzy_UK_1-2-3.svg" alt="Steps to Join" class="w-2/3 hidden md:block" />
                 </div>
             </div>
         </div>

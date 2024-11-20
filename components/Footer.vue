@@ -5,24 +5,24 @@
         <!-- Main footer content -->
         <div class="flex flex-col lg:flex-row py-8 lg:gap-10 items-start">
           <!-- Logo Column -->
-          <div class="w-full lg:w-1/6 mb-8 lg:mb-0 flex justify-center lg:justify-start align-top">
-            <img src="/images/JazzySpins_logo_wh.svg" alt="Jazzy Spins Casino footer Logo" class="footer_logo px-8" />
+          <div class="w-full md:w-1/4 lg:w-1/3 xl:w-1/4 2xl:w-1/6 mb-8 lg:mb-0 flex justify-center lg:justify-start align-top">
+            <img src="/images/JazzySpins_logo_wh.svg" alt="Jazzy Spins Casino footer Logo" class="footer_logo px-4 md:px-6 lg:px-8" />
           </div>
           
           <!-- Right Column Container -->
-          <div class="w-full lg:w-5/6">
+          <div class="w-full md:w-3/4 lg:w-2/3 xl:w-3/4 2xl:w-5/6">
             <!-- Navigation Links -->
             <div class="flex flex-wrap gap-4 lg:gap-6 mb-8 justify-center lg:justify-start">
-              <NuxtLink to="/" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Home</NuxtLink>
-              <NuxtLink to="/compliance/aboutus" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">About Us</NuxtLink>
-              <NuxtLink to="/compliance/deposits" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Deposits</NuxtLink>
-              <NuxtLink to="/compliance/withdrawals" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Withdrawals</NuxtLink>
-              <NuxtLink to="/compliance/rewards" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Rewards Programme</NuxtLink>
-              <NuxtLink to="/compliance/responsible" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Play Responsibly</NuxtLink>
-              <NuxtLink to="/compliance/terms" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Terms & Conditions</NuxtLink>
-              <NuxtLink to="/compliance/privacy" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Privacy Policy</NuxtLink>
-              <NuxtLink to="/compliance/faq" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">FAQ</NuxtLink>
-              <NuxtLink to="/compliance/contact" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige">Contact</NuxtLink>
+              <NuxtLink to="/" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige p-1 font-sans">Home</NuxtLink>
+              <NuxtLink to="/compliance/aboutus" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige p-1 font-sans">About Us</NuxtLink>
+              <NuxtLink to="/compliance/deposits" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige p-1 font-sans">Deposits</NuxtLink>
+              <NuxtLink to="/compliance/withdrawals" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige p-1 font-sans">Withdrawals</NuxtLink>
+              <NuxtLink to="/compliance/rewards" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige p-1 font-sans">Rewards Programme</NuxtLink>
+              <NuxtLink to="/compliance/responsible" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige p-1 font-sans">Play Responsibly</NuxtLink>
+              <NuxtLink to="/compliance/terms" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige p-1 font-sans">Terms & Conditions</NuxtLink>
+              <NuxtLink to="/compliance/privacy" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige p-1 font-sans">Privacy Policy</NuxtLink>
+              <NuxtLink to="/compliance/faq" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige p-1 font-sans">FAQ</NuxtLink>
+              <NuxtLink to="/compliance/contact" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige p-1 font-sans">Contact</NuxtLink>
             </div>
 
             <!-- Footer Text -->
@@ -103,7 +103,7 @@ const { fetch, error, $fetchState } = useFetch(async () => {
 }
 
 .router-link-active {
-  @apply text-secondary bg-secondary_bg;
+  @apply text-secondary bg-secondary_bg p-1 rounded-sm;
 }
 
 @media (max-width: 1024px) {

@@ -21,8 +21,8 @@
           <div class="px-5 text-jazzy-beige !text-xs !font-light" v-html="promo.acf.sig_terms"></div>
         </div>
         <!-- Steps Section -->
-        <div class="bg-jazzy-beige py-8">
-            <div class="container mx-auto px-4">
+        <div class="bg-jazzy-beige">
+            <div class="container mx-auto px-4 py-4 md:py-8">
                 <div class="flex justify-center items-center mx-auto">
                     <img class="center" :src="promo.acf.one_two_three_icon" />
                 </div>
@@ -30,17 +30,18 @@
         </div>
 
         <div class="container mx-auto">
-          <div class="flex justify-center pt-5">
+          <div class="flex justify-center py-4 md:py-8">
             <img class=" w-6/8 lg:w-2/5 place-items-center" :src="promo.acf.trust_icons"
               alt="100% Licensed and fast payouts" />
           </div>
         </div>
 
-        !-- Payments Section -->
-        <div class="bg-jazzy-beige py-8">
-            <div class="container mx-auto px-4">
-                <div class="flex justify-center items-center gap-4 mx-auto">
-                    <img class="center" src="/images/payments_jazzy.svg" />
+        <!-- Payments Section -->
+        <div class="bg-jazzy-beige">
+            <div class="container mx-auto py-4 md:py-8">
+                <div class="flex justify-center items-center">
+                    <img src="/images/payments_jazzy_mobile.webp" alt="Payment Methods" class="w-full md:hidden" />
+                    <img src="/images/payments_jazzy.svg" alt="Payment Methods" class="w-3/4 hidden md:block" />
                 </div>
             </div>
         </div>

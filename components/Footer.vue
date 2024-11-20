@@ -5,7 +5,7 @@
 
       <div class="row pb-10">
         <div class="container mx-auto footerContainer">
-          <ul class="container mx-auto flex list-none flex-wrap text-lg justify-center gap-6 py-8 text-gray-800">
+          <ul class="container mx-auto flex list-none flex-wrap text-lg justify-center gap-6 py-8 text-jazzy-beige">
             <li>
               <NuxtLink to="/compliance/aboutus" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige p-1 font-sans">{{ msgTranslate.aboutus }}</NuxtLink>
             </li>
@@ -52,16 +52,16 @@
 
     <div class="w-full fixed bottom-0 lg:hidden">
         <div class="grid grid-cols-2">
-          <div class="w-full bg-[#91D342] flex justify-center py-3">
+          <div class="w-full bg-jazzy-green flex justify-center py-3 uppercase font-sans">
             <a :href="loginLink" class="flex items-center gap-4 text-[#313131] font-semibold">
-              <TranslatedText :text="msgTranslate.login" />
-              <i class="material-icons">arrow_forward</i>
+              <TranslatedText translation-key="login" />
+              <i class="material-icons text-jazzy-beige">arrow_forward</i>
             </a>
           </div>
-          <div class="w-full bg-[#3598FB] flex justify-center">
+          <div class="w-full bg-jazzy-red-secondary flex justify-center uppercase font-sans">
             <a :href="regLink" class="flex items-center gap-4 text-[#313131] font-semibold">
-              <TranslatedText :text="msgTranslate.sign_up" />
-              <i class="material-icons">security</i>
+              <TranslatedText translation-key="sign_up" />
+              <i class="material-icons text-jazzy-beige">security</i>
             </a>
           </div>
         </div>

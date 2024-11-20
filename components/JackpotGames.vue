@@ -8,7 +8,7 @@
 						<TranslatedText translation-key="jackpot_games" />
 					</h2>
 					<div v-for="promo in promotionsPosts" :key="promo.id">
-						<p class="text-primary/90 font-light text-lg mb-4">
+						<p class="text-primary/90 font-light text-sm md:text-lg mb-4">
 							{{ promo.acf.jackpot_games_info }}
 						</p>
 					</div>

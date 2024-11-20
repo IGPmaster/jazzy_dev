@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-jazzy-liteblue py-10 overflow-hidden relative">
+  <div class="bg-jazzy-liteblue py-0 md:py-2 overflow-hidden relative">
     <div class="slider">
       <div class="slide-track">
         <div v-for="provider in [...providers, ...providers]" :key="`logo-${provider.id}`"

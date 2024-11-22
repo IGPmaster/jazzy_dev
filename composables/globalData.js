@@ -455,20 +455,13 @@ export const CONFIG = Object.freeze({
   SUPPORTED_LANGUAGES: ['EN', 'DE', 'ES']
 });
 
-function updateGameCategories(filteredGames) {
-  console.log('Updating game categories with', filteredGames.length, 'games');
-  
-  // Log a sample game to see its structure
-  console.log('Sample game:', filteredGames[0]);
-  
+async function updateGameCategories(filteredGames) {
   games.value = filteredGames;
   
-  // Use exact same filters as before
-  newGames.value = filteredGames.filter(game => {
-    const isNew = game.gameFilters?.includes('New');
-    console.log(`Game: ${game.gameName}, gameFilters: ${game.gameFilters}, isNew: ${isNew}`);
-    return isNew;
-  });
+  // Filter new games
+  newGames.value = filteredGames.filter(game => 
+    game.gameFilters?.includes('New')
+  );
   
   popularGames.value = filteredGames.filter(game => 
     game.gameFilters?.includes('Featured')
@@ -501,35 +494,14 @@ function updateGameCategories(filteredGames) {
   rouletteGames.value = filteredGames.filter(game => 
     game.gameFilters?.includes('Roulette')
   );
-
-  // Log counts for debugging
-  console.log({
-    total: games.value.length,
-    new: newGames.value.length,
-    popular: popularGames.value.length,
-    casino: casinoGames.value.length,
-    slots: slotGames.value.length,
-    jackpots: jackpotGames.value.length,
-    live: liveGames.value.length,
-    scratch: scratchGames.value.length,
-    blackjack: blackjackGames.value.length,
-    roulette: rouletteGames.value.length
-  });
 }
 
 async function updateLinks() {
   try {
-    // Update registration link
     regLink.value = `${PP_LOBBY_LINK}Registration?lang=${lang.value}`;
-    
-    // Update login link
     loginLink.value = `${PP_LOBBY_LINK}Login?lang=${lang.value}`;
-    
-    // Update play link (if needed)
     playLink.value = PP_LOBBY_LINK;
-    
   } catch (error) {
-    console.error('Error updating links:', error);
     // Set default values in case of error
     regLink.value = PP_LOBBY_LINK;
     loginLink.value = PP_LOBBY_LINK;

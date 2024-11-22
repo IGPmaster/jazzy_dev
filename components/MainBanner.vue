@@ -1,158 +1,102 @@
 <template>
-    <div v-if="loading" class="loading-placeholder" >
-      <svg class="spinner" viewBox="0 0 50 50">
-        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="3"></circle>
-      </svg>
+  <div v-if="loading" class="loading-placeholder">
+    <LoadingSpinner />
+  </div>
+  <div v-else-if="currentPromo" class="head-banner h-100 bg-jazzy-darkblue">
+    <div class="w-full">
+      <a :href="regLink" class="mb-[-5px]" v-if="currentPromo.acf?.image_small">
+        <picture>
+          <source 
+            media="(min-width: 992px)" 
+            :srcset="currentPromo.acf.image_full"
+            type="image/webp"
+            loading="eager"
+          >
+          <img 
+            :src="currentPromo.acf.image_small"
+            class="w-full h-auto pt-16 min-w-screen"
+            :alt="currentPromo.yoast_head_json?.description || 'Promotion Banner'"
+            :width="1920"
+            :height="400"
+            loading="eager"
+            fetchpriority="high"
+          >
+        </picture>
+      </a>
     </div>
-    <div v-else v-for="promo in promotionsPosts" :key="promo.id" class="head-banner h-100 bg-jazzy-darkblue">
-      <div class="w-full">
-        <a :href="regLink" style="margin-bottom: -5px;" v-if="promo.acf && promo.yoast_head_json">
-          <picture>
-            <source media="(min-width: 992px)" :srcset="promo.acf.image_full || '../static/casimboo_loading.webp'"
-              :alt="promo.yoast_head_json.description" :title="promo.yoast_head_json.og_title">
-            <img :src="promo.acf.image_small || '../static/casimboo_loading.webp'" class="w-full h-auto"
-              :alt="promo.yoast_head_json.description" :title="promo.yoast_head_json.og_title"
-              style="min-width: 100vw; padding-top:4rem;" width="1920" height="400">
-          </picture>
-        </a>
-      </div>
-      <div>
-        <div class="container mx-auto text-center sig_terms lg:py-2 ">
-          <div class="px-5 text-jazzy-beige !text-xs !font-light" v-html="promo.acf.sig_terms"></div>
-        </div>
-        <!-- Steps Section -->
-        <div class="bg-jazzy-beige">
-            <div class="container mx-auto px-4 py-4 md:py-8">
-                <div class="flex justify-center items-center mx-auto">
-                    <img class="center" :src="promo.acf.one_two_three_icon" />
-                </div>
-            </div>
-        </div>
 
-        <div class="container mx-auto">
-          <div class="flex justify-center py-4 md:py-8">
-            <img class=" w-6/8 lg:w-2/5 place-items-center" :src="promo.acf.trust_icons"
-              alt="100% Licensed and fast payouts" />
-          </div>
+    <BannerContent 
+      :sig-terms="currentPromo.acf?.sig_terms"
+      :one-two-three-icon="currentPromo.acf?.one_two_three_icon"
+      :trust-icons="currentPromo.acf?.trust_icons"
+    />
+    
+    <div class="bg-jazzy-beige">
+      <div class="container mx-auto py-4 md:py-8">
+        <div class="flex justify-center items-center">
+          <img 
+            src="/images/payments_jazzy_mobile.webp" 
+            alt="Payment Methods" 
+            class="w-full md:hidden"
+            loading="lazy"
+            width="640"
+            height="80"
+          />
+          <img 
+            src="/images/payments_jazzy.svg" 
+            alt="Payment Methods" 
+            class="w-3/4 hidden md:block"
+            loading="lazy"
+            width="960"
+            height="120"
+          />
         </div>
-
-        <!-- Payments Section -->
-        <div class="bg-jazzy-beige">
-            <div class="container mx-auto py-4 md:py-8">
-                <div class="flex justify-center items-center">
-                    <img src="/images/payments_jazzy_mobile.webp" alt="Payment Methods" class="w-full md:hidden" />
-                    <img src="/images/payments_jazzy.svg" alt="Payment Methods" class="w-3/4 hidden md:block" />
-                </div>
-            </div>
-        </div>
-        
       </div>
     </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted, defineEmits } from 'vue';
-const loading = ref(true);
+import { ref } from 'vue';
+import { useAsyncData } from '#app';
 import { promotionsPosts, regLink, fetchPromotions } from '~/composables/globalData';
 
+const loading = ref(true);
+const currentPromo = ref(null);
 const emit = defineEmits(['loaded']);
 
-onMounted(async () => {
+// Prefetch promotions data
+await useAsyncData('promotions', async () => {
   try {
     await fetchPromotions();
+    currentPromo.value = promotionsPosts.value[0];
     loading.value = false;
+    emit('loaded');
   } catch (error) {
-    console.error('Error fetching promotions:', error);
+    loading.value = false;
+    emit('loaded');
   }
-  loading.value = false;
-  emit('loaded');
 });
 </script>
 
 <style scoped>
-/* Mobile styles (max-width: 767px) */
 .loading-placeholder {
-  min-height: 119vw;
-}
-
-/* Tablet styles (min-width: 768px) */
-@media (min-width: 768px) {
-  .loading-placeholder {
-    min-height: 100vw;
-  }
-}
-
-/* Desktop styles (min-width: 992px) */
-@media (min-width: 992px) {
-  .loading-placeholder {
-    min-height: 36vw;
-  }
-}
-
-/* Large Desktop styles (min-width: 1920px) */
-@media (min-width: 1920px) {
-  .loading-placeholder {
-    min-height: 33vw;
-  }
-}
-
-/* Xtreme Desktop styles (min-width: 2400px and up) */
-@media (min-width: 2400px) {
-  .loading-placeholder {
-    min-height: 31vw;
-  }
-}
-.spinner {
-  animation: rotate 2s linear infinite;
-  z-index: 2;
-  position: absolute;
-  top: 25%;
-  left: 50%;
-  margin: -25px 0 0 -25px;
-  width: 50px;
-  height: 50px;
-}
-
-.spinner .path {
-  stroke: white;
-  stroke-linecap: round;
-  animation: dash 1.5s ease-in-out infinite;
-}
-
-@keyframes rotate {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes dash {
-  0% {
-    stroke-dasharray: 1, 150;
-    stroke-dashoffset: 0;
-  }
-
-  50% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -35;
-  }
-
-  100% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -124;
-  }
+  min-height: clamp(31vw, 119vw, calc(100vh - 4rem));
 }
 
 .head-banner {
   opacity: 0;
-  transition: opacity .5s ease-in;
+  animation: fadeIn 0.5s ease-in forwards;
 }
 
-.head-banner {
-  opacity: 1;
+@keyframes fadeIn {
+  to { opacity: 1; }
 }
+
 :deep(a) {
   @apply !text-jazzy-gold underline font-normal;
 }
+
 :deep(p) {
   @apply !text-jazzy-beige font-thin text-xs;
 }

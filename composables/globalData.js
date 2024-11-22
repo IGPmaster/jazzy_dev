@@ -221,16 +221,11 @@ export async function fetchPromotions() {
 
     // If no content found for current country, fallback to IE content
     if (filteredData.length === 0) {
-      console.log('No content found for', lang.value, 'falling back to IE content');
       filteredData = data.filter((item) => {
         const geoTarget = item.acf.geo_target_country_sel;
         return geoTarget && geoTarget.includes('IE');
       });
     }
-
-    // Add some debugging
-    console.log('Current language:', lang.value);
-    console.log('Filtered promotions data:', filteredData);
 
     promotionsPosts.value = filteredData;
   } catch (error) {
@@ -250,33 +245,22 @@ export async function fetchFilterByName() {
 
 export async function fetchGames() {
   if (isCacheValid(apiCache.games)) {
-    console.log('Using cached games data');
     const cachedGames = apiCache.games.data;
     updateGameCategories(cachedGames);
     return;
   }
 
   try {
-    console.log('Fetching fresh games data');
     const response = await fetch(KV_GAMES);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
     const data = await response.json();
-    console.log('Raw games data count:', data.length);
     
-    // Log a few sample games to verify structure
-    console.log('Sample games:', data.slice(0, 3).map(game => ({
-      name: game.gameName,
-      provider: game.provider,
-      id: game.gameId
-    })));
     
     // For now, use all games without filtering by jurisdiction
     const filteredGames = data;
-
-    console.log('Filtered games count:', filteredGames.length);
     
     apiCache.games = { data: filteredGames, timestamp: Date.now() };
     updateGameCategories(filteredGames);

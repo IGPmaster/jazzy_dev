@@ -64,6 +64,19 @@ const country = ref('');
 const countryNotSupported = ref(false);
 const countriesData = ref([]);
 
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+const apiCache = {
+  games: { data: null, timestamp: null },
+  // Add other cache entries as needed
+};
+
+function isCacheValid(cacheEntry) {
+  return cacheEntry?.data && 
+         cacheEntry?.timestamp && 
+         (Date.now() - cacheEntry.timestamp < CACHE_DURATION);
+}
+
 export async function checkCountry() {
   try {
     const workerResponse = await fetch(CF_GEO_WORKER);
@@ -200,7 +213,7 @@ export async function fetchPromotions() {
     const response = await fetch(`${WP_API}promotions?per_page=100`);
     const data = await response.json();
 
-    // First try to find content for current country (SE in this case)
+    // First try to find content for current country
     let filteredData = data.filter((item) => {
       const geoTarget = item.acf.geo_target_country_sel;
       return geoTarget && geoTarget.includes(lang.value);
@@ -235,56 +248,46 @@ export async function fetchFilterByName() {
   }
 }
 
-async function fetchGames() {
+export async function fetchGames() {
+  if (isCacheValid(apiCache.games)) {
+    console.log('Using cached games data');
+    const cachedGames = apiCache.games.data;
+    updateGameCategories(cachedGames);
+    return;
+  }
+
   try {
-    await fetchFilterByName();
+    console.log('Fetching fresh games data');
     const response = await fetch(KV_GAMES);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const data = await response.json();
+    console.log('Raw games data count:', data.length);
+    
+    // Log a few sample games to verify structure
+    console.log('Sample games:', data.slice(0, 3).map(game => ({
+      name: game.gameName,
+      provider: game.provider,
+      id: game.gameId
+    })));
+    
+    // For now, use all games without filtering by jurisdiction
+    const filteredGames = data;
 
-    // Add your logic for processing the games data here
-    const filteredGames = data.filter(game => {
-      const hasName = filterByName.value.some(name => game.gameName.toLowerCase().includes(name.toLowerCase()));
-      const hasId = filterByName.value.some(id => game.gameId == id);
-
-      // Check for jurisdictionCode and excluded countries
-      const isExcludedJurisdiction = game.excludedJurisdictions?.includes(jurisdictionCode.value);
-      const isExcludedCountry = game.excludedCountries?.includes(lang.value);
-
-      return !(hasName || hasId || isExcludedJurisdiction || isExcludedCountry);
-    });
-
-    games.value = filteredGames;
-    newGames.value = filteredGames.filter(game => game.gameFilters?.includes('New'));
-    popularGames.value = filteredGames.filter(game => game.gameFilters?.includes('Featured'));
-	  casinoGames.value = filteredGames.filter(game => game.gameType?.includes('Casino'));
-	  slotGames.value = filteredGames.filter(game => game.gameType?.includes('Slots'));
-	  jackpotGames.value = filteredGames.filter(game => game.gameType?.includes('Jackpots'));
-	  liveGames.value = filteredGames.filter(game => game.gameType?.includes('Live'));
-	  scratchGames.value = filteredGames.filter(game => game.gameName?.toLowerCase().includes('scratch'));
-    blackjackGames.value = filteredGames.filter(game => game.gameFilters?.includes('Blackjack'));
-	  rouletteGames.value = filteredGames.filter(game => game.gameFilters?.includes('Roulette'));
-
-      async function updateLinks() {
-  const tracker = await handleParameter('tracker');
-  const btag = await handleParameter('btag');
-  const affid = await handleParameter('affid');
-  const lang = getCookie('lang');
-
-  const queryStringParams = [
-    tracker ? `tracker=${tracker}` : '',
-    btag ? `btag=${btag}` : '',
-    affid ? `affid=${affid}` : '',
-  ].filter(param => param !== '').join('&'); // Join only the non-empty parameters
-
-  regLink.value = `${PP_LOBBY_LINK}${queryStringParams ? '?' + queryStringParams : ''}#registration`;
-  loginLink.value = `${PP_LOBBY_LINK}${queryStringParams ? '?' + queryStringParams : ''}#login`;
-  playLink.value = `${PP_LOBBY_LINK}${queryStringParams ? '?' + queryStringParams : ''}#play/`;
-}
-
+    console.log('Filtered games count:', filteredGames.length);
+    
+    apiCache.games = { data: filteredGames, timestamp: Date.now() };
+    updateGameCategories(filteredGames);
     await updateLinks();
-
   } catch (error) {
     console.error('Error fetching games:', error);
+    games.value = [];
+    newGames.value = [];
+    popularGames.value = [];
+    casinoGames.value = [];
+    throw error;
   }
 }
 
@@ -392,7 +395,6 @@ export async function fetchCountriesData() {
 
 
 export { 
-    //fetchPromotions, 
     fetchApiPromotions, 
     games, 
     newGames, 
@@ -416,7 +418,121 @@ export {
     country,
     countriesData,
     countryNotSupported,
-    fetchGames,
     getCookie, 
     setCookie, 
 };
+
+export async function fetchFooterContent(lang) {
+  const [icons, text] = await Promise.all([
+    fetchFooterIcons(lang),
+    fetchFooterText(lang)
+  ]);
+  
+  return { icons, text };
+}
+
+export function cleanup() {
+  // Clear all refs
+  games.value = [];
+  newGames.value = [];
+  popularGames.value = [];
+  // ... clear other refs
+
+  // Clear caches
+  Object.keys(apiCache).forEach(key => {
+    apiCache[key] = { data: null, timestamp: null };
+  });
+  footerIconsCache.clear();
+  footerTextCache.clear();
+}
+
+export const CONFIG = Object.freeze({
+  CACHE_DURATION: 30 * 60 * 1000,
+  MAX_RETRIES: 3,
+  DEFAULT_COUNTRY: 'IE',
+  COOKIE_EXPIRY_DAYS: 30,
+  API_TIMEOUT: 5000,
+  SUPPORTED_LANGUAGES: ['EN', 'DE', 'ES']
+});
+
+function updateGameCategories(filteredGames) {
+  console.log('Updating game categories with', filteredGames.length, 'games');
+  
+  // Log a sample game to see its structure
+  console.log('Sample game:', filteredGames[0]);
+  
+  games.value = filteredGames;
+  
+  // Use exact same filters as before
+  newGames.value = filteredGames.filter(game => {
+    const isNew = game.gameFilters?.includes('New');
+    console.log(`Game: ${game.gameName}, gameFilters: ${game.gameFilters}, isNew: ${isNew}`);
+    return isNew;
+  });
+  
+  popularGames.value = filteredGames.filter(game => 
+    game.gameFilters?.includes('Featured')
+  );
+  
+  casinoGames.value = filteredGames.filter(game => 
+    game.gameType?.includes('Casino')
+  );
+  
+  slotGames.value = filteredGames.filter(game => 
+    game.gameType?.includes('Slots')
+  );
+  
+  jackpotGames.value = filteredGames.filter(game => 
+    game.gameType?.includes('Jackpots')
+  );
+  
+  liveGames.value = filteredGames.filter(game => 
+    game.gameType?.includes('Live')
+  );
+  
+  scratchGames.value = filteredGames.filter(game => 
+    game.gameName?.toLowerCase().includes('scratch')
+  );
+  
+  blackjackGames.value = filteredGames.filter(game => 
+    game.gameFilters?.includes('Blackjack')
+  );
+  
+  rouletteGames.value = filteredGames.filter(game => 
+    game.gameFilters?.includes('Roulette')
+  );
+
+  // Log counts for debugging
+  console.log({
+    total: games.value.length,
+    new: newGames.value.length,
+    popular: popularGames.value.length,
+    casino: casinoGames.value.length,
+    slots: slotGames.value.length,
+    jackpots: jackpotGames.value.length,
+    live: liveGames.value.length,
+    scratch: scratchGames.value.length,
+    blackjack: blackjackGames.value.length,
+    roulette: rouletteGames.value.length
+  });
+}
+
+async function updateLinks() {
+  try {
+    // Update registration link
+    regLink.value = `${PP_LOBBY_LINK}Registration?lang=${lang.value}`;
+    
+    // Update login link
+    loginLink.value = `${PP_LOBBY_LINK}Login?lang=${lang.value}`;
+    
+    // Update play link (if needed)
+    playLink.value = PP_LOBBY_LINK;
+    
+  } catch (error) {
+    console.error('Error updating links:', error);
+    // Set default values in case of error
+    regLink.value = PP_LOBBY_LINK;
+    loginLink.value = PP_LOBBY_LINK;
+    playLink.value = PP_LOBBY_LINK;
+  }
+}

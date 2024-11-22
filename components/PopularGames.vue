@@ -24,66 +24,16 @@
 			</div>
 
 			<!-- Loading state -->
-			<div v-if="loading" class="loading-placeholder" role="status" aria-live="polite">
-				<svg class="spinner animate-spin w-12 h-12" viewBox="0 0 50 50">
-					<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="3"></circle>
-				</svg>
-				<span class="sr-only">Loading...</span>
-			</div>
+			<LoadingSpinner v-if="loading" />
 
 			<!-- Games Grid -->
 			<div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-				<div v-for="game in popularGames.slice(-16).reverse()" :key="game.id"
-					class="group relative rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
-					<a :href="regLink" target="_blank" class="block w-full pb-[133%] relative">
-						<img class="absolute inset-0 w-full h-full object-cover rounded-lg" 
-							:src="game.image"
-							@error="game.image = 'newGameImg.jpg'" 
-							loading="lazy"
-							:alt="'Image of ' + game.gameName + ' online slot. ' + game.description"
-							:title="game.gameName + ' - ' + game.id" />
-						
-						<!-- Hover Overlay -->
-						<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent 
-								  opacity-0 group-hover:opacity-100 transition-all duration-300">
-							<!-- Play Button -->
-							<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-									  transform scale-0 group-hover:scale-100 transition-transform duration-300">
-								<div class="bg-jazzy-red-secondary hover:bg-jazzy-red rounded-full 
-										  shadow-lg ring-4 ring-white/10
-										  w-12 h-12 relative">
-									<svg xmlns="http://www.w3.org/2000/svg" 
-										 class="h-8 w-8 text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" 
-										 viewBox="0 0 24 24" 
-										 fill="currentColor">
-										<path d="M8 5v14l11-7z"/>
-									</svg>
-								</div>
-							</div>
-
-							<!-- Game Description -->
-							<!-- <div class="absolute bottom-12 left-0 right-0 p-4 text-white">
-								<p class="text-sm font-medium line-clamp-2" v-if="game?.description">
-									{{ game.description }}
-								</p>
-							</div> -->
-							
-							<!-- Provider Badge -->
-							<div v-if="game?.provider" 
-								class="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm
-									   border-t border-white/10 px-4 py-2">
-								<div class="flex items-center justify-between">
-									<span class="text-xs font-medium text-white/80">
-										Provider
-									</span>
-									<span class="text-xs font-bold text-jazzy-yellow">
-										{{ game.provider }}
-									</span>
-								</div>
-							</div>
-						</div>
-					</a>
-				</div>
+				<GameCard 
+					v-for="game in displayedGames" 
+					:key="game.id"
+					:game="game"
+					:reg-link="regLink"
+				/>
 			</div>
 
 			<!-- CTA Section -->
@@ -104,22 +54,28 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineEmits } from 'vue';
-import { fetchGames } from '~/composables/globalData';
+import { ref, computed, onMounted } from 'vue';
+import { regLink, fetchGames, popularGames, promotionsPosts } from '~/composables/globalData';
+import GameCard from './GameCard.vue';
+import LoadingSpinner from './LoadingSpinner.vue';
 
 const loading = ref(true);
 const emit = defineEmits(['loaded']);
 
+const displayedGames = computed(() => 
+	popularGames.value?.slice(-16).reverse() || []
+);
+
 onMounted(async () => {
-    try {
-        // Fetch fresh data directly
-        await fetchGames();
-        emit('loaded');
-    } catch (error) {
-        console.error('Error in NewGames:', error);
-    } finally {
-        loading.value = false;
-    }
+	try {
+		loading.value = true;
+		await fetchGames();
+		emit('loaded');
+	} catch (error) {
+		console.error('Error in PopularGames:', error);
+	} finally {
+		loading.value = false;
+	}
 });
 </script>
 

@@ -12,11 +12,19 @@
       <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent 
                   opacity-0 group-hover:opacity-100 transition-all duration-300">
         <PlayButton />
-        <ProviderBadge 
-          v-if="game.provider"
-          :provider="game.provider" 
-        />
+        <!-- Provider Badge -->
+        <div v-if="game?.provider" class="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm border-t border-white/10 px-4 py-2">
+			<div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-white/80">
+            Provider
+            </span>
+            <span class="text-xs font-bold text-jazzy-yellow pl-1">
+              {{ game.provider }}
+            </span>
+          </div>
+        </div>
       </div>
+      
     </a>
   </div>
 </template>

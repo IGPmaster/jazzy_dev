@@ -1,15 +1,15 @@
 <template>
-	<div class="bg-jazzy-liteblue py-16">
+	<div class="bg-jazzy-darkblue py-16">
 		<div class="container mx-auto px-4 sm:px-6 lg:px-8">
 			<!-- Header Section -->
 			<div class="flex flex-col lg:flex-row justify-between items-center mb-8">
 				<div class="w-full lg:w-2/3">
 					<h2 class="text-primary text-3xl font-bold mb-4 text-center lg:text-left">
-						<TranslatedText translation-key="slot_games" />
+						<TranslatedText translation-key="live_games" />
 					</h2>
 					<div v-for="promo in promotionsPosts" :key="promo.id">
 						<p class="text-primary/80 font-light text-sm md:text-lg mb-4">
-							{{ promo.acf.slot_games_info }}
+							{{ promo.acf.live_games_info }}
 						</p>
 					</div>
 				</div>
@@ -38,7 +38,7 @@
 
 			<!-- CTA Section -->
 			<div class="mt-16">
-				<div class="bg-jazzy-blue rounded-lg p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between">
+				<div class="bg-jazzy-liteblue rounded-lg p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between">
 					<div class="text-primary font-medium text-xl md:text-2xl xl:text-3xl mb-4 sm:mb-0">
 						<TranslatedText translation-key="claim" />
 					</div>
@@ -65,7 +65,7 @@ const emit = defineEmits(['loaded']);
 const gameStore = useGameStore();
 
 const displayedGames = computed(() => {
-	const games = gameStore.slotGames || [];
+	const games = gameStore.liveGames || [];
 	return games.slice(-16).reverse();
 });
 
@@ -75,9 +75,9 @@ onMounted(async () => {
 		await gameStore.fetchGames();
 		emit('loaded');
 	} catch (error) {
-		console.error('Error in SlotGames:', error);
+		console.error('Error in LiveGames:', error);
 	} finally {
 		loading.value = false;
 	}
 });
-</script>
+</script> 

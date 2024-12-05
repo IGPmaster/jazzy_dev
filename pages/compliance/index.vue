@@ -17,12 +17,20 @@
     </div>
 </template>
 
-
 <script setup>
+import { ref, onMounted } from 'vue';
+import { 
+    msgTranslate, 
+    globalContent, 
+    loadTranslations,
+    PP_API_URL,
+    WHITELABEL_ID,
+    lang
+} from '~/composables/globalData';
 
 function updateCode(key, globalContent) {
     const code = globalContent[key];
-    return code; // Return the code value
+    return code;
 }
 
 async function fetchContent(code) {
@@ -31,24 +39,26 @@ async function fetchContent(code) {
             `${PP_API_URL}GetInfoContentByCode?whitelabelId=${WHITELABEL_ID}&country=${lang.value}&code=${code}`
         );
         const data = await response.json();
-        return data[0].Html; // Return the Html content instead of updating the ref
+        return data[0].Html;
     } catch (error) {
         console.error(error);
+        return ''; // Return empty string on error
     }
 }
 
-import { ref } from 'vue';
-import { msgTranslate, globalContent } from '~/composables/globalData';
-
 const htmlContent = ref('');
 
-(async () => {
-    htmlContent.value = await fetchContent('aboutus'); // Set the htmlContent.value here
-    await loadTranslations();
-})();
+onMounted(async () => {
+    try {
+        await loadTranslations();
+        htmlContent.value = await fetchContent('aboutus');
+    } catch (error) {
+        console.error('Error loading content:', error);
+    }
+});
 
 const handleClick = async (key) => {
-    const code = updateCode(key, globalContent.value); // Use globalContent.value here
+    const code = updateCode(key, globalContent.value);
     htmlContent.value = await fetchContent(code);
 };
 </script>

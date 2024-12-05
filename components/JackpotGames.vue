@@ -8,7 +8,7 @@
 						<TranslatedText translation-key="jackpot_games" />
 					</h2>
 					<div v-for="promo in promotionsPosts" :key="promo.id">
-						<p class="text-primary/90 font-light text-sm md:text-lg mb-4">
+						<p class="text-primary/80 font-light text-sm md:text-lg mb-4">
 							{{ promo.acf.jackpot_games_info }}
 						</p>
 					</div>
@@ -55,21 +55,24 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { regLink, fetchGames, jackpotGames, promotionsPosts } from '~/composables/globalData';
+import { useGameStore } from '~/stores/gameStore';
+import { regLink, promotionsPosts } from '~/composables/globalData';
 import GameCard from './GameCard.vue';
 import LoadingSpinner from './LoadingSpinner.vue';
 
 const loading = ref(true);
 const emit = defineEmits(['loaded']);
+const gameStore = useGameStore();
 
-const displayedGames = computed(() => 
-	jackpotGames.value?.slice(-16).reverse() || []
-);
+const displayedGames = computed(() => {
+	const games = gameStore.jackpotGames || [];
+	return games.slice(-16).reverse();
+});
 
 onMounted(async () => {
 	try {
 		loading.value = true;
-		await fetchGames();
+		await gameStore.fetchGames();
 		emit('loaded');
 	} catch (error) {
 		console.error('Error in JackpotGames:', error);

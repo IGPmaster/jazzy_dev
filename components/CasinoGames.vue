@@ -55,21 +55,24 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { regLink, fetchGames, casinoGames, promotionsPosts } from '~/composables/globalData';
+import { useGameStore } from '~/stores/gameStore';
+import { regLink, promotionsPosts } from '~/composables/globalData';
 import GameCard from './GameCard.vue';
 import LoadingSpinner from './LoadingSpinner.vue';
 
 const loading = ref(true);
 const emit = defineEmits(['loaded']);
+const gameStore = useGameStore();
 
-const displayedGames = computed(() => 
-	casinoGames.value?.slice(-16).reverse() || []
-);
+const displayedGames = computed(() => {
+	const games = gameStore.casinoGames || [];
+	return games.slice(-16).reverse();
+});
 
 onMounted(async () => {
 	try {
 		loading.value = true;
-		await fetchGames();
+		await gameStore.fetchGames();
 		emit('loaded');
 	} catch (error) {
 		console.error('Error in CasinoGames:', error);

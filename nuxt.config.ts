@@ -10,7 +10,8 @@ export default defineNuxtConfig({
   // Keep existing modules
   modules: [
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    '@pinia/nuxt'
   ],
 
   // Keep Google Fonts config

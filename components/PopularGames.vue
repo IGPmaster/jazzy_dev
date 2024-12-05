@@ -54,22 +54,28 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { regLink, fetchGames, popularGames, promotionsPosts } from '~/composables/globalData';
+import { ref, onMounted, computed } from 'vue';
+import { useGameStore } from '~/stores/gameStore';
+import { promotionsPosts, regLink, fetchPromotions } from '~/composables/globalData';
 import GameCard from './GameCard.vue';
 import LoadingSpinner from './LoadingSpinner.vue';
 
-const loading = ref(true);
 const emit = defineEmits(['loaded']);
+const loading = ref(true);
+const gameStore = useGameStore();
 
-const displayedGames = computed(() => 
-	popularGames.value?.slice(-16).reverse() || []
-);
+const displayedGames = computed(() => {
+	const games = gameStore.popularGames || [];
+	return games.slice(-16).reverse();
+});
 
 onMounted(async () => {
 	try {
 		loading.value = true;
-		await fetchGames();
+		await Promise.all([
+			gameStore.fetchGames(),
+			fetchPromotions()
+		]);
 		emit('loaded');
 	} catch (error) {
 		console.error('Error in PopularGames:', error);

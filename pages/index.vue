@@ -56,20 +56,42 @@
 import { ref, onMounted, defineEmits } from 'vue';
 const loading = ref(true);
 
-import { promotionsPosts, regLink, fetchPromotions } from '~/composables/globalData';
+import { 
+	promotionsPosts, 
+	regLink, 
+	fetchPromotions, 
+	fetchApiPromotions, 
+	pp_promotions,
+	PP_API_URL,
+	WHITELABEL_ID,
+	lang
+} from '~/composables/globalData';
 
 const emit = defineEmits(['loaded']);
 
-const { fetch, error, $fetchState } = useFetch(async () => {
-	await fetchApiPromotions();
-});
+async function fetchContent() {
+	try {
+		const response = await fetch(
+			`${PP_API_URL}GetInfoContentByCode?whitelabelId=${WHITELABEL_ID}&country=${lang.value}&code=compliance`
+		);
+		const data = await response.json();
+		return data[0].Html;
+	} catch (error) {
+		console.error(error);
+		return ''; // Return empty string on error
+	}
+}
 
 onMounted(async () => {
 	try {
-		await fetchPromotions();
+		await Promise.all([
+			fetchPromotions(),
+			fetchApiPromotions(),
+			fetchContent()
+		]);
 		loading.value = false;
 	} catch (error) {
-		console.error('Error fetching promotions:', error);
+		console.error('Error fetching content:', error);
 	}
 	loading.value = false;
 	emit('loaded');

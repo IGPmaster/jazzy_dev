@@ -52,11 +52,11 @@
           <div class="container mx-auto py-4 md:py-8">
             <div class="flex justify-center items-center">
               <!-- Mobile payment methods -->
-              <div class="w-full md:hidden relative payment-container-mobile">
+              <div class="w-full md:hidden h-[40px] relative">
                 <img 
                   src="/images/payments_jazzy_mobile.webp" 
                   alt="Payment Methods" 
-                  class="absolute inset-0 w-full h-full object-contain"
+                  class="w-auto h-full mx-auto"
                   loading="lazy"
                   width="640"
                   height="80"
@@ -64,11 +64,11 @@
                 />
               </div>
               <!-- Desktop payment methods -->
-              <div class="w-3/4 hidden md:block relative payment-container-desktop">
+              <div class="w-3/4 hidden md:block h-[60px] relative">
                 <img 
                   src="/images/payments_jazzy.svg" 
                   alt="Payment Methods" 
-                  class="absolute inset-0 w-full h-full object-contain"
+                  class="w-auto h-full mx-auto"
                   loading="lazy"
                   width="960"
                   height="120"
@@ -135,15 +135,6 @@ await useAsyncData('promotions', async () => {
 /* Banner container with mobile aspect ratio (625x625 = 1:1) */
 .banner-container {
   padding-top: 100%; /* 1:1 aspect ratio for mobile */
-}
-
-/* Payment images aspect ratios */
-.payment-container-mobile {
-  padding-top: calc(100% * (80/640)); /* Mobile payments ratio */
-}
-
-.payment-container-desktop {
-  padding-top: calc(100% * (120/960)); /* Desktop payments ratio */
 }
 
 @keyframes fadeIn {

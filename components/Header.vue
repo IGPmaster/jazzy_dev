@@ -68,9 +68,6 @@
 </template>
 
 <script setup>
-
-
-
 const menuIsOpen = ref(false);
 
 // Menu items configuration

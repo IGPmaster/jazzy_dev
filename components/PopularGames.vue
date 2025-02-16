@@ -54,14 +54,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useGameStore } from '~/stores/gameStore';
-import { promotionsPosts, regLink, fetchPromotions } from '~/composables/globalData';
+import { regLink, promotionsPosts, loadTranslations } from '~/composables/globalData';
 import GameCard from './GameCard.vue';
 import LoadingSpinner from './LoadingSpinner.vue';
+import TranslatedText from './TranslatedText.vue';
 
-const emit = defineEmits(['loaded']);
 const loading = ref(true);
+const emit = defineEmits(['loaded']);
 const gameStore = useGameStore();
 
 const displayedGames = computed(() => {
@@ -74,7 +75,7 @@ onMounted(async () => {
 		loading.value = true;
 		await Promise.all([
 			gameStore.fetchGames(),
-			fetchPromotions()
+			loadTranslations()
 		]);
 		emit('loaded');
 	} catch (error) {

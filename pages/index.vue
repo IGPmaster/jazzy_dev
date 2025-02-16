@@ -49,6 +49,7 @@
 			</div>
 		</div>
 	</div>
+	<CookieConsent />
 </template>
 
 <script setup>

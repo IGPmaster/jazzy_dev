@@ -78,6 +78,9 @@ export default defineNuxtConfig({
     '~/plugins/language.js',
     '~/plugins/hreflang.js',
   ],
+  env: {
+    GTM_ID: 'GTM-5SZ64RPP' // Your GA4 ID
+  },
 
   // Keep app head config
   app: {

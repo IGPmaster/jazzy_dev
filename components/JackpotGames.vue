@@ -56,9 +56,10 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useGameStore } from '~/stores/gameStore';
-import { regLink, promotionsPosts } from '~/composables/globalData';
+import { regLink, promotionsPosts, loadTranslations } from '~/composables/globalData';
 import GameCard from './GameCard.vue';
 import LoadingSpinner from './LoadingSpinner.vue';
+import TranslatedText from './TranslatedText.vue';
 
 const loading = ref(true);
 const emit = defineEmits(['loaded']);
@@ -72,7 +73,10 @@ const displayedGames = computed(() => {
 onMounted(async () => {
 	try {
 		loading.value = true;
-		await gameStore.fetchGames();
+		await Promise.all([
+			gameStore.fetchGames(),
+			loadTranslations()
+		]);
 		emit('loaded');
 	} catch (error) {
 		console.error('Error in JackpotGames:', error);

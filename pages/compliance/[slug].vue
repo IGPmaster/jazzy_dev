@@ -2,14 +2,14 @@
     <div>
         <div class="">
             <div class="container mx-auto bg-white pt-32">
-            <div class="px-4">
-                <NuxtLink to="/compliance" class="flex justify-center gap-4 p-2 border rounded border-primary text-gray-800 text-center w-1/2 md:w-1/5 cursor-pointer">
-                    <i class="material-icons">arrow_back</i>
-                    {{ msgTranslate.legal }}
-                      </NuxtLink>
-                <div class="">
-                    <div v-html="htmlContent"></div>
-                </div>
+                <div class="px-4">
+                    <NuxtLink to="/compliance" class="flex justify-center gap-4 p-2 border rounded border-primary text-gray-800 text-center w-1/2 md:w-1/5 cursor-pointer">
+                        <i class="material-icons">arrow_back</i>
+                        <TranslatedText translation-key="legal" />
+                    </NuxtLink>
+                    <div class="">
+                        <div v-html="htmlContent"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -27,6 +27,7 @@ import {
     WHITELABEL_ID,
     lang 
 } from '~/composables/globalData';
+import TranslatedText from '~/components/TranslatedText.vue';
 
 const route = useRoute();
 const slug = route.params.slug;
@@ -48,8 +49,12 @@ const htmlContent = ref('');
 
 onMounted(async () => {
     try {
-        await loadTranslations();
-        htmlContent.value = await fetchContent(slug);
+        await Promise.all([
+            loadTranslations(),
+            fetchContent(slug).then(content => {
+                htmlContent.value = content;
+            })
+        ]);
     } catch (error) {
         console.error('Error loading content:', error);
     }

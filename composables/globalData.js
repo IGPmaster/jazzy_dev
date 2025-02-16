@@ -1,5 +1,11 @@
 import { ref } from 'vue';
 
+// Site-specific configuration
+export const SITE_CONFIG = {
+    siteName: 'Jazzy Spins',
+    gtmId: 'GTM-5SZ64RP',
+};
+
 export const lang = ref('');
 export const tracker = ref('');
 export const jurisdictionCode = ref('');
@@ -24,7 +30,7 @@ export const globalContent = ref({
 export const WHITELABEL_ID = 239;
 export const PP_API_URL = 'https://prd-api.casino-pp.net/CmSHelper/';
 const PP_PROMOTIONS_API = `${PP_API_URL}GetPromotionsInfo?whitelabelId=${WHITELABEL_ID}&country=`;
-const PP_LOBBY_LINK = 'https://jazzyspins.casino-pp.net/';
+export const PP_LOBBY_LINK = 'https://jazzyspins.casino-pp.net/';
 //const KV_GAMES = `https://content.progressplay.net/api23/api/game?whitelabelId=${WHITELABEL_ID}`; // Test API
 
 

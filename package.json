@@ -10,25 +10,26 @@
   },
   "devDependencies": {
     "@nuxtjs/google-fonts": "^3.2.0",
-    "@nuxtjs/tailwindcss": "^6.12.2",
+    "@nuxtjs/tailwindcss": "^6.13.1",
     "@tailwindcss/aspect-ratio": "^0.4.2",
-    "@tailwindcss/forms": "^0.5.9",
-    "@tailwindcss/typography": "^0.5.15",
-    "@types/node": "^22",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/node": "^22.13.5",
     "autoprefixer": "^10.4.20",
-    "nuxi": "^3.15.0",
-    "nuxt": "^3.14.159",
+    "nuxi": "^3.22.2",
+    "nuxt": "^3.6.0",
     "postcss-nesting": "^13.0.1"
   },
   "dependencies": {
     "@gtm-support/vue-gtm": "^3.1.0",
-    "@heroicons/vue": "^2.1.5",
+    "@heroicons/vue": "^2.2.0",
     "@mdi/font": "^7.4.47",
-    "@pinia/nuxt": "^0.9.0",
-    "gsap": "^3.12.5",
+    "@pinia/nuxt": "^0.4.11",
+    "gsap": "^3.12.7",
     "particles.js": "^2.0.0",
-    "swiper": "^11.1.14",
+    "pinia": "^2.1.7",
+    "swiper": "^11.2.4",
     "vue-observe-visibility": "^1.0.0",
-    "wrangler": "^3.83.0"
+    "wrangler": "^3.109.3"
   }
 }

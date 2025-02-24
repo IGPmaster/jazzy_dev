@@ -7,11 +7,13 @@ export default defineNuxtConfig({
     dirs: ['composables/**']
   },
 
-  // Keep existing modules
+  // Update modules configuration
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/google-fonts',
-    '@pinia/nuxt'
+    ['@pinia/nuxt', {
+      autoImports: ['defineStore', 'acceptHMRUpdate'],
+    }]
   ],
 
   // Keep Google Fonts config
@@ -73,10 +75,11 @@ export default defineNuxtConfig({
     payloadExtraction: false
   },
 
-  // Keep plugins
+  // Keep existing plugins
   plugins: [
     '~/plugins/language.js',
     '~/plugins/hreflang.js',
+    '~/plugins/vue-gtm.client.js',
   ],
   env: {
     GTM_ID: 'GTM-5SZ64RPP' // Your GA4 ID

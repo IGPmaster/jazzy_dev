@@ -1,4 +1,5 @@
 <template>
+  <!-- Cookie Banner -->
   <div v-if="showBanner" class="fixed bottom-0 left-0 right-0 bg-white p-4 border-t z-50">
     <div class="max-w-6xl mx-auto">
       <div class="flex flex-col md:flex-row items-center justify-between gap-4">
@@ -29,16 +30,18 @@
           </button>
           <button 
             class="border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-1.5 rounded text-xs"
-            @click="isPreferencesOpen = true"
+            @click="handleOpenPreferences"
           >
             Manage Preferences
           </button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Cookie Preferences Modal -->
-    <div v-if="isPreferencesOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <!-- Cookie Preferences Modal - Always mounted, shown based on isPreferencesOpen -->
+  <Teleport to="body">
+    <div v-if="isPreferencesOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100]">
       <div class="bg-white rounded-lg p-6 max-w-xl w-full mx-4">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-sm font-normal text-gray-900">
@@ -87,7 +90,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <script setup>
@@ -100,6 +103,7 @@ const {
   cookieCategories,
   handleAcceptAll,
   handleDeclineAll,
-  savePreferences
+  savePreferences,
+  handleOpenPreferences
 } = useCookieConsent();
 </script>

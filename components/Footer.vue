@@ -8,6 +8,11 @@
               <TranslatedText :translation-key="value" />
             </NuxtLink>
           </li>
+          <li>
+            <button @click="handleOpenPreferences" class="hover:text-jazzy-gold text-sm lg:text-jazzy-beige p-1 font-sans">
+              {{ msgTranslate?.cookie_settings || 'Cookie Settings' }}
+            </button>
+          </li>
         </ul>
         <div v-for="icon in footerIcons" :key="icon.Name">
           <div v-html="icon.Html"></div>
@@ -60,6 +65,8 @@ import {
   lang 
 } from '~/composables/globalData';
 import TranslatedText from './TranslatedText.vue';
+import { useCookieConsent } from '~/composables/useCookieConsent';
+const { handleOpenPreferences } = useCookieConsent();
 
 const brandId = computed(() => BRAND_CONFIG.WHITELABEL_ID);
 

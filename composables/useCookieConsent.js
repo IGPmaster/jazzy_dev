@@ -1,5 +1,5 @@
 import { ref, onMounted, watch } from 'vue';
-import { PP_LOBBY_LINK, getCookie, setCookie, updateLinks } from './globalData';
+import { PP_LOBBY_LINK, getCookie, setCookie } from './globalData';
 
 // Create global reactive state
 const globalShowBanner = ref(false);
@@ -39,12 +39,12 @@ export function useCookieConsent() {
       id: 'affiliate',
       label: 'Affiliate Tracking',
       description: 'Essential for our business operations. We use a unique identifier stored for 30 days to credit our partners when you visit gaming sites. No personal data is collected.',
-      required: false
+      required: true
     }
   ];
 
   const getTrackerFromURL = () => {
-    if (typeof window === 'undefined' || !hasUserMadeChoice.value || !preferences.value.affiliate) return null;
+    if (typeof window === 'undefined') return null;
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('tracker');
   };
@@ -54,21 +54,21 @@ export function useCookieConsent() {
     const btag = urlParams.get('btag');
     const affid = urlParams.get('affid');
     
-    // Only include tracker if affiliate tracking is consented to and user has made a choice
-    let finalTracker = null;
-    if (preferences.value.affiliate && hasUserMadeChoice.value) {
-        // Only check for tracker if we have consent
-        const urlTracker = tracker || urlParams.get('tracker') || getCookie('affiliateTracker');
-        finalTracker = urlTracker;
+    // Always check URL for tracker first
+    let finalTracker = urlParams.get('tracker');
+    
+    // If no URL tracker, use passed tracker or cookie tracker (always, since it's necessary)
+    if (!finalTracker) {
+        finalTracker = tracker || getCookie('affiliateTracker');
     }
     
     // Build query string with all available parameters
-    const queryParams = new URLSearchParams();
-    if (finalTracker) queryParams.set('tracker', finalTracker);
-    if (btag) queryParams.set('btag', btag);
-    if (affid) queryParams.set('affid', affid);
+    let queryParams = [];
+    if (finalTracker) queryParams.push(`tracker=${finalTracker}`);
+    if (btag) queryParams.push(`btag=${btag}`);
+    if (affid) queryParams.push(`affid=${affid}`);
     
-    const queryString = queryParams.toString();
+    const queryString = queryParams.join('&');
     const queryStringWithQuestionMark = queryString ? `?${queryString}` : '';
     
     regLink.value = `${PP_LOBBY_LINK}${queryStringWithQuestionMark}#registration`;
@@ -77,8 +77,8 @@ export function useCookieConsent() {
   };
 
   const setAffiliateTracking = (tracker) => {
-    // Only set the cookie if affiliate tracking is consented to and user has made a choice
-    if (!tracker || !preferences.value.affiliate || !hasUserMadeChoice.value) {
+    // Since affiliate tracking is now necessary, we don't check for consent
+    if (!tracker) {
         updateLobbyLinks(null);
         return;
     }
@@ -90,20 +90,33 @@ export function useCookieConsent() {
     updateLobbyLinks(tracker);
   };
 
-  const clearNonEssentialCookies = () => {
+  const clearAnalyticsCookies = () => {
     if (typeof document === 'undefined') return;
     
-    const cookiesToKeep = ['PHPSESSID'];
+    // List of Google Analytics cookies to remove
+    const gaCookies = ['_ga', '_gid', '_gat', '_ga_', 'AMP_TOKEN', '_gac_'];
     const cookies = document.cookie.split(';');
 
     cookies.forEach(cookie => {
       const name = cookie.split('=')[0].trim();
-      if (!cookiesToKeep.includes(name)) {
+      // Check if cookie starts with any of the GA prefixes
+      if (gaCookies.some(prefix => name.startsWith(prefix))) {
         document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
         document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
         document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=.${window.location.hostname}`;
       }
     });
+
+    // Clear GA items from localStorage
+    try {
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('_ga') || key.startsWith('ga:')) {
+          localStorage.removeItem(key);
+        }
+      });
+    } catch (e) {
+      console.warn('Failed to clear GA localStorage items:', e);
+    }
   };
 
   const handleAnalytics = (enabled) => {
@@ -115,29 +128,101 @@ export function useCookieConsent() {
       enabled = false;
     }
 
-    // Update GTM consent state
-    if (window.dataLayer) {
-      window.dataLayer.push({
-        'event': 'consent_update',
-        'analytics_storage': enabled ? 'granted' : 'denied',
-        'ad_storage': enabled ? 'granted' : 'denied',
-        'functionality_storage': 'granted',
-        'personalization_storage': enabled ? 'granted' : 'denied',
-        'security_storage': 'granted'
+    // If analytics is disabled, clear all analytics-related storage
+    if (!enabled) {
+      // Clear analytics cookies
+      const cookies = document.cookie.split(';')
+        .map(cookie => cookie.split('=')[0].trim())
+        .filter(name => name.startsWith('_ga') || name.startsWith('_gid') || name.startsWith('_gat') || name.startsWith('_dc_gtm'));
+
+      cookies.forEach(name => {
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=.${window.location.hostname}`;
       });
 
-      // Initialize GTM only if analytics is enabled and user has made a choice
-      if (enabled && hasUserMadeChoice.value && window.initializeGTM) {
-        window.initializeGTM();
+      // Clear analytics localStorage items
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('_ga') || key.startsWith('ga:')) {
+          localStorage.removeItem(key);
+        }
+      });
+
+      // Remove GTM/GA objects
+      delete window.ga;
+      delete window.google_tag_manager;
+      delete window.google_tag_data;
+      delete window._gaq;
+      delete window.gaData;
+      delete window.gaGlobal;
+
+      // Reset dataLayer to initial state
+      if (window.dataLayer) {
+        const initialConfig = window.dataLayer[0];
+        window.dataLayer = [initialConfig];
+      }
+    } else {
+      // Analytics is enabled, initialize GTM and GA
+      if (window.dataLayer) {
+        // First update consent state
+        window.dataLayer.push({
+          'event': 'consent_update',
+          'analytics_storage': 'granted',
+          'ad_storage': 'granted',
+          'functionality_storage': 'granted',
+          'personalization_storage': 'granted',
+          'security_storage': 'granted'
+        });
+
+        // Then initialize GTM if user has made a choice
+        if (hasUserMadeChoice.value && window.initializeGTM) {
+          window.initializeGTM();
+        }
+
+        // Push page view event after initialization
+        window.dataLayer.push({
+          'event': 'pageview',
+          'page_path': window.location.pathname,
+          'page_title': document.title
+        });
       }
     }
+  };
+
+  const clearNonEssentialCookies = () => {
+    if (typeof document === 'undefined') return;
+    
+    // Only keep PHPSESSID and affiliateTracker (now a necessary cookie)
+    const cookiesToKeep = ['PHPSESSID', 'affiliateTracker'];
+    const cookies = document.cookie.split(';');
+
+    cookies.forEach(cookie => {
+      const name = cookie.split('=')[0].trim();
+      if (!cookiesToKeep.includes(name)) {
+        // Remove cookie from all possible domains and paths
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=.${window.location.hostname}`;
+      }
+    });
+
+    // Also clear any Google Analytics or GTM cookies
+    const gaAndGtmCookies = document.cookie.split(';')
+      .map(cookie => cookie.split('=')[0].trim())
+      .filter(name => name.startsWith('_ga') || name.startsWith('_gid') || name.startsWith('_gat') || name.startsWith('_dc_gtm'));
+
+    gaAndGtmCookies.forEach(name => {
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=.${window.location.hostname}`;
+    });
   };
 
   const saveToLocalStorage = (prefs) => {
     if (!hasUserMadeChoice.value) return;
     
-    // Only clear cookies if user has explicitly declined
-    if (!prefs.analytics && !prefs.affiliate) {
+    // Only clear cookies if user has explicitly declined analytics
+    if (!prefs.analytics) {
       clearNonEssentialCookies();
     }
 
@@ -147,17 +232,14 @@ export function useCookieConsent() {
       version: '1.0'
     }));
 
-    if (prefs.affiliate) {
-      const urlTracker = getTrackerFromURL();
-      const trackerToUse = urlTracker || pendingTracker.value;
-      if (trackerToUse) {
-        setAffiliateTracking(trackerToUse);
-      } else {
-        const existingTracker = getCookie('affiliateTracker');
-        updateLobbyLinks(existingTracker);
-      }
+    // Always handle affiliate tracking since it's necessary
+    const urlTracker = getTrackerFromURL();
+    const trackerToUse = urlTracker || pendingTracker.value;
+    if (trackerToUse) {
+      setAffiliateTracking(trackerToUse);
     } else {
-      updateLobbyLinks(null);
+      const existingTracker = getCookie('affiliateTracker');
+      updateLobbyLinks(existingTracker);
     }
 
     handleAnalytics(prefs.analytics);
@@ -171,8 +253,13 @@ export function useCookieConsent() {
       affiliate: true
     };
     preferences.value = allAccepted;
+    
+    // First save preferences to localStorage
     saveToLocalStorage(allAccepted);
-    updateLinks();
+    
+    // Then explicitly handle analytics initialization
+    handleAnalytics(true);
+    
     showBanner.value = false;
   };
 
@@ -180,7 +267,7 @@ export function useCookieConsent() {
     if (typeof window === 'undefined') return;
     
     // Clear cookies
-    const cookiesToKeep = ['PHPSESSID'];
+    const cookiesToKeep = ['PHPSESSID', 'affiliateTracker'];
     const cookies = document.cookie.split(';');
 
     cookies.forEach(cookie => {
@@ -202,6 +289,21 @@ export function useCookieConsent() {
 
     // Clear sessionStorage completely
     sessionStorage.clear();
+
+    // Clear any Google Analytics or GTM data
+    if (window.dataLayer) {
+      // Keep only the initial dataLayer configuration
+      const initialConfig = window.dataLayer[0];
+      window.dataLayer = [initialConfig];
+    }
+
+    // Remove any Google Analytics objects
+    delete window.ga;
+    delete window.google_tag_manager;
+    delete window.google_tag_data;
+    delete window._gaq;
+    delete window.gaData;
+    delete window.gaGlobal;
   };
 
   const handleDeclineAll = () => {
@@ -209,12 +311,11 @@ export function useCookieConsent() {
     const allDeclined = {
       necessary: true,
       analytics: false,
-      affiliate: false
+      affiliate: true
     };
     preferences.value = allDeclined;
     clearAllStorage();
     saveToLocalStorage(allDeclined);
-    updateLinks();
     showBanner.value = false;
   };
 
@@ -222,16 +323,17 @@ export function useCookieConsent() {
     hasUserMadeChoice.value = true;
     const finalPreferences = {
       ...preferences.value,
-      necessary: true
+      necessary: true,
+      affiliate: true  // Always keep affiliate tracking enabled
     };
     preferences.value = finalPreferences;
     saveToLocalStorage(finalPreferences);
-    updateLinks();
     showBanner.value = false;
     isPreferencesOpen.value = false;
   };
 
   const handleOpenPreferences = () => {
+    isPreferencesOpen.value = true;
     if (!localStorage.getItem('cookieConsent')) {
       preferences.value = {
         necessary: true,
@@ -243,7 +345,8 @@ export function useCookieConsent() {
         const { preferences: savedPreferences } = JSON.parse(localStorage.getItem('cookieConsent'));
         preferences.value = {
           ...savedPreferences,
-          necessary: true
+          necessary: true,
+          affiliate: true  // Always keep affiliate tracking enabled
         };
       } catch (e) {
         preferences.value = {
@@ -253,7 +356,6 @@ export function useCookieConsent() {
         };
       }
     }
-    isPreferencesOpen.value = true;
   };
 
   const getConsentStatus = () => {
@@ -273,7 +375,7 @@ export function useCookieConsent() {
     preferences.value = {
       necessary: true,
       analytics: false,
-      affiliate: false
+      affiliate: true
     };
     updateLobbyLinks(null);
     showBanner.value = true;
@@ -288,7 +390,8 @@ export function useCookieConsent() {
         hasUserMadeChoice.value = true;
         preferences.value = {
           ...savedPreferences,
-          necessary: true
+          necessary: true,
+          affiliate: true
         };
         
         // Only handle affiliate tracking if consent exists and user has made a choice

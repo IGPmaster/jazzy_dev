@@ -17,8 +17,8 @@
 					<NuxtLink to="all-games"
 						class="w-full lg:w-auto inline-flex items-center justify-center px-8 py-3 bg-jazzy-green text-white 
 							   uppercase font-medium rounded-md hover:scale-105 transition-all duration-300 shadow-lg">
-						<span><TranslatedText translation-key="see_more" /></span>
-						<i class="material-icons ml-2">arrow_forward</i>
+						<span class="text-white font-semibold"><TranslatedText translation-key="see_more" /></span>
+						<i class="material-icons ml-2 text-white">arrow_forward</i>
 					</NuxtLink>
 				</div>
 			</div>

@@ -51,7 +51,7 @@
                         <div
                             class="flex flex-col md:flex-row items-center md:items-baseline gap-1 md:gap-4 animate-slide-up animation-delay-200">
                             <span class="text-2xl md:text-5xl font-semibold italic text-white font-inter">
-                                200% BONUS UP TO £100
+                                100% BONUS UP TO £500
                             </span>
                         </div>
 

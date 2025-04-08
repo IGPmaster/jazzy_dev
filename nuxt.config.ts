@@ -62,7 +62,7 @@ export default defineNuxtConfig({
     prerender: {
       fallback: true,
       crawlLinks: true,
-      routes: ['/']
+      routes: ['/', '/promotion/campaign1']
     }
   },
 

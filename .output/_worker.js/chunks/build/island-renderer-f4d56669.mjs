@@ -1,0 +1,2 @@
+import{w as t}from"./server.mjs";import"../nitro/nitro.mjs";import{d as e,I as o}from"../routes/renderer.mjs";const r=Object.freeze({__proto__:null,default:{}}),s=e({props:{context:{type:Object,required:!0}},setup(e){const s=r[e.context.name];if(!s)throw t({statusCode:404,statusMessage:`Island component not found: ${JSON.stringify(s)}`});return()=>o(s||"span",{...e.context.props,"nuxt-ssr-component-uid":""})}});export{s as default};
+//# sourceMappingURL=island-renderer-f4d56669.mjs.map

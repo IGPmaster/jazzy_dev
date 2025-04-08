@@ -3,7 +3,7 @@ import { ref } from 'vue';
 // Site-specific configuration
 export const SITE_CONFIG = {
     siteName: 'Jazzy Spins',
-    gtmId: 'GTM-5SZ64RP',
+    gtmId: 'GTM-NXQKF26Z',
 };
 
 export const lang = ref('');

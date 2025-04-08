@@ -94,12 +94,8 @@
         <!-- Terms Section -->
         <div class="bg-jazzy-darkblue">
             <div class="container mx-auto text-white font-light text-xs text-center py-2">
-                New Players Only. Wagering occurs from real balance first. 50X wagering the bonus. Contribution may vary per game. 
-                Available on selected games only. The wagering requirement is calculated on bonus bets only. 
-                Bonus valid 30 Days from receipt. Max conversion: 3 X the bonus amount. 
-                Limited to 5 brands within the <a href="https://www.gamblingcommission.gov.uk/public-register/business/detail/domain-names/39335" class="text-jazzy-yellow underline">network</a>. 
-                Withdrawal requests void all active/pending bonuses. Excluded Skrill and Neteller deposits. 
-                <a :href="regLink" class="text-jazzy-yellow underline">Full Terms Apply</a>
+                New players only. Wagering from real balance first. 50X wagering the bonus or any winnings from free spins. Contribution varies per game. Selected games only. The wagering requirement calculated on bonus bets only. Bonus are valid for 30 days from receipt. Free spins are valid for 7 days from receipt. Max conversion: 3 times the bonus amount or from free spins: £/$/Euro 20. Limited to 5 brands within the <a href="https://www.gamblingcommission.gov.uk/public-register/business/detail/domain-names/39335" class="text-jazzy-yellow underline">network</a>. Withdrawal requests void all active/pending bonuses. Excluded Skrill and Neteller deposits. 
+                <a href="https://www.jazzyspins.com/promotions?code=Welcome239901" class="text-jazzy-yellow underline">Full Terms Apply</a>
             </div>
         </div>
 
@@ -174,7 +170,7 @@
                     <p class="text-2xl font-normal pt-4 text-jazzy-beige">Free Spins Offer:</p>
                     <ol class="text-jazzy-beige font-thin text-xs md:text-sm list-decimal pl-5">
                         <li>Any bonus and winnings will expire 7 days after being credited from the date and time it is credited to a player's account. Players who have not used their bonus and winnings generated from the bonus or if the Wagering Requirement has not been met within the stipulated time limits shall not be able to receive the expired bonus and/or winnings generated from the bonus thereafter.</li>
-                        <li>Once the amount you have wagered meets or exceeds the Wagering Requirement, the Promotion will end and your Bonus Funds will automatically transfer to your Real Money Balance (up to the Maximum Conversion Amount of kr200) from where you will be able to withdraw them as cash or continue to use them in non-Promotion play.</li>
+                        <li>Once the amount you have wagered meets or exceeds the Wagering Requirement, the Promotion will end, and your Bonus Funds will automatically transfer to your Real Money Balance (up to the Maximum Conversion Amount of £20) from where you will be able to withdraw them as cash or continue to use them in non-Promotion play.</li>
                     </ol>
                     
                     <p class="text-2xl font-normal pt-4 text-jazzy-beige">General Terms & Conditions:</p>
@@ -217,11 +213,11 @@ const duplicateProviders = [...providers]
 
 // Add SEO meta tags
 useHead({
-  title: '200% Welcome Bonus up to £100 + 50 Free Spins | Jazzy Spins Casino',
+  title: '100% Welcome Bonus up to £500 + 50 Free Spins | Jazzy Spins Casino',
   meta: [
     { 
       name: 'description', 
-      content: 'Join Jazzy Spins Casino today and claim your 200% welcome bonus up to £100 plus 50 free spins on The Paying Piano Club. New players only, minimum deposit £10.'
+      content: 'Join Jazzy Spins Casino today and claim your 100% welcome bonus up to £500 plus 50 free spins on The Paying Piano Club. New players only, minimum deposit £10.'
     },
     {
       name: 'keywords',
@@ -230,11 +226,11 @@ useHead({
     // Open Graph tags for social sharing
     {
       property: 'og:title',
-      content: '200% Welcome Bonus up to £100 + 50 Free Spins | Jazzy Spins Casino'
+      content: '100% Welcome Bonus up to £500 + 50 Free Spins | Jazzy Spins Casino'
     },
     {
       property: 'og:description',
-      content: 'Join Jazzy Spins Casino today and claim your 200% welcome bonus up to £100 plus 50 free spins on The Paying Piano Club. New players only, minimum deposit £10.'
+      content: 'Join Jazzy Spins Casino today and claim your 100% welcome bonus up to £500 plus 50 free spins on The Paying Piano Club. New players only, minimum deposit £10.'
     },
     {
       property: 'og:type',

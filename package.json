@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt dev",
-    "build": "nuxt build",
+    "build": "nuxt build && cp public/_redirects .output/public/_redirects",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": ""

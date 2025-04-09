@@ -37,38 +37,41 @@ export default defineNuxtPlugin((nuxtApp) => {
         // Function to initialize GTM
         window.initializeGTM = () => {
             try {
-                // Load GTM script
-                const script = document.createElement('script');
-                script.async = true;
-                script.src = `https://www.googletagmanager.com/gtm.js?id=${SITE_CONFIG.gtmId}`;
-                
-                // Add success handler
-                script.onload = () => {
-                    console.log('GTM script loaded successfully');
-                    // Push initial pageview after script loads
-                    window.dataLayer.push({
-                        'event': 'pageview',
-                        'page_path': window.location.pathname
-                    });
-                };
-                
-                // Add error handler
-                script.onerror = (error) => {
-                    console.warn('Failed to load GTM script:', error);
-                };
-                
-                document.head.appendChild(script);
+                // Check if the script is already added
+                if (!document.querySelector(`script[src="https://www.googletagmanager.com/gtm.js?id=${SITE_CONFIG.gtmId}"]`)) {
+                    // Load GTM script
+                    const script = document.createElement('script');
+                    script.async = true;
+                    script.src = `https://www.googletagmanager.com/gtm.js?id=${SITE_CONFIG.gtmId}`;
+                    
+                    // Add success handler
+                    script.onload = () => {
+                        console.log('GTM script loaded successfully');
+                        // Push initial pageview after script loads
+                        window.dataLayer.push({
+                            'event': 'pageview',
+                            'page_path': window.location.pathname
+                        });
+                    };
+                    
+                    // Add error handler
+                    script.onerror = (error) => {
+                        console.warn('Failed to load GTM script:', error);
+                    };
+                    
+                    document.head.appendChild(script);
 
-                // Add noscript iframe for better tracking coverage
-                const noscript = document.createElement('noscript');
-                const iframe = document.createElement('iframe');
-                iframe.src = `https://www.googletagmanager.com/ns.html?id=${SITE_CONFIG.gtmId}`;
-                iframe.height = '0';
-                iframe.width = '0';
-                iframe.style.display = 'none';
-                iframe.style.visibility = 'hidden';
-                noscript.appendChild(iframe);
-                document.body.appendChild(noscript);
+                    // Add noscript iframe for better tracking coverage
+                    const noscript = document.createElement('noscript');
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://www.googletagmanager.com/ns.html?id=${SITE_CONFIG.gtmId}`;
+                    iframe.height = '0';
+                    iframe.width = '0';
+                    iframe.style.display = 'none';
+                    iframe.style.visibility = 'hidden';
+                    noscript.appendChild(iframe);
+                    document.body.appendChild(noscript);
+                }
             } catch (error) {
                 console.warn('Error initializing GTM:', error);
             }

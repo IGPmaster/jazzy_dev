@@ -1,4 +1,4 @@
-# Jazzy Spins - Casino Website Redesign 2025
+# Jazzy Spins - Casino Website Redesign
 
 A modern Nuxt 3-based online casino website featuring game categorization, affiliate tracking, and localization capabilities.
 
@@ -85,16 +85,14 @@ The project is set up for Cloudflare Pages deployment, with ISR (Incremental Sta
 
 ## Recent Updates
 
-### January 2025
+### Latest Updates
 - **Affiliate Tracking Enhancement**: Updated the affiliate tracking system to prioritize URL parameters over existing cookies, allowing new affiliate links to override existing tracking. This change enables affiliates to "take over" tracking when users click their links with a tracker parameter.
 - **Cookie Attributes Improvement**: Enhanced cookie attributes for better cross-site compatibility (SameSite=Lax, Secure flag, domain-specific) and implemented a localStorage backup for affiliate trackers.
 - **Immediate Initialization**: Improved initialization flow to check for affiliate parameters as soon as the component is mounted.
 
-### February 2024
+### Previous Updates
 - Added compliance pages and updated footer information
 - Enhanced cookie consent banner with clearer options
-
-### December 2023
 - Implemented multi-language support
 - Added game category pages
 - Improved caching system

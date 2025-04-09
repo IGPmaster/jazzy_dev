@@ -1,3 +1,5 @@
+import { SITE_CONFIG } from './composables/globalData';
+
 export default defineNuxtConfig({
   // Add compatibility date
   compatibilityDate: '2024-11-17',
@@ -82,7 +84,7 @@ export default defineNuxtConfig({
     '~/plugins/vue-gtm.client.js',
   ],
   env: {
-    GTM_ID: 'GTM-5SZ64RPP' // Your GA4 ID
+    GTM_ID: SITE_CONFIG.gtmId
   },
 
   // Keep app head config

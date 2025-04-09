@@ -82,7 +82,7 @@ export function useCookieConsent() {
       return;
     }
     
-    // Set cookie with enhanced attributes
+    // Always set affiliate cookie regardless of consent (necessary for business operations)
     document.cookie = `affiliateTracker=${tracker}; max-age=${30*24*60*60}; path=/; SameSite=Lax; Secure; domain=${window.location.hostname}`;
     updateLobbyLinks(tracker);
     

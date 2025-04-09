@@ -54,12 +54,12 @@ export function useCookieConsent() {
     const btag = urlParams.get('btag');
     const affid = urlParams.get('affid');
     
-    // Always check URL for tracker first
+    // Always check URL parameters first (takes precedence)
     let finalTracker = urlParams.get('tracker');
     
-    // If no URL tracker, use passed tracker or cookie tracker (always, since it's necessary)
+    // If no URL tracker, fall back to passed tracker or cookie
     if (!finalTracker) {
-        finalTracker = tracker || getCookie('affiliateTracker');
+      finalTracker = tracker || getCookie('affiliateTracker');
     }
     
     // Build query string with all available parameters
@@ -77,17 +77,21 @@ export function useCookieConsent() {
   };
 
   const setAffiliateTracking = (tracker) => {
-    // Since affiliate tracking is now necessary, we don't check for consent
     if (!tracker) {
-        updateLobbyLinks(null);
-        return;
+      updateLobbyLinks(null);
+      return;
     }
     
-    const expiryDate = new Date();
-    expiryDate.setDate(expiryDate.getDate() + 30);
-    
-    document.cookie = `affiliateTracker=${tracker}; max-age=${30*24*60*60}; path=/; SameSite=Strict; Secure`;
+    // Set cookie with enhanced attributes
+    document.cookie = `affiliateTracker=${tracker}; max-age=${30*24*60*60}; path=/; SameSite=Lax; Secure; domain=${window.location.hostname}`;
     updateLobbyLinks(tracker);
+    
+    // Also store in localStorage as backup
+    try {
+      localStorage.setItem('affiliateTracker_backup', tracker);
+    } catch (e) {
+      console.warn('Failed to set localStorage backup for affiliate tracker:', e);
+    }
   };
 
   const clearAnalyticsCookies = () => {
@@ -394,17 +398,16 @@ export function useCookieConsent() {
           affiliate: true
         };
         
-        // Only handle affiliate tracking if consent exists and user has made a choice
-        if (savedPreferences.affiliate && hasUserMadeChoice.value) {
-          const urlTracker = getTrackerFromURL();
-          if (urlTracker) {
-            setAffiliateTracking(urlTracker);
-          } else {
-            const existingTracker = getCookie('affiliateTracker');
+        // Check URL parameters first
+        const urlTracker = getTrackerFromURL();
+        if (urlTracker) {
+          setAffiliateTracking(urlTracker);
+        } else {
+          // Only if no URL parameters exist, use cookie
+          const existingTracker = getCookie('affiliateTracker');
+          if (existingTracker) {
             updateLobbyLinks(existingTracker);
           }
-        } else {
-          updateLobbyLinks(null);
         }
 
         handleAnalytics(savedPreferences.analytics);
@@ -419,17 +422,34 @@ export function useCookieConsent() {
           affiliate: true
         };
         showBanner.value = true;
-        updateLobbyLinks(null);
+        
+        // Still check URL parameters
+        const urlTracker = getTrackerFromURL();
+        if (urlTracker) {
+          setAffiliateTracking(urlTracker);
+        }
       }
     } else {
-      // First visit - set default preferences to all enabled but don't apply them yet
+      // First visit - set default preferences
       hasUserMadeChoice.value = false;
       preferences.value = {
         necessary: true,
         analytics: true,
         affiliate: true
       };
-      updateLobbyLinks(null);
+      
+      // Check URL parameters first
+      const urlTracker = getTrackerFromURL();
+      if (urlTracker) {
+        setAffiliateTracking(urlTracker);
+      } else {
+        // Only if no URL parameters exist, use cookie
+        const existingTracker = getCookie('affiliateTracker');
+        if (existingTracker) {
+          updateLobbyLinks(existingTracker);
+        }
+      }
+      
       showBanner.value = true;
     }
   });

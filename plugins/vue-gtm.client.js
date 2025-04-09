@@ -71,24 +71,46 @@ export default defineNuxtPlugin((nuxtApp) => {
                     iframe.style.visibility = 'hidden';
                     noscript.appendChild(iframe);
                     document.body.appendChild(noscript);
+
+                    // Set a flag to indicate GTM has been initialized
+                    localStorage.setItem('gtm_initialized', 'true');
+                } else {
+                    console.log('GTM script already loaded');
                 }
             } catch (error) {
                 console.warn('Error initializing GTM:', error);
             }
         };
 
-        // Check if consent is already granted
-        const savedConsent = localStorage.getItem('cookieConsent');
-        if (savedConsent) {
-            try {
-                const { preferences } = JSON.parse(savedConsent);
-                if (preferences.analytics) {
-                    window.initializeGTM();
+        // Initialize GTM based on consent status - IMMEDIATE CHECK ON PAGE LOAD
+        const checkAndInitGTM = () => {
+            const savedConsent = localStorage.getItem('cookieConsent');
+            if (savedConsent) {
+                try {
+                    const { preferences } = JSON.parse(savedConsent);
+                    if (preferences.analytics) {
+                        // If analytics consent is granted, initialize GTM
+                        window.initializeGTM();
+                        
+                        // Also update dataLayer consent state
+                        window.dataLayer.push({
+                            'event': 'consent_update',
+                            'analytics_storage': 'granted',
+                            'ad_storage': 'granted',
+                            'functionality_storage': 'granted',
+                            'personalization_storage': 'granted',
+                            'security_storage': 'granted'
+                        });
+                    }
+                } catch (error) {
+                    console.warn('Error checking consent status:', error);
                 }
-            } catch (error) {
-                console.warn('Error checking consent status:', error);
             }
-        }
+        };
+
+        // Run immediately and also after a short delay to ensure DOM is fully loaded
+        checkAndInitGTM();
+        setTimeout(checkAndInitGTM, 1000);
     } catch (error) {
         console.warn('Error setting up GTM:', error);
     }

@@ -165,6 +165,9 @@ export function useCookieConsent() {
         const initialConfig = window.dataLayer[0];
         window.dataLayer = [initialConfig];
       }
+      
+      // Remove GTM initialization flag
+      localStorage.removeItem('gtm_initialized');
     } else {
       // Analytics is enabled, initialize GTM and GA
       if (window.dataLayer) {
@@ -180,15 +183,16 @@ export function useCookieConsent() {
 
         // Then initialize GTM if user has made a choice
         if (hasUserMadeChoice.value && window.initializeGTM) {
+          // Always try to initialize GTM when consent is granted
           window.initializeGTM();
+          
+          // Push page view event after initialization
+          window.dataLayer.push({
+            'event': 'pageview',
+            'page_path': window.location.pathname,
+            'page_title': document.title
+          });
         }
-
-        // Push page view event after initialization
-        window.dataLayer.push({
-          'event': 'pageview',
-          'page_path': window.location.pathname,
-          'page_title': document.title
-        });
       }
     }
   };

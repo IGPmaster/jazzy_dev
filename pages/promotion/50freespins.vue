@@ -51,7 +51,7 @@
                         <div
                             class="flex flex-col md:flex-row items-center md:items-baseline gap-1 md:gap-4 animate-slide-up animation-delay-200">
                             <span class="text-2xl md:text-5xl font-semibold italic text-white font-inter">
-                                100% BONUS UP TO £500
+                                200% BONUS UP TO £100
                             </span>
                         </div>
 
@@ -94,8 +94,8 @@
         <!-- Terms Section -->
         <div class="bg-jazzy-darkblue">
             <div class="container mx-auto text-white font-light text-xs text-center py-2">
-                New players only. Wagering from real balance first. 50X wagering the bonus or any winnings from free spins. Contribution varies per game. Selected games only. The wagering requirement calculated on bonus bets only. Bonus are valid for 30 days from receipt. Free spins are valid for 7 days from receipt. Max conversion: 3 times the bonus amount or from free spins: £/$/Euro 20. Limited to 5 brands within the <a href="https://www.gamblingcommission.gov.uk/public-register/business/detail/domain-names/39335" class="text-jazzy-yellow underline">network</a>. Withdrawal requests void all active/pending bonuses. Excluded Skrill and Neteller deposits. 
-                <a href="https://www.jazzyspins.com/promotions?code=Welcome239901" class="text-jazzy-yellow underline">Full Terms Apply</a>
+                New Players Only. Wagering occurs from real balance first. 30X wagering the bonus. Contribution may vary per game. Available on selected games only. The wagering requirement is calculated on bonus bets only. Bonus valid 30 Days from receipt. Max conversion: 3 X the bonus amount. Limited to 5 brands within the <a href="https://www.gamblingcommission.gov.uk/public-register/business/detail/domain-names/39335">network</a>. Withdrawal requests void all active/pending bonuses. Excluded Skrill and Neteller deposits.  
+                <a href="https://www.jazzyspins.com/promotions?code=Welcome239900" class="text-jazzy-yellow underline">Full Terms Apply</a>
             </div>
         </div>
 
@@ -155,21 +155,20 @@
                 <div class="prose prose-lg max-w-4xl mx-auto">
                     <p class="text-xl md:text-3xl font-normal pt-4 text-jazzy-beige">Terms and Conditions</p>
                     <ol class="text-jazzy-beige font-thin text-xs md:text-sm list-decimal pl-5">
-                        <li>Players must make a minimum deposit of £10.</li>
-                        <li>Bonus or any winnings from the free spins must be wagered 50 times before a withdrawal may be made. Wagering contributions apply and vary from game to game.</li>
-                        <li>Withdrawal requests void all active/pending bonuses.</li>
-                        <li>In order to qualify for the bonus, the player must deposit using the casino cashier only.</li>
+                        <li>The offer is valid until further notice.</li>
+                        <li>Players must make a minimum first deposit of £10 to get 50 Free Spins on The Paying Piano Club Slot & 200% Bonus up to £100.</li>
+                        <li>The bonus can be claimed once during the promotional period.</li>
+                        <li>Bonus or any winnings from the free spins must be wagered 30 times before a withdrawal may be made. Wagering contributions apply and vary from game to game.</li>
+                        <li>Any bonus and winnings will expire 30 days after being credited from the date and time it is credited to a player's account. Players who have not used their bonus and winnings generated from the bonus or if the Wagering Requirement has not been met within the stipulated time limits shall not be able to receive the expired bonus and/or winnings generated from the bonus thereafter.</li>
                     </ol>
 
                     <p class="text-2xl font-normal pt-4 text-jazzy-beige">Match Deposit Offer:</p>
                     <ol class="text-jazzy-beige font-thin text-xs md:text-sm list-decimal pl-5">
-                        <li>Any bonus and winnings will expire 30 days after being credited from the date and time it is credited to a player's account. Players who have not used their bonus and winnings generated from the bonus or if the Wagering Requirement has not been met within the stipulated time limits shall not be able to receive the expired bonus and/or winnings generated from the bonus thereafter.</li>
-                        <li>Once the amount you have wagered meets or exceeds the Wagering Requirement, the Promotion will end and your Bonus Funds will automatically transfer to your Real Money Balance (up to the Maximum Conversion Amount of 3 times the original bonus amount credited to your account) from where you will be able to withdraw them as cash or continue to use them in non-Promotion play.</li>
+                        <li>Once the amount you have wagered meets or exceeds the Wagering Requirement, the Promotion will end. Your Bonus Funds will automatically transfer to your Real Money Balance (up to the Maximum Conversion Amount of 3 times the original bonus amount credited to your account), from where you can withdraw them as cash or continue to use them in non-promotion play.</li>
                     </ol>
                     
                     <p class="text-2xl font-normal pt-4 text-jazzy-beige">Free Spins Offer:</p>
                     <ol class="text-jazzy-beige font-thin text-xs md:text-sm list-decimal pl-5">
-                        <li>Any bonus and winnings will expire 7 days after being credited from the date and time it is credited to a player's account. Players who have not used their bonus and winnings generated from the bonus or if the Wagering Requirement has not been met within the stipulated time limits shall not be able to receive the expired bonus and/or winnings generated from the bonus thereafter.</li>
                         <li>Once the amount you have wagered meets or exceeds the Wagering Requirement, the Promotion will end, and your Bonus Funds will automatically transfer to your Real Money Balance (up to the Maximum Conversion Amount of £20) from where you will be able to withdraw them as cash or continue to use them in non-Promotion play.</li>
                     </ol>
                     

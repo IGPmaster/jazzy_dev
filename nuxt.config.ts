@@ -64,7 +64,7 @@ export default defineNuxtConfig({
     prerender: {
       fallback: true,
       crawlLinks: true,
-      routes: ['/', '/promotion/50freespins']
+      routes: ['/', '/promotion/50freespins', '/promotion/upto500']
     }
   },
 

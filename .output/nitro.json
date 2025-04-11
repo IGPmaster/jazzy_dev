@@ -1,16 +1,18 @@
 {
-  "date": "2025-04-08T13:14:31.060Z",
+  "date": "2025-04-11T08:54:34.493Z",
   "preset": "cloudflare-pages",
   "framework": {
-    "name": "nitro",
-    "version": ""
+    "name": "nuxt",
+    "version": "3.16.2"
   },
   "versions": {
-    "nitro": "2.10.4"
+    "nitro": "2.11.9"
   },
   "commands": {
-    "preview": "npx wrangler pages dev ./",
-    "deploy": "npx wrangler pages deploy ./"
+    "preview": "npx wrangler --cwd ./ pages dev",
+    "deploy": "npx wrangler --cwd ./ pages deploy"
   },
-  "config": {}
+  "config": {
+    "cloudflare": {}
+  }
 }

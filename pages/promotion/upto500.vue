@@ -155,10 +155,10 @@
                 <div class="prose prose-lg max-w-4xl mx-auto">
                     <p class="text-xl md:text-3xl font-normal pt-4 text-jazzy-beige">Terms and Conditions</p>
                     <ol class="text-jazzy-beige font-thin text-xs md:text-sm list-decimal pl-5">
-                        <li>Players must make a minimum deposit of £10.</li>
-                        <li>Bonus or any winnings from the free spins must be wagered 50 times before a withdrawal may be made. Wagering contributions apply and vary from game to game.</li>
-                        <li>Withdrawal requests void all active/pending bonuses.</li>
-                        <li>In order to qualify for the bonus, the player must deposit using the casino cashier only.</li>
+                        <li>The offer is valid until further notice.</li>
+                        <li>Players must make a minimum first deposit of £10 to get 50 Free Spins on The Paying Piano Club Slot & 100% Bonus up to £500.</li>
+                        <li>The bonus can be claimed once during the promotional period.</li>
+                        <li>Bonus or any winnings from the free spins must be wagered 30 times before a withdrawal may be made. Wagering contributions apply and vary from game to game.</li>
                     </ol>
 
                     <p class="text-2xl font-normal pt-4 text-jazzy-beige">Match Deposit Offer:</p>

@@ -6,12 +6,11 @@
     "build": "NODE_OPTIONS=--max_old_space_size=4096 nuxt build && (cp public/_redirects .output/public/_redirects || true)",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "node -e \"try { require('rollup') } catch (e) { process.exit(0) }\""
+    "postinstall": "node -e \"try { require('rollup') } catch (e) { if (process.platform === 'linux') { console.error('Rollup installation failed:', e); process.exit(1); } else { console.log('Skipping Linux-specific Rollup installation on non-Linux platform'); process.exit(0); } }\""
   },
   "devDependencies": {
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/tailwindcss": "^6.13.2",
-    "@rollup/rollup-linux-x64-gnu": "^4.39.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",

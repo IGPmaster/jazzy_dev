@@ -1,1 +1,0 @@
-import{F as t}from"./SAkT3JDN.js";import{_ as e}from"./DJjq22YD.js";import{c as a,o as m,af as s,b as o}from"./t-uv0vql.js";import"./OJweUUsp.js";import"./CPD2fxFC.js";import"./BwdeSwL7.js";import"./DGQoTCyc.js";const k={__name:"campaign",setup(p){return(r,c)=>(m(),a("div",null,[s(r.$slots,"default"),o(t),o(e)]))}};export{k as default};

@@ -95,7 +95,7 @@
         <div class="bg-jazzy-darkblue">
             <div class="container mx-auto text-white font-light text-xs text-center py-2">
                 New players only. Wagering from real balance first. 30X wagering the bonus or any winnings from free spins. Contribution varies per game. Selected games only. The wagering requirement calculated on bonus bets only. Bonus are valid for 30 days from receipt. Free spins are valid for 7 days from receipt. Max conversion: 3 times the bonus amount or from free spins: £20. Limited to 5 brands within the network. Withdrawal requests void all active/pending bonuses. Excluded Skrill and Neteller deposits. . Withdrawal requests void all active/pending bonuses. Excluded Skrill and Neteller deposits.  
-                <a href="https://www.jazzyspins.com/promotions?code=Welcome239900" class="text-jazzy-yellow underline">Full Terms Apply.</a> Please gamble responsibly. <a href="https://www.gamblingcommission.gov.uk/public-register/business/detail/domain-names/39335" class="text-jazzy-yellow underline">Network Rules Apply.</a>
+                <a href="https://www.jazzyspins.com/promotions?code=Welcome239901" class="text-jazzy-yellow underline">Full Terms Apply.</a> Please gamble responsibly. <a href="https://www.gamblingcommission.gov.uk/public-register/business/detail/domain-names/39335" class="text-jazzy-yellow underline">Network Rules Apply.</a>
             </div>
         </div>
 

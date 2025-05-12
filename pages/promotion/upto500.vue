@@ -57,7 +57,7 @@
 
                         <div
                             class="flex flex-row items-center md:items-baseline gap-1 md:gap-4 justify-center md:justify-start mx-auto">
-                            <span class="text-3xl md:text-7xl font-semibold text-white font-oswald">PLUS</span>
+                            <span class="text-3xl md:text-7xl font-semibold text-white font-oswald">+</span>
                             <span class="text-3xl md:text-7xl font-semibold text-jazzy-yellow font-oswald">50 FREE
                                 SPINS</span>
                         </div>
@@ -94,8 +94,8 @@
         <!-- Terms Section -->
         <div class="bg-jazzy-darkblue">
             <div class="container mx-auto text-white font-light text-xs text-center py-2">
-                New Players Only. Wagering occurs from real balance first. 30X wagering the bonus. Contribution may vary per game. Available on selected games only. The wagering requirement is calculated on bonus bets only. Bonus valid 30 Days from receipt. Max conversion: 3 X the bonus amount. Limited to 5 brands within the <a href="https://www.gamblingcommission.gov.uk/public-register/business/detail/domain-names/39335">network</a>. Withdrawal requests void all active/pending bonuses. Excluded Skrill and Neteller deposits.   
-                <a href="https://www.jazzyspins.com/promotions?code=Welcome239901" class="text-jazzy-yellow underline">Full Terms Apply</a>
+                New players only. Wagering from real balance first. 30X wagering the bonus or any winnings from free spins. Contribution varies per game. Selected games only. The wagering requirement calculated on bonus bets only. Bonus are valid for 30 days from receipt. Free spins are valid for 7 days from receipt. Max conversion: 3 times the bonus amount or from free spins: £20. Limited to 5 brands within the network. Withdrawal requests void all active/pending bonuses. Excluded Skrill and Neteller deposits. . Withdrawal requests void all active/pending bonuses. Excluded Skrill and Neteller deposits.  
+                <a href="https://www.jazzyspins.com/promotions?code=Welcome239900" class="text-jazzy-yellow underline">Full Terms Apply.</a> Please gamble responsibly. <a href="https://www.gamblingcommission.gov.uk/public-register/business/detail/domain-names/39335" class="text-jazzy-yellow underline">Network Rules Apply.</a>
             </div>
         </div>
 

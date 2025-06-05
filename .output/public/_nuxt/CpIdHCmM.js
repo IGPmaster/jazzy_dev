@@ -1,0 +1,1 @@
+import{a9 as s}from"./BreWsxUe.js";const a=s("/images/jazz-mobile-welcome-notext.webp"),e=s("/images/jazz-desktop-welcome.webp"),t=s("/images/Jazzy_UK_1-2-3_mobile.svg"),_=s("/images/Jazzy_UK_1-2-3.svg"),m=s("/images/Trust_jazzy.svg");export{a as _,e as a,t as b,_ as c,m as d};

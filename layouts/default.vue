@@ -17,4 +17,5 @@ import CookieConsent from '~/components/CookieConsent.vue';
 onMounted(() => {
   // Any initialization code can go here
 });
+
 </script>

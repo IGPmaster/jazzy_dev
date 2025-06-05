@@ -38,7 +38,7 @@
                   :src="promo.bigImageUrl"
                   :alt="'Promotion banner: ' + promo.name"
                   :title="promo.name"
-                  class="w-full h-full object-cover"
+                  class="w-full h-full object-contain"
                   loading="lazy"
                 >
                 <div class="absolute inset-0 bg-gradient-to-t from-jazzy-darkblue/90 to-transparent 

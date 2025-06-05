@@ -102,32 +102,42 @@ export async function loadLang() {
   if (typeof window !== 'undefined') {
     let langValue;
 
-    // 1. Check CF_GEO_WORKER for originalLang
-    try {
-      const workerResponse = await fetch(CF_GEO_WORKER);
-      const workerData = await workerResponse.json();
-      const originalLang = workerData.countryCode;
+// List of EU country codes (ISO 3166-1 alpha-2)
+const EU_COUNTRIES = [
+  'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR',
+  'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL',
+  'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE'
+];
 
-      // 2:1 Verify value with KV_SUPPORTED_COUNTRIES
-      const apiResponse = await fetch(KV_SUPPORTED_COUNTRIES);
-      const apiData = await apiResponse.json();
-      const foundLangKV = apiData.find(c => c.countryIntlCode === originalLang);
+// 1. Check CF_GEO_WORKER for originalLang
+try {
+  const workerResponse = await fetch(CF_GEO_WORKER);
+  const workerData = await workerResponse.json();
+  const originalLang = workerData.countryCode;
 
-      // Verify value with IGP_SUPPORTED_COUNTRIES
-      const igpResponse = await fetch(IGP_SUPPORTED_COUNTRIES);
-      const igpData = await igpResponse.json();
-      const foundLangIGP = Object.values(igpData).flat().includes(originalLang);
+  // 2:1 Verify value with KV_SUPPORTED_COUNTRIES
+  const apiResponse = await fetch(KV_SUPPORTED_COUNTRIES);
+  const apiData = await apiResponse.json();
+  const foundLangKV = apiData.find(c => c.countryIntlCode === originalLang);
 
-      // Check if the originalLang exists in both KV's
-      if (foundLangKV && foundLangIGP) {
-        langValue = originalLang;
-      } else {
-        // If the country is not found in both KV's, set fallback to 'IE'
-        langValue = 'IE';
-      }
-    } catch (error) {
-      console.error('Error getting country code:', error);
-    }
+  // Verify value with IGP_SUPPORTED_COUNTRIES
+  const igpResponse = await fetch(IGP_SUPPORTED_COUNTRIES);
+  const igpData = await igpResponse.json();
+  const foundLangIGP = Object.values(igpData).flat().includes(originalLang);
+
+  // Check if the originalLang exists in both KV's
+  if (foundLangKV && foundLangIGP) {
+    langValue = originalLang;
+  } else if (EU_COUNTRIES.includes(originalLang)) {
+    // If unsupported but in EU, fallback to IE
+    langValue = 'IE';
+  } else {
+    // Otherwise, fallback to CA
+    langValue = 'CA';
+  }
+} catch (error) {
+  console.error('Error getting country code:', error);
+}
 
     // 2:2 Check if lang cookie exists
     const cookieLang = getCookie('lang');

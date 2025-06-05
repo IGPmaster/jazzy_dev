@@ -28,8 +28,8 @@ export const globalContent = ref({
 
 // ProgressPlay data:
 export const WHITELABEL_ID = 239;
-export const PP_API_URL = 'https://prd-api.casino-pp.net/CmSHelper/';
-const PP_PROMOTIONS_API = `${PP_API_URL}GetPromotionsInfo?whitelabelId=${WHITELABEL_ID}&country=`;
+export const PP_API_URL = 'https://content.progressplay.net/api23/api/';
+const PP_PROMOTIONS_API = `${PP_API_URL}InfoContent?whitelabelId=${WHITELABEL_ID}&country=`;
 export const PP_LOBBY_LINK = 'https://www.jazzyspins.com/';
 //const KV_GAMES = `https://content.progressplay.net/api23/api/game?whitelabelId=${WHITELABEL_ID}`; // Test API
 
@@ -215,7 +215,7 @@ export async function loadTranslations() {
 
 async function fetchApiPromotions() {
   try {
-    const response = await fetch(`${PP_API_URL}GetPromotionsInfo?whitelabelId=${WHITELABEL_ID}&country=${lang.value}`);
+    const response = await fetch(`${PP_API_URL}PromotionsInfo?whitelabelId=${WHITELABEL_ID}&country=${lang.value}`);
     const data = await response.json();
     pp_promotions.value = data;
     //console.log('this.pp_promotions 123: ', pp_promotions.value);
@@ -331,7 +331,7 @@ export async function fetchFooterIcons(lang) {
   if (footerIconsCache.has(lang)) {
     footerIcons.value = footerIconsCache.get(lang);
   } else {
-    const response = await fetch(`${PP_API_URL}GetInfoContentByCode?whitelabelId=${WHITELABEL_ID}&country=${lang}&code=footericon`);
+    const response = await fetch(`${PP_API_URL}InfoContent?whitelabelId=${WHITELABEL_ID}&country=${lang}&code=footericon`);
     const data = await response.json();
     footerIcons.value = data;
     footerIconsCache.set(lang, data);
@@ -342,7 +342,7 @@ export async function fetchFooterText(lang) {
   if (footerTextCache.has(lang)) {
     footerText.value = footerTextCache.get(lang);
   } else {
-    const response = await fetch(`${PP_API_URL}GetInfoContentByCode?whitelabelId=${WHITELABEL_ID}&country=${lang}&code=footertext`);
+    const response = await fetch(`${PP_API_URL}InfoContent?whitelabelId=${WHITELABEL_ID}&country=${lang}&code=footertext`);
     const data = await response.json();
     footerText.value = data;
     footerTextCache.set(lang, data);

@@ -35,7 +35,7 @@ const slug = route.params.slug;
 async function fetchContent(slug) {
     try {
         const response = await fetch(
-            `${PP_API_URL}GetInfoContentByCode?whitelabelId=${WHITELABEL_ID}&country=${lang.value}&code=${slug}`
+            `${PP_API_URL}InfoContent?whitelabelId=${WHITELABEL_ID}&country=${lang.value}&code=${slug}`
         );
         const data = await response.json();
         return data[0].Html;

@@ -73,7 +73,7 @@ const emit = defineEmits(['loaded']);
 async function fetchContent() {
 	try {
 		const response = await fetch(
-			`${PP_API_URL}GetInfoContentByCode?whitelabelId=${WHITELABEL_ID}&country=${lang.value}&code=compliance`
+			`${PP_API_URL}InfoContent?whitelabelId=${WHITELABEL_ID}&country=${lang.value}&code=compliance`
 		);
 		const data = await response.json();
 		return data[0].Html;

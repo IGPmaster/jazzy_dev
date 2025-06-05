@@ -1,13 +1,13 @@
 export const BRAND_CONFIG = {
   WHITELABEL_ID: 239,
   WP_API: 'https://headless.jazzyspins.com/wp-json/wp/v2/',
-  PP_LOBBY_LINK: 'https://jazzyspins.casino-pp.net/',
+  PP_LOBBY_LINK: 'https://www.jazzyspins.com/',
   BRAND_NAME: 'Jazzy Spins',
 } as const;
 
 // Shared API endpoints that use the brand config
 export const API_ENDPOINTS = {
-  PP_API: 'https://prd-api.casino-pp.net/CmSHelper/',
+  PP_API: 'https://content.progressplay.net/api23/api/',
   KV_GAMES: 'https://access-ppgames.tech1960.workers.dev/',
   FILTERED_BY_NAME_KV: 'https://access-filterbyname.tech1960.workers.dev/',
   CF_GEO_WORKER: 'https://cf-geo-lookup.tech1960.workers.dev/',
@@ -18,7 +18,7 @@ export const API_ENDPOINTS = {
 
 // Helper function to get full API URLs
 export const getApiUrls = () => ({
-  promotionsApi: `${API_ENDPOINTS.PP_API}GetPromotionsInfo?whitelabelId=${BRAND_CONFIG.WHITELABEL_ID}&country=`,
+  promotionsApi: `${API_ENDPOINTS.PP_API}PromotionsInfo?whitelabelId=${BRAND_CONFIG.WHITELABEL_ID}&country=`,
   wpApi: BRAND_CONFIG.WP_API,
   lobbyLink: BRAND_CONFIG.PP_LOBBY_LINK,
 }); 

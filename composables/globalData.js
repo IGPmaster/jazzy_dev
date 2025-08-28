@@ -220,10 +220,8 @@ async function fetchApiPromotions() {
     console.log('🔍 UNIFIED: WHITELABEL_ID =', WHITELABEL_ID);
     console.log('🔍 UNIFIED: process.client =', process.client);
     
-    // Use unified proxy for client-side calls, direct API for server-side
-    const apiUrl = process.client
-      ? `https://access-content-pp.tech1960.workers.dev/?type=promotions&whitelabelId=${WHITELABEL_ID}&country=${lang.value}`
-      : `${PP_API_URL}PromotionsInfo?whitelabelId=${WHITELABEL_ID}&country=${lang.value}`;
+    // Always use CloudFlare Worker - NO DIRECT API FALLBACK (CORS blocked)
+    const apiUrl = `https://access-content-pp.tech1960.workers.dev/?type=promotions&whitelabelId=${WHITELABEL_ID}&country=${lang.value}`;
     
     console.log('📡 UNIFIED: Fetching promotions from URL:', apiUrl);
     
@@ -231,16 +229,22 @@ async function fetchApiPromotions() {
     console.log('📊 UNIFIED: Response status:', response.status);
     console.log('📊 UNIFIED: Response ok:', response.ok);
     
-    const responseData = await response.json();
+    if (!response.ok) {
+      console.error('❌ UNIFIED: CloudFlare Worker failed with status:', response.status);
+      pp_promotions.value = [];
+      return;
+    }
     
-    // Handle unified response format vs direct API format
-    const data = process.client ? responseData.promotions : responseData;
+    const responseData = await response.json();
+    console.log('📄 UNIFIED: Raw response:', JSON.stringify(responseData).substring(0, 300));
+    
+    // Handle unified response format
+    const data = responseData.promotions || responseData;
     
     console.log('✅ UNIFIED: Data received:', Array.isArray(data) ? `Array with ${data.length} items` : typeof data);
-    console.log('📄 UNIFIED: Data sample:', data ? JSON.stringify(data).substring(0, 200) : 'No data');
     
     pp_promotions.value = data || [];
-    console.log('✅ UNIFIED: pp_promotions.value set to:', pp_promotions.value);
+    console.log('✅ UNIFIED: pp_promotions.value set to length:', pp_promotions.value.length);
   } catch (error) {
     console.error('❌ UNIFIED: Error fetching promotions:', error);
     console.error('❌ UNIFIED: Error stack:', error.stack);
@@ -377,19 +381,25 @@ export async function fetchCachedContent(code, country = lang.value) {
     console.log('🔍 CONTENT DEBUG: cache key =', cacheKey);
     console.log('🔍 CONTENT DEBUG: WHITELABEL_ID =', WHITELABEL_ID);
     
-    // Use unified Worker for KV caching
+    // Use unified Worker for KV caching - NO DIRECT API FALLBACK (CORS blocked)
     const apiUrl = `https://access-content-pp.tech1960.workers.dev/?type=content&codes=${code}&whitelabelId=${WHITELABEL_ID}&country=${resolvedCountry}`;
     console.log('🔍 CONTENT DEBUG: Full API URL =', apiUrl);
     
     const response = await fetch(apiUrl);
+    console.log('📊 CONTENT: Response status:', response.status);
+    
     if (!response.ok) {
-      console.error('❌ CONTENT: HTTP error:', response.status, response.statusText);
+      console.error('❌ CONTENT: CloudFlare Worker failed with status:', response.status);
       return '';
     }
     
     const responseData = await response.json();
+    console.log('📄 CONTENT: Raw response keys:', Object.keys(responseData));
+    
     const data = responseData[code];
     const htmlContent = data && data[0] ? data[0].Html : '';
+    
+    console.log('📄 CONTENT: Extracted HTML length:', htmlContent.length);
     
     // Cache the result
     contentCache.set(cacheKey, {
@@ -518,32 +528,40 @@ export async function fetchFooterContent(lang) {
     const cached = footerIconsCache.get(cacheKey);
     footerIcons.value = cached.footericon || [];
     footerText.value = cached.footertext || [];
+    console.log('🚀 UNIFIED: Using cached footer content');
     return;
   }
 
   try {
-    // UNIFIED API CALL: Get both footer contents in one request
-    const apiUrl = process.client
-      ? `https://access-content-pp.tech1960.workers.dev/?type=content&codes=footericon,footertext&whitelabelId=${WHITELABEL_ID}&country=${lang}`
-      : null; // Server-side will use direct API calls individually for now
+    // UNIFIED API CALL: Always use CloudFlare Worker - NO DIRECT API FALLBACK (CORS blocked)
+    const apiUrl = `https://access-content-pp.tech1960.workers.dev/?type=content&codes=footericon,footertext&whitelabelId=${WHITELABEL_ID}&country=${lang}`;
 
-    if (process.client) {
-      console.log('🚀 UNIFIED: Fetching footer content (icons + text) in single call');
-      const response = await fetch(apiUrl);
-      const data = await response.json();
-      
-      // Extract individual results from unified response
-      footerIcons.value = data.footericon || [];
-      footerText.value = data.footertext || [];
-      
-      // Cache the unified result
-      footerIconsCache.set(cacheKey, data);
-      console.log('✅ UNIFIED: Footer content cached successfully');
-    } else {
-      // Server-side: Still use individual calls for now
-      await fetchFooterIconsServer(lang);
-      await fetchFooterTextServer(lang);
+    console.log('🚀 UNIFIED: Fetching footer content (icons + text) in single call');
+    console.log('📡 UNIFIED: Footer URL:', apiUrl);
+    
+    const response = await fetch(apiUrl);
+    console.log('📊 UNIFIED: Footer response status:', response.status);
+    
+    if (!response.ok) {
+      console.error('❌ UNIFIED: Footer CloudFlare Worker failed with status:', response.status);
+      footerIcons.value = [];
+      footerText.value = [];
+      return;
     }
+    
+    const data = await response.json();
+    console.log('📄 UNIFIED: Footer response keys:', Object.keys(data));
+    
+    // Extract individual results from unified response
+    footerIcons.value = data.footericon || [];
+    footerText.value = data.footertext || [];
+    
+    console.log('✅ UNIFIED: Footer icons length:', footerIcons.value.length);
+    console.log('✅ UNIFIED: Footer text length:', footerText.value.length);
+    
+    // Cache the unified result
+    footerIconsCache.set(cacheKey, data);
+    console.log('✅ UNIFIED: Footer content cached successfully');
   } catch (error) {
     console.error('❌ UNIFIED: Error fetching footer content:', error);
     footerIcons.value = [];

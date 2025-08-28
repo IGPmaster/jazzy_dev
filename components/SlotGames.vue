@@ -72,7 +72,7 @@ const displayedGames = computed(() => {
 onMounted(async () => {
 	try {
 		loading.value = true;
-		await gameStore.fetchGames();
+		// No API calls needed - games data should be loaded by parent/shared
 		emit('loaded');
 	} catch (error) {
 		console.error('Error in SlotGames:', error);

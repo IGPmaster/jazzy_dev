@@ -64,6 +64,7 @@ import {
 	fetchApiPromotions, 
 	pp_promotions,
 	fetchCachedContent,
+	fetchGames,
 	lang
 } from '~/composables/globalData';
 
@@ -81,10 +82,12 @@ async function fetchContent() {
 
 onMounted(async () => {
 	try {
+		// Load games data first (this will be shared across all game components)
 		await Promise.all([
 			fetchPromotions(),
 			fetchApiPromotions(),
-			fetchContent()
+			fetchContent(),
+			fetchGames() // ✅ Single games API call for entire page
 		]);
 		loading.value = false;
 	} catch (error) {

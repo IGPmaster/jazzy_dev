@@ -73,10 +73,8 @@ const displayedGames = computed(() => {
 onMounted(async () => {
 	try {
 		loading.value = true;
-		await Promise.all([
-			gameStore.fetchGames(),
-			loadTranslations()
-		]);
+		// Only load translations - games data should be loaded by parent/shared
+		await loadTranslations();
 		emit('loaded');
 	} catch (error) {
 		console.error('Error in JackpotGames:', error);

@@ -77,6 +77,12 @@ const apiCache = {
   // Add other cache entries as needed
 };
 
+// 🎮 GAMES API OPTIMIZATION - Critical for CPU time limit fix
+let gamesCache = null;
+let gamesCacheTime = 0;
+let gamesRequestInFlight = null; // 🔑 CRITICAL: Prevents duplicate calls
+const GAMES_CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+
 function isCacheValid(cacheEntry) {
   return cacheEntry?.data && 
          cacheEntry?.timestamp && 
@@ -287,39 +293,110 @@ export async function fetchFilterByName() {
   }
 }
 
+// Helper function to actually fetch games (only called when needed)
+async function actuallyFetchGames() {
+  console.log('🎮 GAMES: Making actual API call to CloudFlare Worker...');
+  
+  await fetchFilterByName();
+  const response = await fetch(KV_GAMES);
+  const data = await response.json();
+
+  // Add your logic for processing the games data here
+  const filteredGames = data.filter(game => {
+    const hasName = filterByName.value.some(name => game.gameName.toLowerCase().includes(name.toLowerCase()));
+    const hasId = filterByName.value.some(id => game.gameId == id);
+
+    // Check for jurisdictionCode and excluded countries
+    const isExcludedJurisdiction = game.excludedJurisdictions?.includes(jurisdictionCode.value);
+    const isExcludedCountry = game.excludedCountries?.includes(lang.value);
+
+    return !(hasName || hasId || isExcludedJurisdiction || isExcludedCountry);
+  });
+
+  // Set all game categories
+  games.value = filteredGames;
+  newGames.value = filteredGames.filter(game => game.gameFilters?.includes('New'));
+  popularGames.value = filteredGames.filter(game => game.gameFilters?.includes('Featured'));
+  casinoGames.value = filteredGames.filter(game => game.gameType?.includes('Casino'));
+  slotGames.value = filteredGames.filter(game => game.gameType?.includes('Slots'));
+  jackpotGames.value = filteredGames.filter(game => game.gameType?.includes('Jackpots'));
+  liveGames.value = filteredGames.filter(game => game.gameType?.includes('Live'));
+  scratchGames.value = filteredGames.filter(game => game.gameName?.toLowerCase().includes('scratch'));
+  blackjackGames.value = filteredGames.filter(game => game.gameFilters?.includes('Blackjack'));
+  rouletteGames.value = filteredGames.filter(game => game.gameFilters?.includes('Roulette'));
+
+  // Cache the results
+  gamesCache = {
+    games: filteredGames,
+    newGames: newGames.value,
+    popularGames: popularGames.value,
+    casinoGames: casinoGames.value,
+    slotGames: slotGames.value,
+    jackpotGames: jackpotGames.value,
+    liveGames: liveGames.value,
+    scratchGames: scratchGames.value,
+    blackjackGames: blackjackGames.value,
+    rouletteGames: rouletteGames.value,
+  };
+  gamesCacheTime = Date.now();
+  
+  console.log('✅ GAMES: API call completed, cached', filteredGames.length, 'games');
+  
+  await updateLinks();
+}
+
 export async function fetchGames() {
   try {
-    await fetchFilterByName();
-    const response = await fetch(KV_GAMES);
-    const data = await response.json();
-
-    // Add your logic for processing the games data here
-    const filteredGames = data.filter(game => {
-      const hasName = filterByName.value.some(name => game.gameName.toLowerCase().includes(name.toLowerCase()));
-      const hasId = filterByName.value.some(id => game.gameId == id);
-
-      // Check for jurisdictionCode and excluded countries
-      const isExcludedJurisdiction = game.excludedJurisdictions?.includes(jurisdictionCode.value);
-      const isExcludedCountry = game.excludedCountries?.includes(lang.value);
-
-      return !(hasName || hasId || isExcludedJurisdiction || isExcludedCountry);
-    });
-
-    games.value = filteredGames;
-    newGames.value = filteredGames.filter(game => game.gameFilters?.includes('New'));
-    popularGames.value = filteredGames.filter(game => game.gameFilters?.includes('Featured'));
-    casinoGames.value = filteredGames.filter(game => game.gameType?.includes('Casino'));
-    slotGames.value = filteredGames.filter(game => game.gameType?.includes('Slots'));
-    jackpotGames.value = filteredGames.filter(game => game.gameType?.includes('Jackpots'));
-    liveGames.value = filteredGames.filter(game => game.gameType?.includes('Live'));
-    scratchGames.value = filteredGames.filter(game => game.gameName?.toLowerCase().includes('scratch'));
-    blackjackGames.value = filteredGames.filter(game => game.gameFilters?.includes('Blackjack'));
-    rouletteGames.value = filteredGames.filter(game => game.gameFilters?.includes('Roulette'));
-
-    await updateLinks();
+    // 1. Check cache FIRST (before Worker call)
+    const now = Date.now();
+    if (gamesCache && (now - gamesCacheTime) < GAMES_CACHE_DURATION) {
+      console.log('🎮 GAMES: Using cached games data (', Math.round((now - gamesCacheTime) / 1000), 'seconds old)');
+      // Set all game categories from cache
+      games.value = gamesCache.games;
+      newGames.value = gamesCache.newGames;
+      popularGames.value = gamesCache.popularGames;
+      casinoGames.value = gamesCache.casinoGames;
+      slotGames.value = gamesCache.slotGames;
+      jackpotGames.value = gamesCache.jackpotGames;
+      liveGames.value = gamesCache.liveGames;
+      scratchGames.value = gamesCache.scratchGames;
+      blackjackGames.value = gamesCache.blackjackGames;
+      rouletteGames.value = gamesCache.rouletteGames;
+      await updateLinks();
+      return; // No Worker call needed!
+    }
+    
+    // 2. Check if request already in flight (prevent duplicate calls)
+    if (gamesRequestInFlight) {
+      console.log('🎮 GAMES: Request already in progress, waiting...');
+      await gamesRequestInFlight;
+      // After waiting, use data from completed request
+      if (gamesCache) {
+        console.log('🎮 GAMES: Using data from completed request');
+        games.value = gamesCache.games;
+        newGames.value = gamesCache.newGames;
+        popularGames.value = gamesCache.popularGames;
+        casinoGames.value = gamesCache.casinoGames;
+        slotGames.value = gamesCache.slotGames;
+        jackpotGames.value = gamesCache.jackpotGames;
+        liveGames.value = gamesCache.liveGames;
+        scratchGames.value = gamesCache.scratchGames;
+        blackjackGames.value = gamesCache.blackjackGames;
+        rouletteGames.value = gamesCache.rouletteGames;
+        await updateLinks();
+      }
+      return; // No duplicate Worker call!
+    }
+    
+    // 3. Start new request (only one at a time)
+    console.log('🎮 GAMES: Fetching fresh games data...');
+    gamesRequestInFlight = actuallyFetchGames();
+    await gamesRequestInFlight;
+    gamesRequestInFlight = null;
 
   } catch (error) {
-    console.error('Error fetching games:', error);
+    console.error('❌ GAMES: Error fetching games:', error);
+    gamesRequestInFlight = null; // Reset on error
   }
 }
 

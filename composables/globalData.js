@@ -215,12 +215,36 @@ export async function loadTranslations() {
 
 async function fetchApiPromotions() {
   try {
-    const response = await fetch(`${PP_API_URL}PromotionsInfo?whitelabelId=${WHITELABEL_ID}&country=${lang.value}`);
-    const data = await response.json();
-    pp_promotions.value = data;
-    //console.log('this.pp_promotions 123: ', pp_promotions.value);
+    console.log('🎁 UNIFIED: Starting fetchApiPromotions()');
+    console.log('🔍 UNIFIED: lang.value =', lang.value);
+    console.log('🔍 UNIFIED: WHITELABEL_ID =', WHITELABEL_ID);
+    console.log('🔍 UNIFIED: process.client =', process.client);
+    
+    // Use unified proxy for client-side calls, direct API for server-side
+    const apiUrl = process.client
+      ? `https://access-content-pp.tech1960.workers.dev/?type=promotions&whitelabelId=${WHITELABEL_ID}&country=${lang.value}`
+      : `${PP_API_URL}PromotionsInfo?whitelabelId=${WHITELABEL_ID}&country=${lang.value}`;
+    
+    console.log('📡 UNIFIED: Fetching promotions from URL:', apiUrl);
+    
+    const response = await fetch(apiUrl);
+    console.log('📊 UNIFIED: Response status:', response.status);
+    console.log('📊 UNIFIED: Response ok:', response.ok);
+    
+    const responseData = await response.json();
+    
+    // Handle unified response format vs direct API format
+    const data = process.client ? responseData.promotions : responseData;
+    
+    console.log('✅ UNIFIED: Data received:', Array.isArray(data) ? `Array with ${data.length} items` : typeof data);
+    console.log('📄 UNIFIED: Data sample:', data ? JSON.stringify(data).substring(0, 200) : 'No data');
+    
+    pp_promotions.value = data || [];
+    console.log('✅ UNIFIED: pp_promotions.value set to:', pp_promotions.value);
   } catch (error) {
-    console.error(error);
+    console.error('❌ UNIFIED: Error fetching promotions:', error);
+    console.error('❌ UNIFIED: Error stack:', error.stack);
+    pp_promotions.value = []; // Ensure it's always an array on error
   }
 }
 
@@ -326,8 +350,63 @@ export async function fetchSupportedCountries() {
 // globalData.js
 const footerIconsCache = new Map();
 const footerTextCache = new Map();
+const contentCache = new Map();
+const CONTENT_CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
 
-export async function fetchFooterIcons(lang) {
+export async function fetchCachedContent(code, country = lang.value) {
+  // CRITICAL: Ensure we use supported country, not raw detected country
+  // If no country provided, use the resolved lang.value (which should be the fallback)
+  const resolvedCountry = country;
+  // KV key format: content:aboutus:239:IE (content:code:whitelabel:country)
+  const cacheKey = `content:${code}:${WHITELABEL_ID}:${resolvedCountry}`;
+  const now = Date.now();
+  
+  // Check cache first
+  if (contentCache.has(cacheKey)) {
+    const cached = contentCache.get(cacheKey);
+    if ((now - cached.timestamp) < CONTENT_CACHE_DURATION) {
+      console.log('📄 CONTENT: Using cached content for', code);
+      return cached.data;
+    }
+  }
+  
+  try {
+    console.log('📄 CONTENT: Fetching fresh content for', code);
+    console.log('🔍 CONTENT DEBUG: country parameter =', resolvedCountry);
+    console.log('🔍 CONTENT DEBUG: lang.value =', lang.value);
+    console.log('🔍 CONTENT DEBUG: cache key =', cacheKey);
+    console.log('🔍 CONTENT DEBUG: WHITELABEL_ID =', WHITELABEL_ID);
+    
+    // Use unified Worker for KV caching
+    const apiUrl = `https://access-content-pp.tech1960.workers.dev/?type=content&codes=${code}&whitelabelId=${WHITELABEL_ID}&country=${resolvedCountry}`;
+    console.log('🔍 CONTENT DEBUG: Full API URL =', apiUrl);
+    
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      console.error('❌ CONTENT: HTTP error:', response.status, response.statusText);
+      return '';
+    }
+    
+    const responseData = await response.json();
+    const data = responseData[code];
+    const htmlContent = data && data[0] ? data[0].Html : '';
+    
+    // Cache the result
+    contentCache.set(cacheKey, {
+      data: htmlContent,
+      timestamp: now
+    });
+    
+    console.log('✅ CONTENT: Content cached for', code, 'for', CONTENT_CACHE_DURATION / 60000, 'minutes');
+    return htmlContent;
+    
+  } catch (error) {
+    console.error('❌ CONTENT: Error fetching content:', error);
+    return '';
+  }
+}
+
+async function fetchFooterIconsServer(lang) {
   if (footerIconsCache.has(lang)) {
     footerIcons.value = footerIconsCache.get(lang);
   } else {
@@ -338,7 +417,7 @@ export async function fetchFooterIcons(lang) {
   }
 }
 
-export async function fetchFooterText(lang) {
+async function fetchFooterTextServer(lang) {
   if (footerTextCache.has(lang)) {
     footerText.value = footerTextCache.get(lang);
   } else {
@@ -433,12 +512,43 @@ export {
 };
 
 export async function fetchFooterContent(lang) {
-  const [icons, text] = await Promise.all([
-    fetchFooterIcons(lang),
-    fetchFooterText(lang)
-  ]);
+  const cacheKey = `footer_${lang}`;
   
-  return { icons, text };
+  if (footerIconsCache.has(cacheKey)) {
+    const cached = footerIconsCache.get(cacheKey);
+    footerIcons.value = cached.footericon || [];
+    footerText.value = cached.footertext || [];
+    return;
+  }
+
+  try {
+    // UNIFIED API CALL: Get both footer contents in one request
+    const apiUrl = process.client
+      ? `https://access-content-pp.tech1960.workers.dev/?type=content&codes=footericon,footertext&whitelabelId=${WHITELABEL_ID}&country=${lang}`
+      : null; // Server-side will use direct API calls individually for now
+
+    if (process.client) {
+      console.log('🚀 UNIFIED: Fetching footer content (icons + text) in single call');
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      
+      // Extract individual results from unified response
+      footerIcons.value = data.footericon || [];
+      footerText.value = data.footertext || [];
+      
+      // Cache the unified result
+      footerIconsCache.set(cacheKey, data);
+      console.log('✅ UNIFIED: Footer content cached successfully');
+    } else {
+      // Server-side: Still use individual calls for now
+      await fetchFooterIconsServer(lang);
+      await fetchFooterTextServer(lang);
+    }
+  } catch (error) {
+    console.error('❌ UNIFIED: Error fetching footer content:', error);
+    footerIcons.value = [];
+    footerText.value = [];
+  }
 }
 
 export function cleanup() {

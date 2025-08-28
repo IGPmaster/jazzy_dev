@@ -23,8 +23,7 @@ import {
     msgTranslate, 
     globalContent, 
     loadTranslations,
-    PP_API_URL,
-    WHITELABEL_ID,
+    fetchCachedContent,
     lang
 } from '~/composables/globalData';
 import TranslatedText from '~/components/TranslatedText.vue';
@@ -36,11 +35,8 @@ function updateCode(key, globalContent) {
 
 async function fetchContent(code) {
     try {
-        const response = await fetch(
-            `${PP_API_URL}InfoContent?whitelabelId=${WHITELABEL_ID}&country=${lang.value}&code=${code}`
-        );
-        const data = await response.json();
-        return data[0].Html;
+        // Use the new CORS-safe function
+        return await fetchCachedContent(code, lang.value);
     } catch (error) {
         console.error(error);
         return ''; // Return empty string on error

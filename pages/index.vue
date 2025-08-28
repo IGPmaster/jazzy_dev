@@ -63,8 +63,7 @@ import {
 	fetchPromotions, 
 	fetchApiPromotions, 
 	pp_promotions,
-	PP_API_URL,
-	WHITELABEL_ID,
+	fetchCachedContent,
 	lang
 } from '~/composables/globalData';
 
@@ -72,11 +71,8 @@ const emit = defineEmits(['loaded']);
 
 async function fetchContent() {
 	try {
-		const response = await fetch(
-			`${PP_API_URL}InfoContent?whitelabelId=${WHITELABEL_ID}&country=${lang.value}&code=compliance`
-		);
-		const data = await response.json();
-		return data[0].Html;
+		// Use the new CORS-safe function
+		return await fetchCachedContent('compliance', lang.value);
 	} catch (error) {
 		console.error(error);
 		return ''; // Return empty string on error

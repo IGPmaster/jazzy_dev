@@ -115,11 +115,15 @@ const EU_COUNTRIES = [
   'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE'
 ];
 
-// 1. Check CF_GEO_WORKER for originalLang
+// 1. Check CF_GEO_WORKER for originalLang and continent
 try {
+  console.log('🌍 GEO: Fetching geo data from CloudFlare Worker...');
   const workerResponse = await fetch(CF_GEO_WORKER);
   const workerData = await workerResponse.json();
   const originalLang = workerData.countryCode;
+  const continent = workerData.continent;
+  
+  console.log('🌍 GEO: Detected country:', originalLang, 'continent:', continent);
 
   // 2:1 Verify value with KV_SUPPORTED_COUNTRIES
   const apiResponse = await fetch(KV_SUPPORTED_COUNTRIES);
@@ -133,16 +137,25 @@ try {
 
   // Check if the originalLang exists in both KV's
   if (foundLangKV && foundLangIGP) {
+    console.log('🌍 GEO: Country', originalLang, 'is supported, using it');
     langValue = originalLang;
-  } else if (EU_COUNTRIES.includes(originalLang)) {
-    // If unsupported but in EU, fallback to IE
-    langValue = 'IE';
   } else {
-    // Otherwise, fallback to CA
-    langValue = 'CA';
+    // Use continent-based fallback (more reliable than hardcoded array)
+    if (continent === 'EU') {
+      console.log('🌍 GEO: EU continent detected, falling back to IE');
+      langValue = 'IE';
+    } else if (EU_COUNTRIES.includes(originalLang)) {
+      // Backup check if continent data is missing
+      console.log('🌍 GEO: No continent data, but found', originalLang, 'in EU countries array, using IE');
+      langValue = 'IE';
+    } else {
+      console.log('🌍 GEO: Non-EU country, falling back to CA');
+      langValue = 'CA';
+    }
   }
 } catch (error) {
-  console.error('Error getting country code:', error);
+  console.error('❌ GEO: Error getting country code:', error);
+  langValue = 'IE'; // Safe fallback
 }
 
     // 2:2 Check if lang cookie exists

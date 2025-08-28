@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { fetchGames as fetchGamesApi, fetchFilterByName, games as globalGames } from '~/composables/globalData';
+import { fetchGames as fetchGamesApi, fetchFilterByName, games } from '~/composables/globalData';
 
 export const useGameStore = defineStore('game', () => {
   // State
@@ -70,8 +70,8 @@ export const useGameStore = defineStore('game', () => {
       await fetchGamesApi();
       
       // Get the data from the global ref
-      if (Array.isArray(globalGames.value)) {
-        allGames.value = globalGames.value;
+      if (Array.isArray(games.value)) {
+        allGames.value = games.value;
         lastFetchTime.value = Date.now();
         return allGames.value;
       } else {

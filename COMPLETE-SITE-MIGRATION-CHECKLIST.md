@@ -123,6 +123,28 @@ Watch for these issues:
 - [ ] Empty promotions arrays
 - [ ] Slow page loads
 
+## 🚨 CRITICAL TROUBLESHOOTING
+
+### Issue: Games Not Loading Despite API Success
+**Symptoms**: Console shows successful API calls but components show empty arrays
+**Cause**: Data flow disconnect between global fetchGames() and gameStore
+**Solution**: Homepage must call `gameStore.fetchGames()` instead of global `fetchGames()`
+
+### Issue: Still Getting CORS Errors
+**Symptoms**: CORS policy errors in console
+**Cause**: `KV_GAMES` still using direct ProgressPlay API
+**Solution**: Update to `const KV_GAMES = 'https://access-ppgames.tech1960.workers.dev/';`
+
+### Issue: Promotions Load Once But Not On Reload
+**Symptoms**: Promotions show on first visit but disappear on page reload
+**Cause**: Promotions page not calling `fetchApiPromotions()`
+**Solution**: Add `onMounted(async () => { await fetchApiPromotions(); })`
+
+### Issue: Import/Export Errors
+**Symptoms**: "X is not a function" or undefined errors
+**Cause**: Importing non-existent exports (e.g., `globalGames` instead of `games`)
+**Solution**: Verify all imports match actual exports in globalData.js
+
 ## Rollback Plan
 
 If issues occur:

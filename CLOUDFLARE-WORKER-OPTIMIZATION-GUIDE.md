@@ -241,6 +241,49 @@ async function actuallyFetchGames() {
 
 ---
 
+## 🚨 CRITICAL IMPLEMENTATION WARNINGS
+
+### ⚠️ WARNING #1: Data Flow Verification Required
+After implementing the optimization, you MUST verify that games actually appear in components:
+
+**Common Issue**: Homepage calls global `fetchGames()` but components use `gameStore.newGames`
+**Solution**: Homepage must call `gameStore.fetchGames()` instead
+
+```javascript
+// ❌ WRONG: This won't populate gameStore
+import { fetchGames } from '~/composables/globalData';
+await fetchGames();
+
+// ✅ CORRECT: This populates gameStore for components
+import { useGameStore } from '~/stores/gameStore';
+const gameStore = useGameStore();
+await gameStore.fetchGames();
+```
+
+### ⚠️ WARNING #2: API URL Verification Required
+Double-check that `KV_GAMES` uses CloudFlare Worker, not direct API:
+
+```javascript
+// ❌ WRONG: Direct API (causes CORS)
+const KV_GAMES = `https://content.progressplay.net/api23/api/game?whitelabelId=${WHITELABEL_ID}`;
+
+// ✅ CORRECT: CloudFlare Worker
+const KV_GAMES = 'https://access-ppgames.tech1960.workers.dev/';
+```
+
+### ⚠️ WARNING #3: Import/Export Verification
+Verify all imports reference existing exports:
+
+```javascript
+// ❌ WRONG: globalGames doesn't exist
+import { games as globalGames } from '~/composables/globalData';
+
+// ✅ CORRECT: games is the actual export
+import { games } from '~/composables/globalData';
+```
+
+---
+
 ## 🌍 CRITICAL: EU COUNTRY FALLBACK FIX
 
 ### Problem

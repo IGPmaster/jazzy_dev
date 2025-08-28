@@ -102,7 +102,26 @@
 </template>
 
 <script setup>
-import { pp_promotions, regLink } from '~/composables/globalData';
+import { ref, onMounted } from 'vue';
+import { pp_promotions, regLink, fetchApiPromotions } from '~/composables/globalData';
+
+// Loading states
+const pending = ref(true);
+const error = ref(null);
+
+// Fetch promotions data
+onMounted(async () => {
+  try {
+    console.log('🎁 PROMOTIONS PAGE: Starting data fetch');
+    await fetchApiPromotions();
+    console.log('🎁 PROMOTIONS PAGE: Data fetched successfully, promotions count:', pp_promotions.value?.length || 0);
+    pending.value = false;
+  } catch (err) {
+    console.error('🚨 PROMOTIONS PAGE: Error fetching promotions:', err);
+    error.value = err;
+    pending.value = false;
+  }
+});
 
 // SEO
 useHead({

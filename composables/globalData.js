@@ -31,14 +31,14 @@ export const WHITELABEL_ID = 239;
 export const PP_API_URL = 'https://content.progressplay.net/api23/api/';
 const PP_PROMOTIONS_API = `${PP_API_URL}InfoContent?whitelabelId=${WHITELABEL_ID}&country=`;
 export const PP_LOBBY_LINK = 'https://www.jazzyspins.com/';
-const KV_GAMES = `https://content.progressplay.net/api23/api/game?whitelabelId=${WHITELABEL_ID}`; // Test API
+const KV_GAMES = 'https://access-ppgames.tech1960.workers.dev/';
 
 
 // WP-REST-API:
 const WP_API = 'https://headless.jazzyspins.com/wp-json/wp/v2/';
 
 //CloudFlare Workers KV data:
-//export const KV_GAMES = 'https://access-ppgames.tech1960.workers.dev/';
+// KV_GAMES now defined above for games optimization
 export const FILTERED_BY_NAME_KV = 'https://access-filterbyname.tech1960.workers.dev/';
 const CF_GEO_WORKER = 'https://cf-geo-lookup.tech1960.workers.dev/';
 const KV_SUPPORTED_COUNTRIES = "https://access-supportedcountries.tech1960.workers.dev/";

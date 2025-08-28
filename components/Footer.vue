@@ -54,8 +54,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { BRAND_CONFIG } from '~/config/brand';
 import { 
-  fetchFooterIcons, 
-  fetchFooterText, 
+  fetchFooterContent, 
   loadTranslations, 
   footerIcons,
   footerText,
@@ -73,8 +72,7 @@ const brandId = computed(() => BRAND_CONFIG.WHITELABEL_ID);
 onMounted(async () => {
   try {
     await Promise.all([
-      fetchFooterIcons(lang.value),
-      fetchFooterText(lang.value),
+      fetchFooterContent(lang.value),
       loadTranslations()
     ]);
   } catch (error) {

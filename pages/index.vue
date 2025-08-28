@@ -64,11 +64,12 @@ import {
 	fetchApiPromotions, 
 	pp_promotions,
 	fetchCachedContent,
-	fetchGames,
 	lang
 } from '~/composables/globalData';
+import { useGameStore } from '~/stores/gameStore';
 
 const emit = defineEmits(['loaded']);
+const gameStore = useGameStore();
 
 async function fetchContent() {
 	try {
@@ -87,7 +88,7 @@ onMounted(async () => {
 			fetchPromotions(),
 			fetchApiPromotions(),
 			fetchContent(),
-			fetchGames() // ✅ Single games API call for entire page
+			gameStore.fetchGames() // ✅ Single games API call for entire page via gameStore
 		]);
 		loading.value = false;
 	} catch (error) {

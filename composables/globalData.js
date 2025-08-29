@@ -33,9 +33,9 @@ const PP_PROMOTIONS_API = `${PP_API_URL}InfoContent?whitelabelId=${WHITELABEL_ID
 export const PP_LOBBY_LINK = 'https://www.jazzyspins.com/';
 // Games API with fallback strategy for UK/ISP blocking
 const KV_GAMES_PRIMARY = 'https://access-ppgames.tech1960.workers.dev/';
-const KV_GAMES_FALLBACK = `https://access-content-pp.tech1960.workers.dev/?type=games&whitelabelId=${WHITELABEL_ID}`;
-// 🚨 CRITICAL: Use direct ProgressPlay API as final fallback for CORS issues
-const KV_GAMES_DIRECT_FALLBACK = `https://content.progressplay.net/api23/api/game?whitelabelId=${WHITELABEL_ID}`;
+// 🔧 FIXED: Use correct games endpoint that actually exists
+const KV_GAMES_FALLBACK = `https://access-ppgames.tech1960.workers.dev/`;
+// 🚨 EMERGENCY: Remove direct API fallback as it's always blocked by CORS in UK
 const KV_GAMES = KV_GAMES_PRIMARY; // Default to primary
 
 
@@ -381,37 +381,52 @@ async function actuallyFetchGames() {
       console.log('✅ GAMES: Fallback worker succeeded');
       
     } catch (fallbackError) {
-      console.warn('⚠️ GAMES: Both workers failed, trying direct API as final fallback');
-      console.warn('⚠️ GAMES: Primary error:', primaryError.message);
-      console.warn('⚠️ GAMES: Fallback error:', fallbackError.message);
-      console.log('🎮 GAMES: Trying direct API fallback:', KV_GAMES_DIRECT_FALLBACK);
+      console.error('❌ GAMES: All games workers failed - UK ISP blocking detected');
+      console.error('❌ GAMES: Primary error:', primaryError.message);
+      console.error('❌ GAMES: Fallback error:', fallbackError.message);
+      console.warn('🚨 GAMES: Implementing emergency mode - returning empty games array');
       
-      try {
-        // Final fallback: Direct ProgressPlay API (may work in some regions)
-        response = await fetch(KV_GAMES_DIRECT_FALLBACK, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          mode: 'cors'
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Direct API failed with status: ${response.status}`);
-        }
-        
-        data = await response.json();
-        console.log('✅ GAMES: Direct API fallback succeeded');
-        
-      } catch (directError) {
-        console.error('❌ GAMES: All games API endpoints failed');
-        console.error('❌ GAMES: Primary error:', primaryError.message);
-        console.error('❌ GAMES: Fallback error:', fallbackError.message);
-        console.error('❌ GAMES: Direct API error:', directError.message);
-        throw new Error('All games API endpoints failed');
-      }
+      // 🚨 EMERGENCY MODE: Return empty array instead of crashing
+      // This allows the site to function without games data
+      data = [];
+      console.warn('⚠️ GAMES: Emergency mode activated - site will show no games but remain functional');
     }
+  }
+
+  // Handle emergency mode (empty data array)
+  if (!data || !Array.isArray(data) || data.length === 0) {
+    console.warn('🚨 GAMES: No games data available - setting all game categories to empty');
+    
+    // Set all game categories to empty arrays
+    games.value = [];
+    newGames.value = [];
+    popularGames.value = [];
+    casinoGames.value = [];
+    slotGames.value = [];
+    jackpotGames.value = [];
+    liveGames.value = [];
+    scratchGames.value = [];
+    blackjackGames.value = [];
+    rouletteGames.value = [];
+
+    // Cache empty results
+    gamesCache = {
+      games: [],
+      newGames: [],
+      popularGames: [],
+      casinoGames: [],
+      slotGames: [],
+      jackpotGames: [],
+      liveGames: [],
+      scratchGames: [],
+      blackjackGames: [],
+      rouletteGames: [],
+    };
+    gamesCacheTime = Date.now();
+    
+    console.warn('⚠️ GAMES: Emergency mode complete - site functional without games');
+    await updateLinks();
+    return;
   }
 
   // Add your logic for processing the games data here

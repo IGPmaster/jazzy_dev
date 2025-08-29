@@ -116,6 +116,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useHead } from '#imports';
 import { games, regLink, loginLink, playLink } from '~/composables/globalData';
+import { useGameStore } from '~/stores/gameStore';
 
 let selectedProvider = ref('all');
 let selectedSubProvider = ref('all');
@@ -172,8 +173,11 @@ let sortedGames = computed(() => {
 	return [...filteredGames.value].sort((a, b) => a.gameName.localeCompare(b.gameName));
 });
 
+const gameStore = useGameStore();
+
 onMounted(async () => {
-	await fetchGames();
+	// ✅ OPTIMIZED: Single shared games call via gameStore (with 10min cache)
+	await gameStore.fetchGames();
 });
 
 const filterGames = () => {

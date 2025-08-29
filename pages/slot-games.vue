@@ -54,11 +54,15 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useHead } from '#imports';
-import { fetchGames, promotionsPosts, slotGames, msgTranslate, regLink, loginLink } from '~/composables/globalData';
+import { promotionsPosts, slotGames, msgTranslate, regLink, loginLink } from '~/composables/globalData';
+import { useGameStore } from '~/stores/gameStore';
+
+const gameStore = useGameStore();
 
 // Fetch games and other data
 const { fetch, error, $fetchState } = useFetch(async () => {
-	await fetchGames();
+	// ✅ OPTIMIZED: Single shared games call via gameStore (with 10min cache)
+	await gameStore.fetchGames();
 	await fetchPromotions();
 	await loadTranslations(loadLang());
 });

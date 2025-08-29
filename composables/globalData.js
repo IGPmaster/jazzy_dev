@@ -139,9 +139,12 @@ try {
   const foundLangIGP = Object.values(igpData).flat().includes(originalLang);
 
   // Check if the originalLang exists in both KV's
+  let isRealCountry = false; // Track if this is a validated country vs fallback
+  
   if (foundLangKV && foundLangIGP) {
     console.log('🌍 GEO: Country', originalLang, 'is supported, using it');
     langValue = originalLang;
+    isRealCountry = true; // This is a validated/supported country
   } else {
     // Use continent-based fallback (more reliable than hardcoded array)
     if (continent === 'EU') {
@@ -156,9 +159,24 @@ try {
       langValue = 'CA';
     }
   }
+
+  // 🇨🇦 CRITICAL: Store CA tracking data for Playtech filtering
+  if (typeof window !== 'undefined') {
+    (window as any).__isRealCountry = isRealCountry;
+    (window as any).__originalDetectedCountry = originalLang;
+    
+    console.log('🇨🇦 GEO DEBUG: Storing tracking data - isRealCountry:', isRealCountry, 'originalCountry:', originalLang);
+  }
+
 } catch (error) {
   console.error('❌ GEO: Error getting country code:', error);
   langValue = 'IE'; // Safe fallback
+  
+  // Set safe defaults for CA tracking even on error
+  if (typeof window !== 'undefined') {
+    (window as any).__isRealCountry = false;
+    (window as any).__originalDetectedCountry = 'Unknown';
+  }
 }
 
     // 2:2 Check if lang cookie exists

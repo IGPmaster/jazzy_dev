@@ -31,12 +31,11 @@ export const WHITELABEL_ID = 239;
 export const PP_API_URL = 'https://content.progressplay.net/api23/api/';
 const PP_PROMOTIONS_API = `${PP_API_URL}InfoContent?whitelabelId=${WHITELABEL_ID}&country=`;
 export const PP_LOBBY_LINK = 'https://www.jazzyspins.com/';
-// Games API with fallback strategy for UK/ISP blocking
-const KV_GAMES_PRIMARY = 'https://access-ppgames.tech1960.workers.dev/';
-// 🔧 FIXED: Use correct games endpoint that actually exists
-const KV_GAMES_FALLBACK = `https://access-ppgames.tech1960.workers.dev/`;
-// 🚨 EMERGENCY: Remove direct API fallback as it's always blocked by CORS in UK
-const KV_GAMES = KV_GAMES_PRIMARY; // Default to primary
+// 🎯 SILVER BULLET: Use LOCAL CloudFlare Functions to bypass all VPN blocking
+// These are same-origin requests that avoid browser CORS and VPN detection entirely
+const KV_GAMES_PRIMARY = '/api/pp/games'; // Local CloudFlare Function
+const KV_GAMES_FALLBACK = '/api/worker/games'; // Local worker proxy as fallback
+const KV_GAMES = KV_GAMES_PRIMARY; // Default to primary local function
 
 
 // WP-REST-API:
@@ -262,8 +261,8 @@ async function fetchApiPromotions() {
     console.log('🔍 UNIFIED: WHITELABEL_ID =', WHITELABEL_ID);
     console.log('🔍 UNIFIED: process.client =', process.client);
     
-    // Always use CloudFlare Worker - NO DIRECT API FALLBACK (CORS blocked)
-    const apiUrl = `https://access-content-pp.tech1960.workers.dev/?type=promotions&whitelabelId=${WHITELABEL_ID}&country=${lang.value}`;
+    // 🎯 SILVER BULLET: Use LOCAL CloudFlare Function to bypass VPN blocking
+    const apiUrl = `/api/pp/promotions?whitelabelId=${WHITELABEL_ID}&country=${lang.value}`;
     
     console.log('📡 UNIFIED: Fetching promotions from URL:', apiUrl);
     
@@ -331,7 +330,7 @@ export async function fetchFilterByName() {
 
 // Helper function to actually fetch games (only called when needed)
 async function actuallyFetchGames() {
-  console.log('🎮 GAMES: Making actual API call to CloudFlare Worker...');
+  console.log('🎮 GAMES: Making actual API call to LOCAL CloudFlare Function...');
   
   await fetchFilterByName();
   
@@ -339,46 +338,32 @@ async function actuallyFetchGames() {
   let data;
   
   try {
-    // Try primary games worker first with CORS headers
-    console.log('🎮 GAMES: Trying primary worker:', KV_GAMES_PRIMARY);
-    response = await fetch(KV_GAMES_PRIMARY, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      mode: 'cors'
-    });
+    // 🎯 SILVER BULLET: Try LOCAL CloudFlare Function first (same-origin, no CORS issues)
+    console.log('🎮 GAMES: Trying local function:', KV_GAMES_PRIMARY);
+    response = await fetch(KV_GAMES_PRIMARY);
     
     if (!response.ok) {
-      throw new Error(`Primary worker failed with status: ${response.status}`);
+      throw new Error(`Local games function failed with status: ${response.status}`);
     }
     
     data = await response.json();
-    console.log('✅ GAMES: Primary worker succeeded');
+    console.log('✅ GAMES: Local games function succeeded');
     
   } catch (primaryError) {
-    console.warn('⚠️ GAMES: Primary worker failed, trying fallback:', primaryError.message);
-    console.log('🎮 GAMES: Trying fallback worker:', KV_GAMES_FALLBACK);
+    console.warn('⚠️ GAMES: Local games function failed, trying worker fallback:', primaryError.message);
+    console.log('🎮 GAMES: Trying local worker fallback:', KV_GAMES_FALLBACK);
     
     try {
-      response = await fetch(KV_GAMES_FALLBACK, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        mode: 'cors'
-      });
+      response = await fetch(KV_GAMES_FALLBACK);
       
       if (!response.ok) {
-        throw new Error(`Fallback worker failed with status: ${response.status}`);
+        throw new Error(`Local worker fallback failed with status: ${response.status}`);
       }
       
       const responseData = await response.json();
       // Handle different response formats from fallback worker
       data = responseData.games || responseData;
-      console.log('✅ GAMES: Fallback worker succeeded');
+      console.log('✅ GAMES: Local worker fallback succeeded');
       
     } catch (fallbackError) {
       console.error('❌ GAMES: All games workers failed - UK ISP blocking detected');
@@ -624,8 +609,8 @@ export async function fetchCachedContent(code, country = lang.value) {
     console.log('🔍 CONTENT DEBUG: cache key =', cacheKey);
     console.log('🔍 CONTENT DEBUG: WHITELABEL_ID =', WHITELABEL_ID);
     
-    // Use unified Worker for KV caching - NO DIRECT API FALLBACK (CORS blocked)
-    const apiUrl = `https://access-content-pp.tech1960.workers.dev/?type=content&codes=${code}&whitelabelId=${WHITELABEL_ID}&country=${resolvedCountry}`;
+    // 🎯 SILVER BULLET: Use LOCAL CloudFlare Function to bypass VPN blocking
+    const apiUrl = `/api/pp/content?codes=${code}&whitelabelId=${WHITELABEL_ID}&country=${resolvedCountry}`;
     console.log('🔍 CONTENT DEBUG: Full API URL =', apiUrl);
     
     const response = await fetch(apiUrl);
@@ -776,8 +761,8 @@ export async function fetchFooterContent(lang) {
   }
 
   try {
-    // UNIFIED API CALL: Always use CloudFlare Worker - NO DIRECT API FALLBACK (CORS blocked)
-    const apiUrl = `https://access-content-pp.tech1960.workers.dev/?type=content&codes=footericon,footertext&whitelabelId=${WHITELABEL_ID}&country=${lang}`;
+    // 🎯 SILVER BULLET: Use LOCAL CloudFlare Function to bypass VPN blocking
+    const apiUrl = `/api/pp/content?codes=footericon,footertext&whitelabelId=${WHITELABEL_ID}&country=${lang}`;
 
     console.log('🚀 UNIFIED: Fetching footer content (icons + text) in single call');
     console.log('📡 UNIFIED: Footer URL:', apiUrl);

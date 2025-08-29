@@ -162,8 +162,8 @@ try {
 
   // 🇨🇦 CRITICAL: Store CA tracking data for Playtech filtering
   if (typeof window !== 'undefined') {
-    (window as any).__isRealCountry = isRealCountry;
-    (window as any).__originalDetectedCountry = originalLang;
+    window.__isRealCountry = isRealCountry;
+    window.__originalDetectedCountry = originalLang;
     
     console.log('🇨🇦 GEO DEBUG: Storing tracking data - isRealCountry:', isRealCountry, 'originalCountry:', originalLang);
   }
@@ -174,8 +174,8 @@ try {
   
   // Set safe defaults for CA tracking even on error
   if (typeof window !== 'undefined') {
-    (window as any).__isRealCountry = false;
-    (window as any).__originalDetectedCountry = 'Unknown';
+    window.__isRealCountry = false;
+    window.__originalDetectedCountry = 'Unknown';
   }
 }
 
@@ -385,8 +385,8 @@ async function actuallyFetchGames() {
     // Only filter Playtech for REAL CA (validated country), not fallback CA
     let isPlaytechExcluded = false;
     if (typeof window !== 'undefined') {
-      const isRealCountry = (window as any).__isRealCountry;
-      const originalDetectedCountry = (window as any).__originalDetectedCountry;
+      const isRealCountry = window.__isRealCountry;
+      const originalDetectedCountry = window.__originalDetectedCountry;
       
       // Only filter Playtech if:
       // 1. Current lang is CA AND
@@ -433,8 +433,8 @@ async function actuallyFetchGames() {
   
   // Debug information for CA Playtech filtering
   if (typeof window !== 'undefined') {
-    const isRealCountry = (window as any).__isRealCountry;
-    const originalDetectedCountry = (window as any).__originalDetectedCountry;
+    const isRealCountry = window.__isRealCountry;
+    const originalDetectedCountry = window.__originalDetectedCountry;
     
     console.log('🇨🇦 DEBUG: Current lang.value:', lang.value);
     console.log('🇨🇦 DEBUG: Original detected country:', originalDetectedCountry);

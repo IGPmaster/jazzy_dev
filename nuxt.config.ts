@@ -62,7 +62,6 @@ export default defineNuxtConfig({
       publicDir: '.output/public'
     },
     prerender: {
-      fallback: true,
       crawlLinks: true,
       routes: ['/', '/promotion/50freespins', '/promotion/upto500']
     }
@@ -83,8 +82,12 @@ export default defineNuxtConfig({
     '~/plugins/hreflang.js',
     '~/plugins/vue-gtm.client.js',
   ],
-  env: {
-    GTM_ID: SITE_CONFIG.gtmId
+
+  // Runtime config for environment variables
+  runtimeConfig: {
+    public: {
+      gtmId: SITE_CONFIG.gtmId
+    }
   },
 
   // Keep app head config

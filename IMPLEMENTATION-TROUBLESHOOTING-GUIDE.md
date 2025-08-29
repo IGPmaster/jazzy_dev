@@ -206,6 +206,54 @@ try {
 
 ---
 
+## 🚨 CRITICAL ISSUE #7: CA Playtech Filtering for Real vs Fallback CA
+
+### **Problem**
+Canada (CA) needs special Playtech filtering, but only for REAL CA traffic (validated as supported country), not for fallback CA (non-EU countries falling back to CA).
+
+### **Root Cause**
+**Business Logic**: Real Canadian users should not see Playtech games due to licensing restrictions, but users from other non-EU countries falling back to CA should see all games.
+
+### **Symptoms**
+- All CA users see Playtech games (incorrect for real CA)
+- OR all CA users don't see Playtech games (incorrect for fallback CA)
+- No differentiation between real vs fallback CA traffic
+
+### **Solution**
+Implement dual-tracking system to differentiate real vs fallback countries:
+
+```javascript
+// In useLocalization.ts - Track validation status
+if (foundLangKV && foundLangIGP) {
+  langValue = originalLang;
+  isRealCountry = true; // This is validated/supported
+} else {
+  // This is a fallback country
+  isRealCountry = false;
+}
+
+// Store globally for game filtering
+(window as any).__isRealCountry = isRealCountry;
+(window as any).__originalDetectedCountry = originalLang;
+
+// In globalData.js - Filter Playtech only for real CA
+if (lang.value === 'CA' && isRealCountry && originalDetectedCountry === 'CA') {
+  const isPlaytech = game.provider?.toLowerCase() === 'playtech' || 
+                    game.subProvider?.toLowerCase() === 'playtech';
+  if (isPlaytech) {
+    console.log('🇨🇦 PLAYTECH: Filtering out Playtech game for real CA:', game.gameName);
+    isPlaytechExcluded = true;
+  }
+}
+```
+
+### **Prevention**
+- Always test with both real CA VPN and non-EU country VPNs
+- Verify console logs show correct CA type detection
+- Monitor Playtech game counts for different CA scenarios
+
+---
+
 ## 🛠️ DEBUGGING CHECKLIST
 
 When implementing these optimizations, follow this checklist:
@@ -236,19 +284,31 @@ When implementing these optimizations, follow this checklist:
 - [ ] Test from different geographic regions
 - [ ] Verify fallback workers activate when needed
 
-### **6. Console Monitoring**
+### **6. GEO & CA Testing**
+- [ ] Test EU countries fallback to IE (not CA)
+- [ ] Test real CA VPN shows Playtech filtering
+- [ ] Test non-EU countries fallback to CA with all games
+- [ ] Verify continent data is received from GEO worker
+
+### **7. Console Monitoring**
 Look for these success patterns:
 - [ ] `🎮 GAMES: Using cached games data`
 - [ ] `✅ GAMES: Primary worker succeeded`
 - [ ] `✅ GAMES: Fallback worker succeeded` (if primary fails)
 - [ ] `✅ UNIFIED: Data received`
 - [ ] `🌍 GEO: EU continent detected, falling back to IE`
+- [ ] `🌍 LOCALIZATION: EU continent detected, falling back to IE`
+- [ ] `🇨🇦 PLAYTECH: Real CA detected - Playtech games will be filtered`
+- [ ] `🇨🇦 PLAYTECH: Fallback CA detected - Playtech games will be included`
 
 Watch for these error patterns:
 - [ ] CORS errors (especially with 503 status)
 - [ ] "is not a function" errors
 - [ ] Empty arrays when data should exist
 - [ ] `❌ GAMES: Both primary and fallback workers failed`
+- [ ] EU countries falling back to CA instead of IE
+- [ ] Real CA users seeing Playtech games
+- [ ] Fallback CA users not seeing Playtech games
 
 ---
 

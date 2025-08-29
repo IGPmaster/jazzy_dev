@@ -24,6 +24,9 @@ export const useLocalization = () => {
       }
       const workerData = await workerResponse.json();
       const originalLang = workerData.countryCode;
+      const continent = workerData.continent; // 🔑 CRITICAL: Get continent data
+
+      console.log('🌍 LOCALIZATION: Detected country:', originalLang, 'continent:', continent);
 
       // 2. Verify with supported countries
       const [kvResponse, igpResponse] = await Promise.all([
@@ -42,10 +45,44 @@ export const useLocalization = () => {
       const foundLangIGP = Object.values(igpData).flat().includes(originalLang);
 
       let langValue = 'IE'; // Default fallback
+      let isRealCountry = false; // Track if this is a validated country vs fallback
 
       if (foundLangKV && foundLangIGP) {
         langValue = originalLang;
+        isRealCountry = true; // This is a validated/supported country
+        console.log('🌍 LOCALIZATION: Country', originalLang, 'is validated as supported');
+      } else {
+        // Implement continent-based EU fallback (matching globalData.js logic)
+        if (continent === 'EU') {
+          langValue = 'IE';
+          console.log('🌍 LOCALIZATION: EU continent detected, falling back to IE');
+        } else {
+          // EU countries array for backup check
+          const EU_COUNTRIES = [
+            'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR',
+            'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL',
+            'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE'
+          ];
+          
+          if (!continent || continent === 'Unknown') {
+            console.log('🌍 LOCALIZATION: No continent data, checking EU countries array');
+            if (EU_COUNTRIES.includes(originalLang)) {
+              langValue = 'IE';
+              console.log('🌍 LOCALIZATION: Found', originalLang, 'in EU countries array, using IE');
+            } else {
+              langValue = 'CA';
+              console.log('🌍 LOCALIZATION: Non-EU country, falling back to CA');
+            }
+          } else {
+            langValue = 'CA';
+            console.log('🌍 LOCALIZATION: Non-EU continent, falling back to CA');
+          }
+        }
       }
+
+      // Store the validation status globally for game filtering
+      (window as any).__isRealCountry = isRealCountry;
+      (window as any).__originalDetectedCountry = originalLang;
 
       // Handle cookie
       const cookieLang = getCookie('lang');

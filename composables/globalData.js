@@ -363,7 +363,27 @@ async function actuallyFetchGames() {
     const isExcludedJurisdiction = game.excludedJurisdictions?.includes(jurisdictionCode.value);
     const isExcludedCountry = game.excludedCountries?.includes(lang.value);
 
-    return !(hasName || hasId || isExcludedJurisdiction || isExcludedCountry);
+    // 🇨🇦 CRITICAL: CA Playtech Filtering
+    // Only filter Playtech for REAL CA (validated country), not fallback CA
+    let isPlaytechExcluded = false;
+    if (typeof window !== 'undefined') {
+      const isRealCountry = (window as any).__isRealCountry;
+      const originalDetectedCountry = (window as any).__originalDetectedCountry;
+      
+      // Only filter Playtech if:
+      // 1. Current lang is CA AND
+      // 2. It's a validated/real CA (not a fallback)
+      if (lang.value === 'CA' && isRealCountry && originalDetectedCountry === 'CA') {
+        const isPlaytech = game.provider?.toLowerCase() === 'playtech' || 
+                          game.subProvider?.toLowerCase() === 'playtech';
+        if (isPlaytech) {
+          console.log('🇨🇦 PLAYTECH: Filtering out Playtech game for real CA:', game.gameName);
+          isPlaytechExcluded = true;
+        }
+      }
+    }
+
+    return !(hasName || hasId || isExcludedJurisdiction || isExcludedCountry || isPlaytechExcluded);
   });
 
   // Set all game categories
@@ -392,6 +412,24 @@ async function actuallyFetchGames() {
     rouletteGames: rouletteGames.value,
   };
   gamesCacheTime = Date.now();
+  
+  // Debug information for CA Playtech filtering
+  if (typeof window !== 'undefined') {
+    const isRealCountry = (window as any).__isRealCountry;
+    const originalDetectedCountry = (window as any).__originalDetectedCountry;
+    
+    console.log('🇨🇦 DEBUG: Current lang.value:', lang.value);
+    console.log('🇨🇦 DEBUG: Original detected country:', originalDetectedCountry);
+    console.log('🇨🇦 DEBUG: Is real/validated country:', isRealCountry);
+    
+    if (lang.value === 'CA') {
+      if (isRealCountry && originalDetectedCountry === 'CA') {
+        console.log('🇨🇦 PLAYTECH: Real CA detected - Playtech games will be filtered');
+      } else {
+        console.log('🇨🇦 PLAYTECH: Fallback CA detected - Playtech games will be included');
+      }
+    }
+  }
   
   console.log('✅ GAMES: API call completed, cached', filteredGames.length, 'games');
   

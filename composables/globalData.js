@@ -34,6 +34,8 @@ export const PP_LOBBY_LINK = 'https://www.jazzyspins.com/';
 // Games API with fallback strategy for UK/ISP blocking
 const KV_GAMES_PRIMARY = 'https://access-ppgames.tech1960.workers.dev/';
 const KV_GAMES_FALLBACK = `https://access-content-pp.tech1960.workers.dev/?type=games&whitelabelId=${WHITELABEL_ID}`;
+// 🚨 CRITICAL: Use direct ProgressPlay API as final fallback for CORS issues
+const KV_GAMES_DIRECT_FALLBACK = `https://content.progressplay.net/api23/api/game?whitelabelId=${WHITELABEL_ID}`;
 const KV_GAMES = KV_GAMES_PRIMARY; // Default to primary
 
 
@@ -337,9 +339,16 @@ async function actuallyFetchGames() {
   let data;
   
   try {
-    // Try primary games worker first
+    // Try primary games worker first with CORS headers
     console.log('🎮 GAMES: Trying primary worker:', KV_GAMES_PRIMARY);
-    response = await fetch(KV_GAMES_PRIMARY);
+    response = await fetch(KV_GAMES_PRIMARY, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      mode: 'cors'
+    });
     
     if (!response.ok) {
       throw new Error(`Primary worker failed with status: ${response.status}`);
@@ -353,7 +362,14 @@ async function actuallyFetchGames() {
     console.log('🎮 GAMES: Trying fallback worker:', KV_GAMES_FALLBACK);
     
     try {
-      response = await fetch(KV_GAMES_FALLBACK);
+      response = await fetch(KV_GAMES_FALLBACK, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors'
+      });
       
       if (!response.ok) {
         throw new Error(`Fallback worker failed with status: ${response.status}`);
@@ -365,10 +381,36 @@ async function actuallyFetchGames() {
       console.log('✅ GAMES: Fallback worker succeeded');
       
     } catch (fallbackError) {
-      console.error('❌ GAMES: Both primary and fallback workers failed');
-      console.error('❌ GAMES: Primary error:', primaryError.message);
-      console.error('❌ GAMES: Fallback error:', fallbackError.message);
-      throw new Error('All games API endpoints failed');
+      console.warn('⚠️ GAMES: Both workers failed, trying direct API as final fallback');
+      console.warn('⚠️ GAMES: Primary error:', primaryError.message);
+      console.warn('⚠️ GAMES: Fallback error:', fallbackError.message);
+      console.log('🎮 GAMES: Trying direct API fallback:', KV_GAMES_DIRECT_FALLBACK);
+      
+      try {
+        // Final fallback: Direct ProgressPlay API (may work in some regions)
+        response = await fetch(KV_GAMES_DIRECT_FALLBACK, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          mode: 'cors'
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Direct API failed with status: ${response.status}`);
+        }
+        
+        data = await response.json();
+        console.log('✅ GAMES: Direct API fallback succeeded');
+        
+      } catch (directError) {
+        console.error('❌ GAMES: All games API endpoints failed');
+        console.error('❌ GAMES: Primary error:', primaryError.message);
+        console.error('❌ GAMES: Fallback error:', fallbackError.message);
+        console.error('❌ GAMES: Direct API error:', directError.message);
+        throw new Error('All games API endpoints failed');
+      }
     }
   }
 

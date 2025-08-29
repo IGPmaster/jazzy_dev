@@ -31,7 +31,10 @@ export const WHITELABEL_ID = 239;
 export const PP_API_URL = 'https://content.progressplay.net/api23/api/';
 const PP_PROMOTIONS_API = `${PP_API_URL}InfoContent?whitelabelId=${WHITELABEL_ID}&country=`;
 export const PP_LOBBY_LINK = 'https://www.jazzyspins.com/';
-const KV_GAMES = 'https://access-ppgames.tech1960.workers.dev/';
+// Games API with fallback strategy for UK/ISP blocking
+const KV_GAMES_PRIMARY = 'https://access-ppgames.tech1960.workers.dev/';
+const KV_GAMES_FALLBACK = `https://access-content-pp.tech1960.workers.dev/?type=games&whitelabelId=${WHITELABEL_ID}`;
+const KV_GAMES = KV_GAMES_PRIMARY; // Default to primary
 
 
 // WP-REST-API:
@@ -311,8 +314,45 @@ async function actuallyFetchGames() {
   console.log('🎮 GAMES: Making actual API call to CloudFlare Worker...');
   
   await fetchFilterByName();
-  const response = await fetch(KV_GAMES);
-  const data = await response.json();
+  
+  let response;
+  let data;
+  
+  try {
+    // Try primary games worker first
+    console.log('🎮 GAMES: Trying primary worker:', KV_GAMES_PRIMARY);
+    response = await fetch(KV_GAMES_PRIMARY);
+    
+    if (!response.ok) {
+      throw new Error(`Primary worker failed with status: ${response.status}`);
+    }
+    
+    data = await response.json();
+    console.log('✅ GAMES: Primary worker succeeded');
+    
+  } catch (primaryError) {
+    console.warn('⚠️ GAMES: Primary worker failed, trying fallback:', primaryError.message);
+    console.log('🎮 GAMES: Trying fallback worker:', KV_GAMES_FALLBACK);
+    
+    try {
+      response = await fetch(KV_GAMES_FALLBACK);
+      
+      if (!response.ok) {
+        throw new Error(`Fallback worker failed with status: ${response.status}`);
+      }
+      
+      const responseData = await response.json();
+      // Handle different response formats from fallback worker
+      data = responseData.games || responseData;
+      console.log('✅ GAMES: Fallback worker succeeded');
+      
+    } catch (fallbackError) {
+      console.error('❌ GAMES: Both primary and fallback workers failed');
+      console.error('❌ GAMES: Primary error:', primaryError.message);
+      console.error('❌ GAMES: Fallback error:', fallbackError.message);
+      throw new Error('All games API endpoints failed');
+    }
+  }
 
   // Add your logic for processing the games data here
   const filteredGames = data.filter(game => {

@@ -9,6 +9,7 @@ export const BRAND_CONFIG = {
 export const API_ENDPOINTS = {
   PP_API: 'https://content.progressplay.net/api23/api/',
   KV_GAMES: 'https://access-ppgames.tech1960.workers.dev/',
+  KV_GAMES_FALLBACK: 'https://access-content-pp.tech1960.workers.dev/?type=games&whitelabelId=239',
   FILTERED_BY_NAME_KV: 'https://access-filterbyname.tech1960.workers.dev/',
   CF_GEO_WORKER: 'https://cf-geo-lookup.tech1960.workers.dev/',
   KV_SUPPORTED_COUNTRIES: 'https://access-supportedcountries.tech1960.workers.dev/',

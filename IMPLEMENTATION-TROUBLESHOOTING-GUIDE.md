@@ -158,6 +158,54 @@ git commit -m "Simple single-line commit message describing the change"
 
 ---
 
+## 🚨 CRITICAL ISSUE #6: UK VPN / Games Worker CORS 503 Error
+
+### **Problem**
+When using UK VPN or accessing from UK, the games CloudFlare Worker returns 503 error and "CORS Missing Allow Origin" while other workers work fine.
+
+### **Root Cause**
+**Regional Worker Blocking**: The primary games worker (`access-ppgames.tech1960.workers.dev`) may be blocked or misconfigured for UK/EU regions, while the content worker (`access-content-pp.tech1960.workers.dev`) works correctly.
+
+### **Symptoms**
+```
+🎮 GAMES: Making actual API call to CloudFlare Worker...
+XHRGET https://access-ppgames.tech1960.workers.dev/ CORS Missing Allow Origin
+Cross-Origin begäran blockerad: ... Statuskod: 503.
+❌ GAMES: Error fetching games: TypeError: NetworkError when attempting to fetch resource.
+```
+
+### **Solution**
+Implement fallback strategy using the working content worker:
+
+```javascript
+// Add fallback URLs
+const KV_GAMES_PRIMARY = 'https://access-ppgames.tech1960.workers.dev/';
+const KV_GAMES_FALLBACK = `https://access-content-pp.tech1960.workers.dev/?type=games&whitelabelId=${WHITELABEL_ID}`;
+
+// Update actuallyFetchGames() with try-catch fallback logic
+try {
+  // Try primary worker first
+  response = await fetch(KV_GAMES_PRIMARY);
+  if (!response.ok) throw new Error(`Primary failed: ${response.status}`);
+  data = await response.json();
+} catch (primaryError) {
+  // Fallback to content worker
+  console.warn('Primary worker failed, trying fallback');
+  response = await fetch(KV_GAMES_FALLBACK);
+  if (!response.ok) throw new Error(`Fallback failed: ${response.status}`);
+  const responseData = await response.json();
+  data = responseData.games || responseData; // Handle different response formats
+}
+```
+
+### **Prevention**
+- Always test with UK VPN after implementing games optimizations
+- Implement fallback strategies for all critical API endpoints
+- Monitor CloudFlare Worker logs for regional access issues
+- Use the working content worker as a backup for games data
+
+---
+
 ## 🛠️ DEBUGGING CHECKLIST
 
 When implementing these optimizations, follow this checklist:
@@ -182,16 +230,25 @@ When implementing these optimizations, follow this checklist:
 - [ ] Don't rely on cached data from other pages
 - [ ] Implement loading states and error handling
 
-### **5. Console Monitoring**
+### **5. Regional Testing**
+- [ ] Test with UK VPN connection
+- [ ] Test with EU VPN connections
+- [ ] Test from different geographic regions
+- [ ] Verify fallback workers activate when needed
+
+### **6. Console Monitoring**
 Look for these success patterns:
 - [ ] `🎮 GAMES: Using cached games data`
+- [ ] `✅ GAMES: Primary worker succeeded`
+- [ ] `✅ GAMES: Fallback worker succeeded` (if primary fails)
 - [ ] `✅ UNIFIED: Data received`
 - [ ] `🌍 GEO: EU continent detected, falling back to IE`
 
 Watch for these error patterns:
-- [ ] CORS errors
+- [ ] CORS errors (especially with 503 status)
 - [ ] "is not a function" errors
 - [ ] Empty arrays when data should exist
+- [ ] `❌ GAMES: Both primary and fallback workers failed`
 
 ---
 

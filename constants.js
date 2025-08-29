@@ -5,7 +5,9 @@ export const WP_API = 'https://staging4.casimboo.com/wp-json/wp/v2/';
 export const KV_REST = "https://access-wprestapi.tech1960.workers.dev/";
 export const PP_LOBBY_LINK = 'https://www.jazzyspins.com/';
 export const CF_GEO_WORKER = 'https://cf-geo-lookup.tech1960.workers.dev/';
+// Primary games worker (may fail in UK/ISP blocked regions)
 export const KV_GAMES = "https://access-ppgames.tech1960.workers.dev/";
+export const KV_GAMES_FALLBACK = "https://access-content-pp.tech1960.workers.dev/?type=games&whitelabelId=239";
 export const KV_SUPPORTED_COUNTRIES = "https://access-supportedcountries.tech1960.workers.dev/";
 export const REST_COUNTRY_KV = "https://access-restcountries.tech1960.workers.dev/";
 export const IGP_SUPPORTED_COUNTRIES = "https://igp-supported-countries.tech1960.workers.dev/";

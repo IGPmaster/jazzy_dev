@@ -85,7 +85,7 @@ const apiCache = {
 let gamesCache = null;
 let gamesCacheTime = 0;
 let gamesRequestInFlight = null; // 🔑 CRITICAL: Prevents duplicate calls
-const GAMES_CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+const GAMES_CACHE_DURATION = 2 * 60 * 60 * 1000; // 2 hours (games rarely change)
 
 function isCacheValid(cacheEntry) {
   return cacheEntry?.data && 
@@ -583,9 +583,15 @@ export async function fetchSupportedCountries() {
 const footerIconsCache = new Map();
 const footerTextCache = new Map();
 const contentCache = new Map();
-const CONTENT_CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
+const CONTENT_CACHE_DURATION = 4 * 60 * 60 * 1000; // 4 hours (compliance content rarely changes)
 
 export async function fetchCachedContent(code, country = lang.value) {
+  // Validate code parameter (as per CACHE-OPTIMIZATION-IMPLEMENTATION.md)
+  if (!code || code === 'undefined' || typeof code !== 'string') {
+    console.error('❌ CONTENT: Invalid code parameter:', { code, type: typeof code });
+    return '';
+  }
+  
   // CRITICAL: Ensure we use supported country, not raw detected country
   // If no country provided, use the resolved lang.value (which should be the fallback)
   const resolvedCountry = country;

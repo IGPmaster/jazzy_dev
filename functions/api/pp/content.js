@@ -21,6 +21,47 @@ export async function onRequest(context) {
     const codes = url.searchParams.get('codes') || url.searchParams.get('code')
     const type = url.searchParams.get('type') || 'content' // content, promotions
     
+    // 🚀 KV CACHING: Check KV cache first for content requests
+    if (type === 'content' && codes && context.env && context.env.CONTENT_KV) {
+      const codeList = codes.split(',').map(c => c.trim())
+      let allCached = true
+      const cachedResults = {}
+      
+      for (const code of codeList) {
+        const kvKey = `content:${code}:${whitelabelId}:${country}`
+        try {
+          const cached = await context.env.CONTENT_KV.get(kvKey)
+          if (cached) {
+            cachedResults[code] = JSON.parse(cached)
+            console.log(`✅ KV CACHE HIT: ${kvKey}`)
+          } else {
+            allCached = false
+            console.log(`❌ KV CACHE MISS: ${kvKey}`)
+            break
+          }
+        } catch (error) {
+          console.log(`⚠️ KV CACHE ERROR: ${kvKey}`, error)
+          allCached = false
+          break
+        }
+      }
+      
+      if (allCached) {
+        console.log(`🚀 KV CACHE: Returning all cached content for ${codes}`)
+        return new Response(JSON.stringify(cachedResults), {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Cache-Control': 'public, max-age=900', // 15 minutes cache
+            'X-Cache': 'HIT'
+          }
+        })
+      }
+    }
+    
     // For promotions, codes parameter is not required
     if (!codes && type !== 'promotions') {
       return new Response(JSON.stringify({ error: 'Missing codes parameter' }), {
@@ -96,6 +137,19 @@ export async function onRequest(context) {
             const data = await response.json()
             results[code] = data
             console.log(`✅ UNIFIED: Successfully fetched content for ${code}`)
+            
+            // 🚀 KV CACHING: Store in KV cache for future requests
+            if (context.env && context.env.CONTENT_KV) {
+              const kvKey = `content:${code}:${whitelabelId}:${country}`
+              try {
+                await context.env.CONTENT_KV.put(kvKey, JSON.stringify(data), {
+                  expirationTtl: 900 // 15 minutes TTL
+                })
+                console.log(`✅ KV CACHE: Stored ${kvKey}`)
+              } catch (error) {
+                console.log(`⚠️ KV CACHE: Failed to store ${kvKey}:`, error)
+              }
+            }
           } else {
             console.error(`❌ UNIFIED: Content API error for ${code}: ${response.status}`)
             results[code] = []

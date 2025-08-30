@@ -609,8 +609,8 @@ export async function fetchCachedContent(code, country = lang.value) {
     console.log('🔍 CONTENT DEBUG: cache key =', cacheKey);
     console.log('🔍 CONTENT DEBUG: WHITELABEL_ID =', WHITELABEL_ID);
     
-    // 🎯 SILVER BULLET: Use LOCAL CloudFlare Function to bypass VPN blocking
-    const apiUrl = `/api/pp/content?codes=${code}&whitelabelId=${WHITELABEL_ID}&country=${resolvedCountry}`;
+    // Use unified CloudFlare Worker for KV caching (as per IGPsites-CONTENT-FIX.md)
+    const apiUrl = `https://access-content-pp.tech1960.workers.dev/?type=content&codes=${code}&whitelabelId=${WHITELABEL_ID}&country=${resolvedCountry}`;
     console.log('🔍 CONTENT DEBUG: Full API URL =', apiUrl);
     
     const response = await fetch(apiUrl);
@@ -761,8 +761,8 @@ export async function fetchFooterContent(lang) {
   }
 
   try {
-    // 🎯 SILVER BULLET: Use LOCAL CloudFlare Function to bypass VPN blocking
-    const apiUrl = `/api/pp/content?codes=footericon,footertext&whitelabelId=${WHITELABEL_ID}&country=${lang}`;
+    // Use unified CloudFlare Worker for KV caching (as per IGPsites-CONTENT-FIX.md)
+    const apiUrl = `https://access-content-pp.tech1960.workers.dev/?type=content&codes=footericon,footertext&whitelabelId=${WHITELABEL_ID}&country=${lang}`;
 
     console.log('🚀 UNIFIED: Fetching footer content (icons + text) in single call');
     console.log('📡 UNIFIED: Footer URL:', apiUrl);

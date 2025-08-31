@@ -95,7 +95,7 @@ export default defineNuxtConfig({
     head: {
       title: 'Jazzy Spins',
       meta: [
-        { name: 'description', content: "Jazzy" }
+        { name: 'description', content: "Jazzy Spins - Premium Online Casino with the best games and promotions" }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },

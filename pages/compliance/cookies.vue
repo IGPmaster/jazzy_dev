@@ -97,7 +97,7 @@ import { useCookieConsent } from '~/composables/useCookieConsent'
 const { isPreferencesOpen, handleOpenPreferences } = useCookieConsent()
 
 useHead({
-  title: 'Cookie Policy - Dukes Casino',
+  title: 'Cookie Policy - Jazzy Spins',
   meta: [
     {
       name: 'description',

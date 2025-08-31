@@ -69,7 +69,7 @@ const { fetch, error, $fetchState } = useFetch(async () => {
 });
 // Set page-specific meta tags
 useHead({
-	title: 'Casino Games - Jazzy',
+	title: 'Casino Games - Jazzy Spins Online Casino',
 	meta: [
 		{ hid: 'description', name: 'description', content: 'Explore the best casino games available at Jazzy Spins!' },
 		{ name: 'keywords', content: 'casino, games, casino, Jazzy Spins' }

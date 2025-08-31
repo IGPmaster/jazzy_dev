@@ -163,10 +163,10 @@ import { useHead } from '#imports';
 const myPromotionsPosts = useFetch(() => fetchApiPromotions());
 // Set page-specific meta tags
 useHead({
-    title: 'Promotions - Hippozino',
+    title: 'Promotions - Jazzy Spins',
     meta: [
-        { hid: 'description', name: 'description', content: 'Explore all the best promotions available at Hippozino!' },
-        { name: 'keywords', content: 'promotions, games, casino, Hippozino' }
+        { hid: 'description', name: 'description', content: 'Explore all the best promotions available at Jazzy Spins!' },
+        { name: 'keywords', content: 'promotions, games, casino, Jazzy Spins' }
     ]
 });
 </script>

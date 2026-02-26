@@ -71,7 +71,7 @@
 								:alt="'Image of ' + game.gameName + ' online slot. ' + game.description"
 								:title="game.gameName + ' - ' + game.id"
 								loading="lazy"
-								@error="game.image = 'newGameImg.jpg'"
+								@error="onImageError(game)"
 								class="w-full h-full object-cover" />
 							
 							<!-- Hover Overlay -->
@@ -117,6 +117,12 @@ import { ref, computed, onMounted } from 'vue';
 import { useHead } from '#imports';
 import { games, regLink, loginLink, playLink } from '~/composables/globalData';
 import { useGameStore } from '~/stores/gameStore';
+
+const failedImages = ref(new Set());
+
+function onImageError(game) {
+	if (game?.id) failedImages.value.add(game.id);
+}
 
 let selectedProvider = ref('all');
 let selectedSubProvider = ref('all');
@@ -170,7 +176,9 @@ let filteredGames = computed(() => {
 });
 
 let sortedGames = computed(() => {
-	return [...filteredGames.value].sort((a, b) => a.gameName.localeCompare(b.gameName));
+	return [...filteredGames.value]
+		.filter(game => !failedImages.value.has(game.id))
+		.sort((a, b) => a.gameName.localeCompare(b.gameName));
 });
 
 const gameStore = useGameStore();

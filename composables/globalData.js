@@ -33,8 +33,8 @@ const PP_PROMOTIONS_API = `${PP_API_URL}InfoContent?whitelabelId=${WHITELABEL_ID
 export const PP_LOBBY_LINK = 'https://www.jazzyspins.com/';
 // 🎯 SILVER BULLET: Use LOCAL CloudFlare Functions to bypass all VPN blocking
 // These are same-origin requests that avoid browser CORS and VPN detection entirely
-const KV_GAMES_PRIMARY = '/api/pp/games'; // Local CloudFlare Function
-const KV_GAMES_FALLBACK = '/api/worker/games'; // Local worker proxy as fallback
+const KV_GAMES_PRIMARY = process.client ? '/api/pp/games' : 'https://content.progressplay.net/api23/api/game?whitelabelId=239';
+const KV_GAMES_FALLBACK = process.client ? '/api/worker/games' : 'https://access-ppgames.tech1960.workers.dev/';
 const KV_GAMES = KV_GAMES_PRIMARY; // Default to primary local function
 
 

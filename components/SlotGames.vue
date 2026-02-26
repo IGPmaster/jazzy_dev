@@ -33,6 +33,7 @@
 					:key="game.id"
 					:game="game"
 					:reg-link="regLink"
+					@image-error="onImageError"
 				/>
 			</div>
 
@@ -63,10 +64,15 @@ import LoadingSpinner from './LoadingSpinner.vue';
 const loading = ref(true);
 const emit = defineEmits(['loaded']);
 const gameStore = useGameStore();
+const failedImages = ref(new Set());
+
+function onImageError(game) {
+	if (game?.id) failedImages.value.add(game.id);
+}
 
 const displayedGames = computed(() => {
 	const games = gameStore.slotGames || [];
-	return games.slice(-16).reverse();
+	return [...games].reverse().filter(g => !failedImages.value.has(g.id)).slice(0, 16);
 });
 
 onMounted(async () => {

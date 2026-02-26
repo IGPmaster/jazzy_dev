@@ -25,12 +25,12 @@
 		</div>
 		<div class="px-4 sm:px-6 lg:px-0 py-10">
 			<div class="container mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-				<div v-for="game in slotGames" :key="game.id" :class="'item ' + game.id">
+				<div v-for="game in visibleGames" :key="game.id" :class="'item ' + game.id">
 					<div class="">
 						<div class="show show-first first-content-border">
 							<a :href="regLink" target="_blank">
 								<img style="min-width: 100%;" class="responsive-img item-qqq" :src="game.image" loading="lazy"
-									@error="game.image = 'newGameImg.jpg'"
+									@error="onImageError(game)"
 									:alt="'Image of ' + game.gameName + ' online slot. ' + game.description"
 									:title="game.gameName + ' - ' + game.id" />
 							</a>
@@ -52,12 +52,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useHead } from '#imports';
 import { promotionsPosts, slotGames, msgTranslate, regLink, loginLink } from '~/composables/globalData';
 import { useGameStore } from '~/stores/gameStore';
 
 const gameStore = useGameStore();
+
+const failedImages = ref(new Set());
+
+function onImageError(game) {
+	if (game?.id) failedImages.value.add(game.id);
+}
+
+const visibleGames = computed(() => {
+	return slotGames.value.filter(game => !failedImages.value.has(game.id));
+});
 
 // Fetch games and other data
 const { fetch, error, $fetchState } = useFetch(async () => {

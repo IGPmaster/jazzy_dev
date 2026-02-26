@@ -1,9 +1,9 @@
 <template>
-  <div v-if="game" class="group relative rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
+  <div v-if="game && !hasError" class="group relative rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
     <a :href="regLink || '#'" target="_blank" class="block w-full pb-[133%] relative">
-      <img class="absolute inset-0 w-full h-full object-cover" 
+      <img class="absolute inset-0 w-full h-full object-cover"
         :src="game.image"
-        @error="handleImageError" 
+        @error="handleImageError"
         loading="lazy"
         :alt="gameAltText"
         :title="gameTitleText" />
@@ -30,6 +30,8 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
 const props = defineProps({
   game: {
     type: Object,
@@ -42,19 +44,23 @@ const props = defineProps({
   }
 });
 
-const gameAltText = computed(() => 
-  props.game?.gameName 
+const emit = defineEmits(['image-error']);
+const hasError = ref(false);
+
+const gameAltText = computed(() =>
+  props.game?.gameName
     ? `Image of ${props.game.gameName} online slot. ${props.game.description || ''}`
     : 'Game image'
 );
 
-const gameTitleText = computed(() => 
-  props.game?.gameName 
+const gameTitleText = computed(() =>
+  props.game?.gameName
     ? `${props.game.gameName} - ${props.game.id || ''}`
     : 'Game'
 );
 
-function handleImageError(event) {
-  event.target.src = '/newGameImg.jpg';  // Make sure path is correct
+function handleImageError() {
+  hasError.value = true;
+  emit('image-error', props.game);
 }
 </script> 

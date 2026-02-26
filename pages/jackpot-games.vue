@@ -27,7 +27,7 @@
 		</div>
 		<div class="px-4 sm:px-6 lg:px-0 py-10">
 			<div class="container mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-				<div v-for="game in jackpotGames" :key="game.id" :class="'item ' + game.id">
+				<div v-for="game in visibleGames" :key="game.id" :class="'item ' + game.id">
 					<div class="">
 						<div class="show show-first first-content-border">
 							<a :href="regLink" target="_blank">
@@ -35,7 +35,7 @@
 									class="responsive-img item-qqq" 
 									:src="game.image"
 									loading="lazy"
-									@error="game.image = 'newGameImg.jpg'"
+									@error="onImageError(game)"
 									:alt="'Image of ' + game.gameName + ' online slot. ' + game.description"
 									:title="game.gameName + ' - ' + game.id" />
 							</a>
@@ -57,12 +57,22 @@
 </template>
 
 <script setup>
-// import { ref, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useHead } from '#imports';
 import { jackpotGames, msgTranslate, regLink, } from '~/composables/globalData';
 import { useGameStore } from '~/stores/gameStore';
 
 const gameStore = useGameStore();
+
+const failedImages = ref(new Set());
+
+function onImageError(game) {
+	if (game?.id) failedImages.value.add(game.id);
+}
+
+const visibleGames = computed(() => {
+	return jackpotGames.value.filter(game => !failedImages.value.has(game.id));
+});
 
 const { fetch, error, $fetchState } = useFetch(async () => {
 	// ✅ OPTIMIZED: Single shared games call via gameStore (with 10min cache)

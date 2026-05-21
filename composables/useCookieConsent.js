@@ -71,8 +71,9 @@ export function useCookieConsent() {
     const queryString = queryParams.join('&');
     const queryStringWithQuestionMark = queryString ? `?${queryString}` : '';
     
-    regLink.value = `${PP_LOBBY_LINK}${queryStringWithQuestionMark}#registration`;
-    loginLink.value = `${PP_LOBBY_LINK}${queryStringWithQuestionMark}#login`;
+    const navSeparator = queryString ? '&' : '';
+    regLink.value = `${PP_LOBBY_LINK}?${queryString}${navSeparator}nav=registration`;
+    loginLink.value = `${PP_LOBBY_LINK}?${queryString}${navSeparator}nav=login`;
     playLink.value = `${PP_LOBBY_LINK}${queryStringWithQuestionMark}#play/`;
   };
 

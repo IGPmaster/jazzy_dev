@@ -885,8 +885,8 @@ export async function updateLinks() {
     const queryString = queryParams.toString();
     const baseUrl = PP_LOBBY_LINK.endsWith('/') ? PP_LOBBY_LINK : `${PP_LOBBY_LINK}/`;
 
-    regLink.value = `${baseUrl}${queryString ? '?' + queryString : ''}#registration`;
-    loginLink.value = `${baseUrl}${queryString ? '?' + queryString : ''}#login`;
+    regLink.value = `${baseUrl}?${queryString ? queryString + '&' : ''}nav=registration`;
+    loginLink.value = `${baseUrl}?${queryString ? queryString + '&' : ''}nav=login`;
     playLink.value = `${baseUrl}${queryString ? '?' + queryString : ''}#play/`;
 
     // Store tracker in cookie if it exists

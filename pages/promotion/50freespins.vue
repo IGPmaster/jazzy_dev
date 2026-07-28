@@ -95,7 +95,7 @@
         <div class="bg-jazzy-darkblue">
             <div class="container mx-auto text-white font-light text-xs text-center py-2">
                 New players only. Wagering from real balance first. 30X wagering the bonus or any winnings from free spins. Contribution varies per game. Selected games only. The wagering requirement calculated on bonus bets only. Bonus are valid for 30 days from receipt. Free spins are valid for 7 days from receipt. Max conversion: 3 times the bonus amount or from free spins: £20. Limited to 5 brands within the network. Withdrawal requests void all active/pending bonuses. Excluded Skrill and Neteller deposits. . Withdrawal requests void all active/pending bonuses. Excluded Skrill and Neteller deposits.  
-                <a href="https://www.jazzyspins.com/promotions?code=Welcome239900" class="text-jazzy-yellow underline">Full Terms Apply.</a> Please gamble responsibly. <a href="https://www.gamblingcommission.gov.uk/public-register/business/detail/domain-names/39335" class="text-jazzy-yellow underline">Network Rules Apply.</a>
+                <a href="https://play.jazzyspins.com/promotions?code=Welcome239900" class="text-jazzy-yellow underline">Full Terms Apply.</a> Please gamble responsibly. <a href="https://www.gamblingcommission.gov.uk/public-register/business/detail/domain-names/39335" class="text-jazzy-yellow underline">Network Rules Apply.</a>
             </div>
         </div>
 
@@ -177,7 +177,7 @@
                     <p class="text-2xl font-normal pt-4 text-jazzy-beige">General Terms & Conditions:</p>
                     <ol class="text-jazzy-beige font-thin text-xs md:text-sm list-decimal pl-5">
                         <li>All active bonuses or pending bonuses and promotional offers, and any winnings generated through the wagering of either of the aforementioned, will be cancelled upon withdrawal request if any of the applicable conditions have not been met in full prior to withdrawal request being submitted.</li>
-                        <li>The promotion is subject to the JazzySpins's <a href="https://www.jazzyspins.com/#info/terms" class="text-jazzy-yellow underline">Terms and Conditions.</a></li>
+                        <li>The promotion is subject to the JazzySpins's <a href="https://play.jazzyspins.com/#info/terms" class="text-jazzy-yellow underline">Terms and Conditions.</a></li>
                         <li>JazzySpins reserves the right to alter this chapter, cancel, modify or suspend any offer and any promotion at any time and without prior notice – in respect of any Bonus that has yet to be provided to You. Any bonuses granted prior to the change shall not be affected. The terms and conditions and the bonus policy that apply to any Bonus received by You are the Terms and Conditions and its Bonus Policy that are in force at the time in which You sign up to the Promotion to which that Bonus relates. Nothing in this section limits any other right and/or remedy granted to Us.</li>
                         <li>These terms and conditions may be published in a number of languages for information purposes. In case of deviations, the English version applies.</li>
                     </ol>

@@ -1,7 +1,7 @@
 export const BRAND_CONFIG = {
   WHITELABEL_ID: 239,
   WP_API: 'https://headless.jazzyspins.com/wp-json/wp/v2/',
-  PP_LOBBY_LINK: 'https://www.jazzyspins.com/',
+  PP_LOBBY_LINK: 'https://play.jazzyspins.com/',
   BRAND_NAME: 'Jazzy Spins',
 } as const;
 

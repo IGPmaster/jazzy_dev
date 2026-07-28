@@ -30,7 +30,7 @@ export const globalContent = ref({
 export const WHITELABEL_ID = 239;
 export const PP_API_URL = 'https://content.progressplay.net/api23/api/';
 const PP_PROMOTIONS_API = `${PP_API_URL}InfoContent?whitelabelId=${WHITELABEL_ID}&country=`;
-export const PP_LOBBY_LINK = 'https://www.jazzyspins.com/';
+export const PP_LOBBY_LINK = 'https://play.jazzyspins.com/';
 // 🎯 SILVER BULLET: Use LOCAL CloudFlare Functions to bypass all VPN blocking
 // These are same-origin requests that avoid browser CORS and VPN detection entirely
 const KV_GAMES_PRIMARY = process.client ? '/api/pp/games' : 'https://content.progressplay.net/api23/api/game?whitelabelId=239';

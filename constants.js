@@ -3,7 +3,7 @@ export const PP_API_URL = 'https://content.progressplay.net/api23/api/';
 export const PP_PROMOTIONS_API = `${PP_API_URL}PromotionsInfo?whitelabelId=${WHITELABEL_ID}&country=`;
 export const WP_API = 'https://headless.jazzyspins.com/wp-json/wp/v2/';
 export const KV_REST = "https://access-wprestapi.tech1960.workers.dev/";
-export const PP_LOBBY_LINK = 'https://www.jazzyspins.com/';
+export const PP_LOBBY_LINK = 'https://play.jazzyspins.com/';
 export const CF_GEO_WORKER = 'https://cf-geo-lookup.tech1960.workers.dev/';
 // Primary games worker (may fail in UK/ISP blocked regions)
 export const KV_GAMES = "https://access-ppgames.tech1960.workers.dev/";

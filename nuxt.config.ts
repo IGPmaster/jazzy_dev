@@ -69,6 +69,7 @@ export default defineNuxtConfig({
 
   // Keep route rules
   routeRules: {
+    '/promotions': { redirect: { to: 'https://play.jazzyspins.com/promotions', statusCode: 301 } },
     '/**': { isr: true }
   },
 

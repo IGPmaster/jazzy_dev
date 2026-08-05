@@ -4,32 +4,28 @@
 	<ProvidersSlider />
 	<NewGames />
 
-	<!-- PP Promotions API -->
-	<div class="section  py-0 md:py-2 bg-jazzy-beige">
-		
-		<div v-for="rest in promotionsPosts" :key="rest.code" class="container py-10 mx-auto text-primary">
-			<div v-html="rest.acf.promo_over" class="leading-relaxed"></div>
-		</div>
-
-		<div class="container mx-auto md:py-5">
-			<h2 class="text-jazzy-darkblue mb-4">Promotions</h2>
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
-				<div v-for="promo in pp_promotions" :key="promo.code">
-					<div class="card overflow-hidden rounded-lg leading-relaxed">
-						<div class="card-image">
-							<a :href="regLink">
-								<img class="activator w-full h-auto" :src="promo.bigImageUrl" loading="lazy"
-									:alt="'Image of ' + promo.title + ' promotion.'"
-									:title="promo.title + ', ' + promo.subTitle">
-							</a>
-						</div>
+	<!-- Promotions -->
+	<div class="bg-jazzy-beige py-16">
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="bg-white rounded-lg shadow-lg py-6 md:py-10 px-4 sm:px-6">
+				<div class="flex flex-col lg:flex-row justify-between items-center">
+					<div class="w-full lg:w-2/3">
+						<h2 class="text-jazzy-darkblue text-3xl font-bold mb-4 text-center lg:text-left">Promotions</h2>
+						<p class="text-jazzy-darkblue/80 font-light text-sm md:text-lg mb-4">
+							Keep the good times swinging — check out the promotions page for the bonuses
+							and offers currently playing at JazzySpins. There is always a fresh number
+							on the bill.
+						</p>
+					</div>
+					<div class="w-full lg:w-auto mt-4 lg:mt-0">
+						<a :href="promotionsLink"
+							class="w-full lg:w-auto inline-flex items-center justify-center px-8 py-3 bg-jazzy-green text-white
+								   uppercase font-medium rounded-md hover:scale-105 transition-all duration-300 shadow-lg">
+							<span class="text-white font-semibold">Promotions</span>
+							<i class="material-icons ml-2 text-white">arrow_forward</i>
+						</a>
 					</div>
 				</div>
-			</div>
-		</div>
-		<div class="py-10">
-			<div v-for="rest in promotionsPosts" :key="rest.code" class="container mx-auto py-2 info_content hide_this">
-				<div class="text-primary" v-html="rest.acf.promo_under"></div>
 			</div>
 		</div>
 	</div>
@@ -57,12 +53,10 @@
 import { ref, onMounted, defineEmits } from 'vue';
 const loading = ref(true);
 
-import { 
-	promotionsPosts, 
-	regLink, 
-	fetchPromotions, 
-	fetchApiPromotions, 
-	pp_promotions,
+import {
+	promotionsPosts,
+	promotionsLink,
+	fetchPromotions,
 	fetchCachedContent,
 	lang
 } from '~/composables/globalData';
@@ -86,7 +80,6 @@ onMounted(async () => {
 		// Load games data first (this will be shared across all game components)
 		await Promise.all([
 			fetchPromotions(),
-			fetchApiPromotions(),
 			fetchContent(),
 			gameStore.fetchGames() // ✅ Single games API call for entire page via gameStore
 		]);

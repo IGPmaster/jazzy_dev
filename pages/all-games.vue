@@ -66,7 +66,7 @@
 			<div class="container mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
 				<div v-for="game in sortedGames" :key="game.id" :class="'item-' + game.excludedCountries">
 					<div class="relative h-full group overflow-hidden rounded-lg">
-						<a :href="playLink + game.serverGameId" target="_blank" class="block h-full">
+						<a :href="playLink" target="_blank" class="block h-full">
 							<img :src="game.image"
 								:alt="'Image of ' + game.gameName + ' online slot. ' + game.description"
 								:title="game.gameName + ' - ' + game.id"

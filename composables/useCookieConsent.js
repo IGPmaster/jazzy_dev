@@ -74,7 +74,7 @@ export function useCookieConsent() {
     const navSeparator = queryString ? '&' : '';
     regLink.value = `${PP_LOBBY_LINK}?${queryString}${navSeparator}nav=registration`;
     loginLink.value = `${PP_LOBBY_LINK}?${queryString}${navSeparator}nav=login`;
-    playLink.value = `${PP_LOBBY_LINK}${queryStringWithQuestionMark}#play/`;
+    playLink.value = `${PP_LOBBY_LINK}?${queryString}${navSeparator}nav=play`;
   };
 
   const setAffiliateTracking = (tracker) => {

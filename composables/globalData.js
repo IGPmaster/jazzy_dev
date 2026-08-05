@@ -64,6 +64,7 @@ const rouletteGames = ref([]);
 const regLink = ref([null]);
 const loginLink = ref([null]);
 const playLink = ref([null]);
+const promotionsLink = ref(`${PP_LOBBY_LINK}promotions`);
 const msgTranslate = ref({});
 const pp_promotions = ref([]);
 const promotionsPosts = ref([]);
@@ -742,6 +743,7 @@ export {
     regLink,
     loginLink,
     playLink,
+    promotionsLink,
     msgTranslate,
     pp_promotions,
     promotionsPosts,
@@ -887,7 +889,8 @@ export async function updateLinks() {
 
     regLink.value = `${baseUrl}?${queryString ? queryString + '&' : ''}nav=registration`;
     loginLink.value = `${baseUrl}?${queryString ? queryString + '&' : ''}nav=login`;
-    playLink.value = `${baseUrl}${queryString ? '?' + queryString : ''}#play/`;
+    playLink.value = `${baseUrl}?${queryString ? queryString + '&' : ''}nav=play`;
+    promotionsLink.value = `${baseUrl}promotions${queryString ? '?' + queryString : ''}`;
 
     // Store tracker in cookie if it exists
     if (trackerValue) {

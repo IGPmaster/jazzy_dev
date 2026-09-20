@@ -1,3 +1,8 @@
 /promotions https://play.jazzyspins.com/promotions 301
 /promotions/* https://play.jazzyspins.com/promotions 301
-/*    /index.html   200
+
+# No SPA catch-all here. `/*  /index.html  200` used to sit on this line and
+# served the homepage, with a 200, for every unmatched URL — so any invented
+# path became an indexable duplicate of the front page instead of a 404.
+# This site is ssr: true on the cloudflare-pages preset, so the worker 404s
+# correctly on its own. Do not reinstate it.

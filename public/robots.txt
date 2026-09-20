@@ -1,0 +1,10 @@
+# jazzyspins.com
+# Canonical host is the apex; www 301s here.
+
+User-agent: *
+Allow: /
+
+# Campaign landing pages are paid-traffic destinations, not search results.
+Disallow: /lp/
+
+Sitemap: https://jazzyspins.com/sitemap.xml
